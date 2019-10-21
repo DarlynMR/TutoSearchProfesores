@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.rd.dmmr.tutosearchprofesores.RegistrarProf">
+
+
+
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/books"
+        android:alpha="0.7"
+        android:layout_alignParentTop="true"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp"/>
+
+    <LinearLayout
+        android:id="@+id/LYtop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="1dp"
+            android:backgroundTint="@color/colorBlanco"
+            />
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circularprofile"
+        android:layout_width="119dp"
+        android:layout_height="129dp"
+        android:layout_gravity="center"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:layout_below="@id/LYtop"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/imageprofile"
+        app:civ_border_color="@android:color/darker_gray"
+        app:civ_border_width="3sp" />
+
+    <LinearLayout
+        android:id="@+id/LYInformacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/fondo_trans"
+        android:layout_below="@id/circularprofile"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/txtNombreRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/nombre_completo"
+            android:drawableStart="@drawable/ic_person_black_24dp"
+            android:drawablePadding="6sp"
+            android:inputType="textEmailAddress" />
+        <EditText
+            android:id="@+id/txtTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/tel_fono"
+            android:drawableStart="@drawable/ic_contact_phone_black_24dp"
+            android:drawablePadding="6sp"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/txtCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/correo_electr_nico"
+            android:drawableStart="@drawable/ic_email_black_24dp"
+            android:drawablePadding="6sp"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/contrase_a"
+            android:drawableStart="@drawable/ic_passwordopen"
+            android:drawablePadding="6sp"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/txtPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6sp"
+            android:drawableStart="@drawable/ic_passwordopen"
+            android:ems="10"
+            android:hint="@string/repetir_contrase_a"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btncargarimage"
+            android:layout_width="165sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:drawableStart="@drawable/cargarimage"
+            android:background="@drawable/button_style"
+            android:text="@string/cargar_foto" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnRegistrar"
+        android:layout_width="152dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="172dp"
+        android:layout_below="@id/LYInformacion"
+        android:background="@drawable/button_style"
+        android:text="@string/registrar" />
+
+
+
+</RelativeLayout>
+

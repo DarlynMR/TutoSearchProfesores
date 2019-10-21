@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="colorAccent">#795548</color>
+
+
+    <color name="Blanco">#ffffff</color>
+    <color name="Rojo">#ff0000</color>
+    <color name="GrisParaTexto">#d6d2d2</color>
+
+    <color name="GrisFondo">#596878</color>
+
+
+
+    <color name="colorMensaje">#4ae864</color>
+    <color name="colorBlanco">#ffffff</color>
+    <color name="text_color">#c9c7c7</color>
+    <color name="darkColor">#222222</color>
+
+    <color name="lineaGris">#ededed</color>
+
+
+    <color name="colorPrimaryLgn">#000000</color>
+    <color name="colorPrimaryDarkLgn">#212121</color>
+    <color name="colorAccentLgn">#ff6d00</color>
+
+    <color name="tabTextColor">#ffffff</color>
+    <color name="tabIndicador">#ffffff</color>
+</resources>

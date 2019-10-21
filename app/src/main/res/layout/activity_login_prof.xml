@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Blanco"
+    android:fillViewport="true"
+    tools:context="com.rd.dmmr.tutosearchprofesores.LoginProf">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/colorPrimaryDarkLgn"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/Blanco"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:padding="@dimen/margin_default"
+                android:layout_margin="@dimen/margin_short"
+                android:background="@color/Blanco"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_default"
+                android:text="@string/desc"
+                android:textColor="@color/Blanco"
+                android:padding="@dimen/margin_short"
+                android:gravity="center"
+                android:textSize="@dimen/_12sdp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/margin_short"
+                android:padding="@dimen/margin_short"
+                android:weightSum="2">
+
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Leer más"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_margin="@dimen/margin_short"
+                    android:backgroundTint="@color/Blanco"
+                    android:background="@drawable/cornered_button"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_margin="@dimen/margin_short"
+                    android:text="Visitar página"
+                    android:background="@drawable/cornered_button"
+                    android:textColor="@color/Blanco"/>
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_default"
+            android:layout_weight="1"
+            android:background="@color/Blanco"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/margin_short">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/correo_electr_nico"
+                    android:paddingBottom="18dp"
+                    android:textSize="@dimen/_15sdp"
+                    android:inputType="textEmailAddress"/>
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
+                app:passwordToggleEnabled="true">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/contrase_a"
+                    android:inputType="textPassword"
+                    android:paddingBottom="18dp"
+                    android:textSize="@dimen/_15sdp" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/margin_short"
+                android:padding="@dimen/margin_short"
+                android:gravity="center"
+                android:weightSum="2">
+
+
+
+
+                <Button
+                    android:id="@+id/btnRegistroLogin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Registrarse"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_margin="@dimen/margin_short"
+                    android:backgroundTint="@color/GrisParaTexto"
+                    android:background="@drawable/cornered_button"/>
+
+                <Button
+                    android:id="@+id/btnEntrarLogin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_margin="@dimen/margin_short"
+                    android:text="Entrar"
+                    android:background="@drawable/cornered_button"
+                    android:textColor="@color/Blanco"/>
+
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="He olvidado mi contraseña"
+                android:textColor="@color/colorAccentLgn"
+
+                android:textSize="@dimen/_12sdp"/>
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>
