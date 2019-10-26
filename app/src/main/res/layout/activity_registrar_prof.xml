@@ -8,9 +8,6 @@
     tools:context="com.rd.dmmr.tutosearchprofesores.RegistrarProf">
 
 
-
-
-
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
@@ -61,7 +58,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
         android:paddingStart="10dp"
-        android:paddingEnd="10dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
@@ -70,14 +66,34 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/txtNombreRegistrar"
+            android:id="@+id/txt_nombres_reg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/nombre_completo"
+            android:hint="@string/nombres"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:drawablePadding="6sp"
-            android:inputType="textEmailAddress" />
+            android:inputType="textPersonName" />
+        <EditText
+            android:id="@+id/txt_apellidos_reg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/apeliidos"
+            android:drawableStart="@drawable/ic_person_black_24dp"
+            android:drawablePadding="6sp"
+            android:inputType="textPersonName" />
+        <TextView
+            android:id="@+id/txt_fechanacimiento_reg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/fecha_nacimiento"
+            android:textSize="@dimen/_14sdp"
+            android:drawableStart="@drawable/ic_if_christmas_date_1651909"
+            android:drawablePadding="6sp"
+            />
+
         <EditText
             android:id="@+id/txtTelefono"
             android:layout_width="match_parent"
@@ -133,14 +149,13 @@
 
     <Button
         android:id="@+id/btnRegistrar"
-        android:layout_width="152dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="172dp"
-        android:layout_below="@id/LYInformacion"
         android:background="@drawable/button_style"
-        android:text="@string/registrar" />
+        android:text="@string/registrar"
+        android:layout_below="@id/LYInformacion"/>
+
 
 
 

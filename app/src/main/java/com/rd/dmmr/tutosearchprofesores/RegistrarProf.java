@@ -1,5 +1,6 @@
 package com.rd.dmmr.tutosearchprofesores;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,8 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class RegistrarProf extends AppCompatActivity implements View.OnClickListener {
+import java.util.Calendar;
+import java.util.HashMap;
 
+public class RegistrarProf extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
@@ -29,13 +34,14 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
     private ProgressDialog progressDialog;
 
+
     private Button JbtnRegistrar;
 
-    private EditText NombreCompleto;
-    private EditText Telefono;
-    private EditText Correo;
-    private EditText Password;
-    private EditText Password2;
+    private EditText nombres, apellidos, telefono, correo, password, password2;
+
+    private TextView fecha_nacimiento;
+
+    private int ano, mes, dia, hora, minutos;
 
     private FloatingActionButton fback_button;
 
@@ -43,13 +49,15 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_prof);
 
-        NombreCompleto= (EditText) findViewById(R.id.txtNombreRegistrar);
-        Telefono= (EditText) findViewById(R.id.txtTelefono);
-        Correo= (EditText) findViewById(R.id.txtCorreo);
-        Password= (EditText) findViewById(R.id.txtPassword);
-        Password2= (EditText) findViewById(R.id.txtPassword2);
+        nombres = (EditText) findViewById(R.id.txt_nombres_reg);
+        apellidos = (EditText) findViewById(R.id.txt_apellidos_reg);
+        fecha_nacimiento = (TextView) findViewById(R.id.txt_fechanacimiento_reg);
+        telefono = (EditText) findViewById(R.id.txtTelefono);
+        correo = (EditText) findViewById(R.id.txtCorreo);
+        password = (EditText) findViewById(R.id.txtPassword);
+        password2 = (EditText) findViewById(R.id.txtPassword2);
 
-        fback_button= (FloatingActionButton) findViewById(R.id.fBackButton);
+        fback_button = (FloatingActionButton) findViewById(R.id.fBackButton);
 
         FAutentic = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -61,7 +69,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser usuario = firebaseAuth.getCurrentUser();
                 if (usuario != null) {
-                    Mtoast("Iniciado como "+firebaseAuth.getCurrentUser().getEmail());
+                    Mtoast("Iniciado como " + firebaseAuth.getCurrentUser().getEmail());
                 } else {
                     Mtoast("Cierre de sesión correcto");
 
@@ -70,45 +78,64 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         };
 
 
-
         JbtnRegistrar.setOnClickListener(this);
-       fback_button.setOnClickListener(this);
-
+        fback_button.setOnClickListener(this);
+        fecha_nacimiento.setOnClickListener(this);
 
 
     }
 
-    public void Registrar(String email, String password){
+    public void Registrar(String email, String password) {
 
         progressDialog.setMessage("Creando cuenta...");
         progressDialog.show();
-        FAutentic.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        FAutentic.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                String Nom = NombreCompleto.getText().toString();
-                String Tel = Telefono.getText().toString();
-                String Mail= Correo.getText().toString();
-                if(!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     Alerta("Ocurrio un error", "Direccion de correo en uso, falla de conexión o correo mal escrito.");
 
-                }else {
+                } else {
 
-                    Alerta("Estado de registro","Su cuenta ha sido creada correctamente, solo resta ir a su correo y " +
+                    Alerta("Estado de registro", "Su cuenta ha sido creada correctamente, solo resta ir a su correo y " +
                             "entrar al enlace de verificación para activarla");
 
-                    FirebaseUser user= FAutentic.getCurrentUser();
-                    DBReference.child("UCATECI").child("Profesores").child(user.getUid()).child("Nombre").setValue(Nom);
-                    DBReference.child("UCATECI").child("Profesores").child(user.getUid()).child("Telefono").setValue(Tel);
-                    DBReference.child("UCATECI").child("Profesores").child(user.getUid()).child("Correo").setValue(Mail);
+                    final FirebaseUser user = FAutentic.getCurrentUser();
+                    DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(user.getUid());
 
-                    user.sendEmailVerification();
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put("nombres", nombres.getText().toString());
+                    hashMap.put("apellidos", apellidos.getText().toString());
+                    hashMap.put("telefonos", telefono.getText().toString());
+                    hashMap.put("fecha_nacimiento", fecha_nacimiento.getText().toString());
+                    hashMap.put("correo", correo.getText().toString());
+                    hashMap.put("url_pic", "null");
 
 
+                    DBReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = FAutentic.getCurrentUser();
+                                user.sendEmailVerification();
+                                FAutentic.signOut();
 
+                                progressDialog.dismiss();
+                                Intent i = new Intent(RegistrarProf.this, LoginProf.class);
+                                RegistrarProf.this.startActivity(i);
 
+                                Mtoast("Usuario registrado correctamente");
+                            } else {
 
+                                Mtoast("Ocurrio un error al registrar el usuario");
+                                user.delete();
+                                FAutentic.signOut();
+                                progressDialog.dismiss();
+                            }
 
+                        }
+                    });
 
 
                     Intent i = new Intent(RegistrarProf.this, LoginProf.class);
@@ -123,29 +150,43 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-    public void Alerta (String Titulo, String Mensaje){
+    public void Alerta(String Titulo, String Mensaje) {
         AlertDialog alertDialog;
-        alertDialog = new AlertDialog.Builder(RegistrarProf.this).setNegativeButton("Ok",null).create();
+        alertDialog = new AlertDialog.Builder(RegistrarProf.this).setNegativeButton("Ok", null).create();
         alertDialog.setTitle(Titulo);
         alertDialog.setMessage(Mensaje);
         alertDialog.show();
 
     }
 
-    public void Mtoast(String mensaje){
+    public void Mtoast(String mensaje) {
 
-        Toast toast= Toast.makeText(RegistrarProf.this, mensaje,Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(RegistrarProf.this, mensaje, Toast.LENGTH_SHORT);
         toast.show();
     }
 
     @Override
     public void onClick(View view) {
-        if (view==JbtnRegistrar){
-            Registrar(Correo.getText().toString(),Password.getText().toString());
+        if (view == JbtnRegistrar) {
+            Registrar(correo.getText().toString(), password.getText().toString());
         }
-        if (view==fback_button){
-           onBackPressed();
+        if (view == fback_button) {
+            onBackPressed();
+        }
+        if (view == fecha_nacimiento) {
+            final Calendar calendar = Calendar.getInstance();
+            ano = calendar.get(Calendar.YEAR);
+            mes = calendar.get(Calendar.MONTH);
+            dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int an, int me, int di) {
+                    fecha_nacimiento.setText(di + "/" + (me + 1) + "/" + an);
+                }
+            }
+                    , dia, mes, ano);
+            datePickerDialog.show();
         }
     }
 }

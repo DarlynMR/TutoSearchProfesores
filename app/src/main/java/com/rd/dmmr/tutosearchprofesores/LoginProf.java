@@ -134,7 +134,7 @@ public class LoginProf extends AppCompatActivity {
 
                         FirebaseUser user = FAutentic.getCurrentUser();
                         assert user != null;
-                        DBReference=FirebaseDatabase.getInstance().getReference().child("UCATECI").child("Profesores").child(user.getUid());
+                        DBReference=FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(user.getUid());
 
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginProf.this, "Datos incorrectos, por favor digite otra vez sus datos", Toast.LENGTH_LONG).show();
@@ -158,9 +158,11 @@ public class LoginProf extends AppCompatActivity {
 
                                         }else {
                                         */
-                                            editor.putString("nombreProf", dataSnapshot.child("Nombre").getValue().toString());
-                                            editor.putString("Correo", dataSnapshot.child("Correo").getValue().toString());
-                                            editor.putString("TelefonoProf", dataSnapshot.child("Telefono").getValue().toString());
+                                            editor.putString("nombresProf", dataSnapshot.child("nombres").getValue().toString());
+                                            editor.putString("apellidosProf", dataSnapshot.child("apellidos").getValue().toString());
+                                            editor.putString("TelefonoProf", dataSnapshot.child("telefono").getValue().toString());
+                                            editor.putString("FechaNacimiento", dataSnapshot.child("fecha_nacimiento").getValue().toString());
+                                            editor.putString("Correo", dataSnapshot.child("correo").getValue().toString());
                                             editor.commit();
                                        // }
 

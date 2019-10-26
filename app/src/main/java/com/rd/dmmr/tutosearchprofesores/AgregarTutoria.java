@@ -185,10 +185,10 @@ public class AgregarTutoria extends AppCompatActivity implements View.OnClickLis
         String horafinal = HoraFinal.getText().toString();
 
 
-                    String keyid= DBRefGetid.child("UCATECI").child("Tutorias").push().getKey();
+                    String keyid= DBRefGetid.child("tutorias").child("institucionales").push().getKey();
                     FirebaseUser user= FAutentic.getCurrentUser();
 
-                    DBReference= FirebaseDatabase.getInstance().getReference().child("UCATECI").child("Tutorias").child(keyid);
+                    DBReference= FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
 
                     HashMap<String,String> TutoMap=new HashMap<>();
                     TutoMap.put("Materia",materia);
