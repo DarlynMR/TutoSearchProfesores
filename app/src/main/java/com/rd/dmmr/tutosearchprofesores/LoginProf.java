@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginProf extends AppCompatActivity {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class LoginProf extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
@@ -82,13 +86,7 @@ public class LoginProf extends AppCompatActivity {
             }
         };
 
-
-        JbtnEntrar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Login(LCorreo.getText().toString(),LPassword.getText().toString());
-            }
-        });
-
+        JbtnEntrar.setOnClickListener(this);
         JbtnRegistrar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent activityChangeIntent = new Intent(LoginProf.this, RegistrarProf.class);
@@ -128,29 +126,30 @@ public class LoginProf extends AppCompatActivity {
 
         FAutentic.signInWithEmailAndPassword(Usuario, Password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        try {
+                            FirebaseUser user = FAutentic.getCurrentUser();
+                            assert user != null;
+                            DBReference=FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(user.getUid());
 
-                        FirebaseUser user = FAutentic.getCurrentUser();
-                        assert user != null;
-                        DBReference=FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(user.getUid());
-
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(LoginProf.this, "Datos incorrectos, por favor digite otra vez sus datos", Toast.LENGTH_LONG).show();
-                            progressDialog.dismiss();
-                        } else {
-
-                            if (!user.isEmailVerified()) {
-                                Toast.makeText(LoginProf.this, "Esta cuenta aun no ha sido verificada o no existe", Toast.LENGTH_LONG).show();
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(LoginProf.this, "Datos incorrectos, por favor digite otra vez sus datos", Toast.LENGTH_LONG).show();
                                 progressDialog.dismiss();
-                                return;
-                            }
-                            if (task.isSuccessful()) {
+                                FAutentic.signOut();
+                            } else {
 
-                                DBReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (!user.isEmailVerified()) {
+                                    Toast.makeText(LoginProf.this, "Esta cuenta aun no ha sido verificada o no existe", Toast.LENGTH_LONG).show();
+                                    progressDialog.dismiss();
+                                    FAutentic.signOut();
+                                    return;
+                                }
+                                if (task.isSuccessful()) {
+
+                                    DBReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
                                         /*
                                         if (dataSnapshot==null){
                                             Alerta("Error al iniciar", "La cuenta que esta intentando acceder es de un estudiante, aqui solo se permite iniciar con cuenta de profesor");
@@ -158,45 +157,66 @@ public class LoginProf extends AppCompatActivity {
 
                                         }else {
                                         */
-                                            editor.putString("nombresProf", dataSnapshot.child("nombres").getValue().toString());
-                                            editor.putString("apellidosProf", dataSnapshot.child("apellidos").getValue().toString());
-                                            editor.putString("TelefonoProf", dataSnapshot.child("telefono").getValue().toString());
-                                            editor.putString("FechaNacimiento", dataSnapshot.child("fecha_nacimiento").getValue().toString());
-                                            editor.putString("Correo", dataSnapshot.child("correo").getValue().toString());
+                                            Log.i("Prueba", dataSnapshot.child("nombres").getValue(String.class));
+                                            editor.putString("nombresProf", dataSnapshot.child("nombres").getValue(String.class));
+                                            editor.putString("apellidosProf", dataSnapshot.child("apellidos").getValue(String.class));
+                                            editor.putString("TelefonoProf", dataSnapshot.child("telefono").getValue(String.class));
+                                            editor.putString("FechaNacimiento", dataSnapshot.child("fecha_nacimiento").getValue(String.class));
+                                            editor.putString("Correo", dataSnapshot.child("correo").getValue(String.class));
                                             editor.commit();
-                                       // }
+                                            // }
 
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-                                    }
-                                });
+                                        }
+                                    });
 
 
 
-                                Toast.makeText(LoginProf.this, "Inicio de sesión exitoso.",
-                                        Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
-                                Intent intent = new Intent(LoginProf.this, Pantalla_Principal.class);
-                                LoginProf.this.startActivity(intent);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(LoginProf.this, "Fallo en el inicio de sesión",
-                                        Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginProf.this, "Inicio de sesión exitoso.",
+                                            Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent(LoginProf.this, Pantalla_Principal.class);
+                                    LoginProf.this.startActivity(intent);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(LoginProf.this, "Fallo en el inicio de sesión",
+                                            Toast.LENGTH_SHORT).show();
 
-                                progressDialog.dismiss();
+                                    progressDialog.dismiss();
+                                }
+
+                                // ...
                             }
-
-                            // ...
+                        } catch (Exception e){
+                            Alerta("Error al tratar de iniciar", e.getMessage());
+                            progressDialog.dismiss();
                         }
+
                     }
 
                 });
 
 
+        }
+
+
+    public static boolean Validad_email(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
     }
 
 
@@ -237,5 +257,24 @@ public class LoginProf extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        View ViewFocus = null;
+        if (view==JbtnEntrar){
+            if (LCorreo.getText().toString().length() == 0) {
+                campos_vacios(LCorreo,ViewFocus);
+            } else if (LPassword.getText().toString().length() == 0){
+                campos_vacios(LPassword,ViewFocus);
+            } else if (!Validad_email(LCorreo.getText().toString())){
+                LCorreo.setError("Correo inválido");
+            }else{
+                Login(LCorreo.getText().toString(),LPassword.getText().toString());
+            }
+        }
+    }
 
+    public void campos_vacios(EditText campo, View view){
+        campo.setError("No puede dejar este campo vacío.");
+        view= campo;
+    }
 }

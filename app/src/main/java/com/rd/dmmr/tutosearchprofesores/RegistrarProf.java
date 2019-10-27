@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -159,6 +161,11 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
     }
 
+    public void campos_vacios(EditText campo, View view){
+        campo.setError("No puede dejar este campo vacío.");
+        view= campo;
+    }
+
     public void Mtoast(String mensaje) {
 
         Toast toast = Toast.makeText(RegistrarProf.this, mensaje, Toast.LENGTH_SHORT);
@@ -168,7 +175,35 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view == JbtnRegistrar) {
-            Registrar(correo.getText().toString(), password.getText().toString());
+            View ViewFocus = null;
+            String pass,pass2;
+            pass= password.getText().toString(); pass2= password2.getText().toString();
+
+
+            if (nombres.getText().toString().length() == 0) {
+                campos_vacios(nombres,ViewFocus);
+            } else if (apellidos.getText().toString().length() == 0) {
+                campos_vacios(apellidos,ViewFocus);
+            }else if (fecha_nacimiento.getText().toString().length() == 0) {
+                Alerta("Fecha vacía", "Favor de introducir su fecha de nacimiento.");
+            }else if (telefono.getText().toString().length() == 0) {
+                campos_vacios(telefono,ViewFocus);
+            }else if (correo.getText().toString().length() == 0) {
+                campos_vacios(correo,ViewFocus);
+            }else if (apellidos.getText().toString().length() == 0) {
+                campos_vacios(apellidos,ViewFocus);
+            } else if (password.getText().toString().length() == 0) {
+                campos_vacios(password,ViewFocus);
+            } else if (password2.getText().toString().length() == 0) {
+                campos_vacios(password2,ViewFocus);
+            }else if (!pass.equals(pass2)) {
+                Log.i("Prueba", ""+pass.equals(pass2));
+                password2.setError("Las contraseñas no coinciden.");
+                ViewFocus =password2;
+            } else {
+                Registrar(correo.getText().toString(), password.getText().toString());
+            }
+
         }
         if (view == fback_button) {
             onBackPressed();
