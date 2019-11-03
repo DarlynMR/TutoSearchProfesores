@@ -32,9 +32,9 @@ import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtNombreProfMenu;
 
 
 public class Pantalla_Principal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    CardView crdAgregarTutoria;
+    CardView crdAgregarTutoria, crdTutoriasAceptadas;
 
     TextView txtNombreProf, txtCorreoProf;
 
@@ -69,13 +69,10 @@ public class Pantalla_Principal extends AppCompatActivity
 
 
         crdAgregarTutoria= (CardView)findViewById(R.id.crdAgregarTutoria);
-        crdAgregarTutoria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Pantalla_Principal.this, AgregarTutoria.class);
-                Pantalla_Principal.this.startActivity(intent);
-            }
-        });
+        crdTutoriasAceptadas= (CardView)findViewById(R.id.card_tutorias_reservadas);
+        crdTutoriasAceptadas.setOnClickListener(this);
+        crdTutoriasAceptadas.setOnClickListener(this);
+
     }
 
     @Override
@@ -189,5 +186,16 @@ public class Pantalla_Principal extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view==crdAgregarTutoria){
+                    Intent intent = new Intent(Pantalla_Principal.this, AgregarTutoria.class);
+                    Pantalla_Principal.this.startActivity(intent);
+        } else if (view==crdTutoriasAceptadas){
+            Intent intent = new Intent(Pantalla_Principal.this, TransmisionActivity.class);
+            Pantalla_Principal.this.startActivity(intent);
+        }
     }
 }
