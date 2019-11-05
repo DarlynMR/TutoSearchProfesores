@@ -6,9 +6,6 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +15,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -241,7 +241,7 @@ public class AgregarTutoria extends AppCompatActivity implements View.OnClickLis
                     Fecha.setText(di + "/" + (me + 1) + "/" + an);
                 }
             }
-                ,dia,mes,ano);
+                ,ano,mes,dia);
             datePickerDialog.show();
         }
 

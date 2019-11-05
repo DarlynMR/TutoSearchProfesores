@@ -25,6 +25,14 @@ repositories {
     }
 }
 
+android {
+    defaultConfig {
+        // ...
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -36,10 +44,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
     //Todo lo necesario para que se puedan utilizar las funciones de firebase, imagen circular y otros
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
-    implementation 'com.google.firebase:firebase-database:19.1.0'
+    implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
 
     implementation 'com.intuit.sdp:sdp-android:1.0.3'
@@ -59,5 +67,11 @@ dependencies {
 
     //HTTP
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    implementation project(path: ':libbambuser-0.9.18')
+
+    //Material Design
+    implementation 'com.github.ganfra:material-spinner:2.0.0'
+
+    implementation 'id.zelory:compressor:2.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

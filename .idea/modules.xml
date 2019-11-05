@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/TutoSearchProfesores.iml" filepath="$PROJECT_DIR$/TutoSearchProfesores.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/com.wowza.gocoder.sdk/com.wowza.gocoder.sdk.iml" filepath="$PROJECT_DIR$/com.wowza.gocoder.sdk/com.wowza.gocoder.sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbambuser-0.9.18/libbambuser-0.9.18.iml" filepath="$PROJECT_DIR$/libbambuser-0.9.18/libbambuser-0.9.18.iml" />
     </modules>
   </component>
 </project>

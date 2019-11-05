@@ -2,21 +2,21 @@ package com.rd.dmmr.tutosearchprofesores;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import android.view.View;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,8 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtCorreoProfMenu;
 import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtNombreProfMenu;
 
@@ -34,7 +32,7 @@ import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtNombreProfMenu;
 public class Pantalla_Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    CardView crdAgregarTutoria, crdTutoriasAceptadas;
+    CardView crdAgregarTutoria, crdTutoriasAceptadas,crdMensajes;
 
     TextView txtNombreProf, txtCorreoProf;
 
@@ -70,8 +68,12 @@ public class Pantalla_Principal extends AppCompatActivity
 
         crdAgregarTutoria= (CardView)findViewById(R.id.crdAgregarTutoria);
         crdTutoriasAceptadas= (CardView)findViewById(R.id.card_tutorias_reservadas);
+        crdMensajes= (CardView)findViewById(R.id.card_mensajes);
+
+
+        crdAgregarTutoria.setOnClickListener(this);
         crdTutoriasAceptadas.setOnClickListener(this);
-        crdTutoriasAceptadas.setOnClickListener(this);
+        crdMensajes.setOnClickListener(this);
 
     }
 
@@ -191,10 +193,13 @@ public class Pantalla_Principal extends AppCompatActivity
     @Override
     public void onClick(View view) {
         if (view==crdAgregarTutoria){
-                    Intent intent = new Intent(Pantalla_Principal.this, AgregarTutoria.class);
+                    Intent intent = new Intent(Pantalla_Principal.this, ElegirTipoTutoria.class);
                     Pantalla_Principal.this.startActivity(intent);
         } else if (view==crdTutoriasAceptadas){
             Intent intent = new Intent(Pantalla_Principal.this, TransmisionActivity.class);
+            Pantalla_Principal.this.startActivity(intent);
+        }else if (view==crdMensajes){
+            Intent intent = new Intent(Pantalla_Principal.this, TransmisionActivity2.class);
             Pantalla_Principal.this.startActivity(intent);
         }
     }

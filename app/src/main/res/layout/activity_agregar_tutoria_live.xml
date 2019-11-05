@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:design="http://schemas.android.com/tools"
+    android:id="@+id/LYMainLive"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AgregarTutoriaLive"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/MyAppbar"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:fitsSystemWindows="true"
+        app:expanded="false">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+            app:contentInsetStart="72dp"
+            app:contentScrim="@color/GrisFondo"
+            app:expandedTitleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            app:layout_collapseParallaxMultiplier="0.8"
+            app:theme="@style/Widget.AppCompat.Toolbar">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgTutoLive"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentTop="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/video_camera_live"
+                        />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/MyToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:elevation="0dp"
+                android:minHeight="185dp"
+                android:theme="@style/AppTheme"
+                app:contentInsetStart="72dp"
+                app:layout_collapseMode="pin"
+                app:layout_collapseParallaxMultiplier="0.8"
+                app:popupTheme="@style/AppTheme"
+                app:titleTextColor="@color/colorBlanco" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/contenedor_detalle_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabImgChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_menu_camera"
+        app:backgroundTint="@color/cardview_light_background"
+        app:layout_anchor="@+id/contenedor_detalle_item"
+        app:layout_anchorGravity="top|end" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+        android:background="@color/cardview_light_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:id="@+id/LYContenido"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="24dp">
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spnMateria"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                app:ms_arrowColor="@color/GrisFondo"
+                app:ms_floatingLabelColor="#A9A9A9"
+                app:ms_floatingLabelText="Materia"
+                app:ms_hint="Seleccione la materia"
+                app:ms_hintColor="#000000"
+                app:ms_multiline="true"
+                >
+
+            </fr.ganfra.materialspinner.MaterialSpinner>
+
+            <LinearLayout
+                android:id="@+id/LYTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spnMateria"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="60sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8sp"
+                    android:text="@string/t_tulo"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8sp"
+                    android:background="@color/GrisParaTexto"
+                    android:inputType="" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lbDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/LYTitulo"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:text="Descripción"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_below="@id/lbDescripcion"
+                android:layout_marginHorizontal="8sp"
+                android:background="@color/GrisParaTexto"
+                android:ems="10"
+                android:inputType="textMultiLine" />
+
+
+            <Button
+                android:id="@+id/btnFecha"
+                android:layout_width="50sp"
+                android:layout_height="55sp"
+                android:layout_below="@id/txtDescripcion"
+                android:drawableBottom="@drawable/ic_if_christmas_date_1651909" />
+
+            <EditText
+                android:id="@+id/txtFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDescripcion"
+                android:layout_toEndOf="@id/btnFecha"
+                android:editable="false" />
+
+
+            <Button
+                android:id="@+id/btnHoraInicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hora Inicio"
+                android:textSize="12sp"
+                android:layout_below="@id/btnFecha"/>
+
+            <EditText
+                android:id="@+id/txtHoraInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/btnHoraInicio"
+                android:layout_below="@id/btnFecha"/>
+
+
+            <Button
+                android:id="@+id/btnPublicar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="Publicar"
+                android:layout_below="@id/btnHoraInicio"/>
+
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
