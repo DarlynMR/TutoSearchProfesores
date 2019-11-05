@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,6 +47,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 
@@ -136,7 +136,6 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
         String materia = spnMateria.getSelectedItem().toString();
         String profesor = pref.getString("nombreProf", "");
-        Log.i("Probando", "Nada: " + profesor);
 
         if (download_url == null) {
             download_url = "default";
@@ -152,13 +151,12 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
 
         keyid = DBRefGetid.child("tutorias").child("institucionales").push().getKey();
+
         SubirImagen(keyid);
+
         FirebaseUser user = FAutentic.getCurrentUser();
 
         DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
-
-        Log.i("URL", download_url + " Vacio?");
-        Log.i("URL", thumb_downloadUrl + " Vacio?");
 
         HashMap<String, String> TutoMap = new HashMap<>();
         TutoMap.put("Materia", materia);
@@ -264,7 +262,17 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                                 public void onSuccess(Uri uri) {
 
                                     download_url = uri.toString();
-                                    Log.i("URL", download_url + " Vacio?");
+                                    Map update_hashmMap=new HashMap();
+                                    update_hashmMap.put("image",download_url);
+                                    DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
+                                    DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
 
                                 }
 
@@ -282,6 +290,18 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                                         public void onSuccess(Uri uri) {
 
                                             thumb_downloadUrl = uri.toString();
+                                            Map update_hashmMap=new HashMap();
+                                            update_hashmMap.put("thumb_image",thumb_downloadUrl);
+                                            DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
+                                            DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(AgregarTutoriaLive.this, "Se ha subido la imagen con exito.", Toast.LENGTH_LONG).show();
+                                                        progressDialog.dismiss();
+                                                    }
+                                                }
+                                            });
 
                                         }
 
@@ -328,7 +348,6 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                     while (iterator.hasNext()) {
                         final DataSnapshot idmateria = (DataSnapshot) iterator.next();
                         materia.add(idmateria.getKey());
-                        Log.i("Materia", idmateria.getKey());
                         spnMateria = (Spinner) findViewById(R.id.spnMateria);
                         ArrayAdapter<String> materiaAdapter = new ArrayAdapter<String>(AgregarTutoriaLive.this, android.R.layout.simple_spinner_item, materia);
                         materiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -200,7 +200,8 @@ public class AgregarTutoria extends AppCompatActivity implements View.OnClickLis
                     TutoMap.put("Hora inicial",horainicio);
                     TutoMap.put("Hora final",horafinal);
                     TutoMap.put("Titulo",titulo);
-                    TutoMap.put("Imagen",image);
+                    TutoMap.put("image",image);
+                    TutoMap.put("thumb_image",image);
 
 
                     DBReference.setValue(TutoMap).addOnCompleteListener(new OnCompleteListener<Void>() {
