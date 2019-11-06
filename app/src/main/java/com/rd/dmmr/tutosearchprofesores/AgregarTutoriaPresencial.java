@@ -1,5 +1,6 @@
 package com.rd.dmmr.tutosearchprofesores;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -19,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,54 +49,84 @@ import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 
-public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClickListener {
+public class AgregarTutoriaPresencial extends AppCompatActivity implements View.OnClickListener {
 
-
-    //Variables
-    private static final int GALLERY_INTENT = 1;
-    byte[] thumb_byte;
-    String download_url, thumb_downloadUrl,nombreProfCompleto;
-
-    //Objetos
-    private ImageView imgTutoLive;
-    private FloatingActionButton fabImgChange;
-    private Spinner spnMateria;
-    private EditText txtTitulo, txtDescripcion, txtFecha, txtHoraInicio;
-    private Button btnFecha, btnHora, btnPublicar;
-    private ProgressDialog progressDialog;
-    private String keyid;
-    private Uri uri = null;
-
-    private int ano, mes, dia, hora, minutos;
-
-    //Firebase user
+    //Variables Firebase de Usuario y referencia de base de datos
     private FirebaseAuth FAutentic;
     private FirebaseUser FUser;
-
-    //Firebase Database
-    private DatabaseReference DBReference;
-    private DatabaseReference DBRefGetid;
-    private DatabaseReference DBRefGetMateria;
-    private DatabaseReference UserReference;
-
-    //Firebase Storage
     private StorageReference imgStorage;
     private StorageReference urlStorage;
 
+    //Variables
+    private String urlImgT;
+    private static final int GALERRY_PICK=1;
+    byte[] thumb_byte;
+    private int ano,mes,dia,hora,minutos;
+    private Uri uri = null;
+    private String keyid;
+    private String download_url, thumb_downloadUrl,nombreProfCompleto;
+
+    //Objetos
+    private Spinner spnMateriaPresencial;
+
+    private EditText Titulo, Descripcion, Lugar, Fecha, HoraInicio, HoraFinal;
+
+    private Button btnFecha, btnHoraInicio, btnHoraFinal, btnPublicar;
+
+    private FloatingActionButton fabSelectImagePresencial;
+
+    private ImageView imgTutoPresencial;
+
+    private DatabaseReference DBReference;
+    private DatabaseReference DBRefGetid;
+    private DatabaseReference UserReference;
+    private DatabaseReference DBRefGetMateria;
+
+    private ProgressDialog progressDialog;
+
+
+
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agregar_tutoria_live);
+        setContentView(R.layout.activity_agregar_tutoria_presencial);
 
+        Titulo = (EditText) findViewById(R.id.txtTitulo);
+        Descripcion = (EditText) findViewById(R.id.txtDescripcion);
+        Lugar = (EditText) findViewById(R.id.txtLugar);
+        Fecha = (EditText) findViewById(R.id.txtFecha);
+        HoraInicio = (EditText) findViewById(R.id.txtHoraInicio);
+        HoraFinal = (EditText) findViewById(R.id.txtHoraFinal);
+
+        btnFecha = (Button) findViewById(R.id.btnFecha);
+        btnHoraInicio = (Button) findViewById(R.id.btnHoraInicio);
+        btnHoraFinal = (Button) findViewById(R.id.btnHoraFinal);
+
+        imgTutoPresencial = (ImageView) findViewById(R.id.imgTutoPresencial);
+
+        spnMateriaPresencial = (Spinner) findViewById(R.id.spnMateriaPresencial);
+
+        fabSelectImagePresencial = (FloatingActionButton) findViewById(R.id.fabImgChangePresencial) ;
+
+        btnFecha.setOnClickListener(this);
+        btnHoraInicio.setOnClickListener(this);
+        btnHoraFinal.setOnClickListener(this);
+        btnPublicar = (Button) findViewById(R.id.btnPublicar);
+
+
+        progressDialog = new ProgressDialog(this);
 
         imgStorage = FirebaseStorage.getInstance().getReference();
         urlStorage = FirebaseStorage.getInstance().getReference();
 
+
         FAutentic = FirebaseAuth.getInstance();
         FUser = FirebaseAuth.getInstance().getCurrentUser();
+        DBRefGetid = FirebaseDatabase.getInstance().getReference();
+
+        DBRefGetMateria = FirebaseDatabase.getInstance().getReference().child("materias");
         UserReference= FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(FUser.getUid());
-
-
         try {
 
             UserReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -111,110 +141,85 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                 }
             });
         }catch (Exception e){
-            Toast.makeText(AgregarTutoriaLive.this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AgregarTutoriaPresencial.this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show();
         }
-
-
-        DBReference = FirebaseDatabase.getInstance().getReference();
-        DBRefGetid = FirebaseDatabase.getInstance().getReference();
-        DBRefGetMateria = FirebaseDatabase.getInstance().getReference().child("materias");
-
-        imgTutoLive = (ImageView) findViewById(R.id.imgTutoLive);
-
-        fabImgChange = (FloatingActionButton) findViewById(R.id.fabImgChange);
-
-        spnMateria = (Spinner) findViewById(R.id.spnMateriaLive);
-
-        txtTitulo = (EditText) findViewById(R.id.txtTitulo);
-        txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
-        txtFecha = (EditText) findViewById(R.id.txtFecha);
-        txtHoraInicio = (EditText) findViewById(R.id.txtHoraInicio);
-
-        btnFecha = (Button) findViewById(R.id.btnFecha);
-        btnHora = (Button) findViewById(R.id.btnHoraInicio);
-        btnPublicar = (Button) findViewById(R.id.btnPublicar);
 
         LlenarSpinner();
 
-        fabImgChange.setOnClickListener(this);
-        btnHora.setOnClickListener(this);
-        btnFecha.setOnClickListener(this);
         btnPublicar.setOnClickListener(this);
+        fabSelectImagePresencial.setOnClickListener(this);
 
-        txtFecha.setOnClickListener(this);
-        txtHoraInicio.setOnClickListener(this);
     }
 
-    private void mtdAgregarTutoriaLive() {
+
+    private void mtdAgregarTutoriaPresencial(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Agregando tutoría...");
         progressDialog.setMessage("La tutoría se esta agregando, por favor espere");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        //Variables para los datos del profesor
-
-        String materia = spnMateria.getSelectedItem().toString();
-
+        String materia= spnMateriaPresencial.getSelectedItem().toString();
         if (download_url == null) {
-            download_url = "defaultLive";
+            download_url = "defaultPresencial";
         }
         if (thumb_downloadUrl == null) {
-            thumb_downloadUrl = "defaultLive";
+            thumb_downloadUrl = "defaultPresencial";
         }
 
-        String titulo = txtTitulo.getText().toString();
-        String descripcion = txtDescripcion.getText().toString();
-        String fecha = txtFecha.getText().toString();
-        String horainicio = txtHoraInicio.getText().toString();
+        String titulo = Titulo.getText().toString();
+        String descripcion = Descripcion.getText().toString();
+        String lugar = Lugar.getText().toString();
+        String fecha = Fecha.getText().toString();
+        String horainicio= HoraInicio.getText().toString();
+        String horafinal = HoraFinal.getText().toString();
 
 
-        keyid = DBRefGetid.child("tutorias").child("institucionales").push().getKey();
+                    keyid= DBRefGetid.child("tutorias").child("institucionales").push().getKey();
+                    SubirImagen(keyid);
+                    FirebaseUser user= FAutentic.getCurrentUser();
 
-        SubirImagen(keyid);
+                    DBReference= FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
 
-        FirebaseUser user = FAutentic.getCurrentUser();
-
-        DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
-
-
-        HashMap<String, String> TutoMap = new HashMap<>();
-        TutoMap.put("Materia", materia);
-        TutoMap.put("UIDProfesor", user.getUid());
-        TutoMap.put("Profesor", nombreProfCompleto);
-        TutoMap.put("Descripción", descripcion);
-        TutoMap.put("Fecha", fecha);
-        TutoMap.put("Hora inicial", horainicio);
-        TutoMap.put("Titulo", titulo);
-        TutoMap.put("image", download_url);
-        TutoMap.put("thumb_image", thumb_downloadUrl);
-        TutoMap.put("tipo_tuto","Live");
+                    HashMap<String,String> TutoMap=new HashMap<>();
+                    TutoMap.put("Materia",materia);
+                    TutoMap.put("UIDProfesor",user.getUid());
+                    TutoMap.put("Profesor",nombreProfCompleto);
+                    TutoMap.put("Descripción",descripcion);
+                    TutoMap.put("Lugar",lugar);
+                    TutoMap.put("Fecha",fecha);
+                    TutoMap.put("Hora inicial",horainicio);
+                    TutoMap.put("Hora final",horafinal);
+                    TutoMap.put("Titulo",titulo);
+                    TutoMap.put("image",download_url);
+                    TutoMap.put("thumb_image",thumb_downloadUrl);
+                    TutoMap.put("tipo_tuto","Presencial");
 
 
-        DBReference.setValue(TutoMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
+                    DBReference.setValue(TutoMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                         public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                progressDialog.dismiss();
+                                Intent intent = new Intent(AgregarTutoriaPresencial.this, Pantalla_Principal.class);
+                                AgregarTutoriaPresencial.this.startActivity(intent);
+
+                                Toast.makeText(AgregarTutoriaPresencial.this, "Se ha publicado la tutoría", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(AgregarTutoriaPresencial.this, "Ha ocurrido un error al publicar la tutoría", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+
                     progressDialog.dismiss();
-                    Intent intent = new Intent(AgregarTutoriaLive.this, Pantalla_Principal.class);
-                    AgregarTutoriaLive.this.startActivity(intent);
-                    Toast.makeText(AgregarTutoriaLive.this, "Se ha publicado la tutoría", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AgregarTutoriaLive.this, "Ha ocurrido un error al publicar la tutoría", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-
-        progressDialog.dismiss();
-
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
+        if (requestCode == GALERRY_PICK && resultCode == RESULT_OK) {
 
             Uri imageurl = data.getData();
 
@@ -241,7 +246,7 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
             thumb_byte = baos.toByteArray();
         }
 
-        imgTutoLive.setImageURI(uri);
+        imgTutoPresencial.setImageURI(uri);
 
     }
 
@@ -252,11 +257,6 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
             StorageReference filePath = imgStorage.child("img_tutorias").child(UIDTuto + ".jpg");
             final StorageReference thumb_filePath = imgStorage.child("img_tutorias").child("thumbs").child(UIDTuto + ".jpg");
 
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Cargando imagen...");
-            progressDialog.setMessage("Cargando imagen espere mientras se carga la imagen.");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
 
             File thumb_filepath = new File(uri.getPath());
 
@@ -290,7 +290,7 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
-                                                progressDialog.dismiss();
+
                                             }
                                         }
                                     });
@@ -318,8 +318,8 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if(task.isSuccessful()){
-                                                        Toast.makeText(AgregarTutoriaLive.this, "Se ha subido la imagen con exito.", Toast.LENGTH_LONG).show();
-                                                        progressDialog.dismiss();
+                                                        Toast.makeText(AgregarTutoriaPresencial.this, "Se ha subido la imagen con exito.", Toast.LENGTH_LONG).show();
+
                                                     }
                                                 }
                                             });
@@ -333,8 +333,8 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
 
                                     } else {
-                                        Toast.makeText(AgregarTutoriaLive.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
-                                        progressDialog.dismiss();
+                                        Toast.makeText(AgregarTutoriaPresencial.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
+
                                     }
                                 }
                             });
@@ -343,8 +343,8 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
 
                         } else {
-                            Toast.makeText(AgregarTutoriaLive.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
-                            progressDialog.dismiss();
+                            Toast.makeText(AgregarTutoriaPresencial.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
+
                         }
                     }
                 });
@@ -369,10 +369,10 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                     while (iterator.hasNext()) {
                         final DataSnapshot idmateria = (DataSnapshot) iterator.next();
                         materia.add(idmateria.getKey());
-                        spnMateria = (Spinner) findViewById(R.id.spnMateriaLive);
-                        ArrayAdapter<String> materiaAdapter = new ArrayAdapter<String>(AgregarTutoriaLive.this, android.R.layout.simple_spinner_item, materia);
+                        spnMateriaPresencial = (Spinner) findViewById(R.id.spnMateriaPresencial);
+                        ArrayAdapter<String> materiaAdapter = new ArrayAdapter<String>(AgregarTutoriaPresencial.this, android.R.layout.simple_spinner_item, materia);
                         materiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spnMateria.setAdapter(materiaAdapter);
+                        spnMateriaPresencial.setAdapter(materiaAdapter);
 
 
                     }
@@ -388,57 +388,62 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
         }
     }
-
-    public void Alerta(String Titulo, String Mensaje) {
-        AlertDialog alertDialog;
-        alertDialog = new AlertDialog.Builder(AgregarTutoriaLive.this).setNegativeButton("Ok", null).create();
-        alertDialog.setTitle(Titulo);
-        alertDialog.setMessage(Mensaje);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-
-    }
-
     @Override
     public void onClick(View view) {
-        if (view == fabImgChange) {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), GALLERY_INTENT);
+
+
+        if (view==btnPublicar){
+            mtdAgregarTutoriaPresencial();
         }
-        if (view == txtHoraInicio || view == btnHora) {
-            final Calendar calendar = Calendar.getInstance();
-            hora = calendar.get(Calendar.HOUR_OF_DAY);
-            minutos = calendar.get(Calendar.MINUTE);
+        if(view==btnFecha){
+            final Calendar calendar= Calendar.getInstance();
+            ano=calendar.get(Calendar.YEAR);
+            mes=calendar.get(Calendar.MONTH);
+            dia=calendar.get(Calendar.DAY_OF_MONTH);
 
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker timePicker, int hor, int min) {
-                    txtHoraInicio.setText(hor + ":" + min);
-                }
-            }, hora, minutos, false);
-            timePickerDialog.show();
-
-        }
-        if (view == txtFecha || view == btnFecha) {
-            final Calendar calendar = Calendar.getInstance();
-            ano = calendar.get(Calendar.YEAR);
-            mes = calendar.get(Calendar.MONTH);
-            dia = calendar.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            DatePickerDialog datePickerDialog= new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int an, int me, int di) {
-                    txtFecha.setText(di + "/" + (me + 1) + "/" + an);
+                    Fecha.setText(di + "/" + (me + 1) + "/" + an);
                 }
             }
-                    , ano, mes, dia);
+                ,ano,mes,dia);
             datePickerDialog.show();
         }
 
-        if (view == btnPublicar) {
-            mtdAgregarTutoriaLive();
+        if(view==btnHoraInicio){
+            final Calendar calendar= Calendar.getInstance();
+            hora=calendar.get(Calendar.HOUR_OF_DAY);
+            minutos=calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog= new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int hor, int min) {
+                    HoraInicio.setText(hor+":"+min);
+                }
+            },hora,minutos,false);
+            timePickerDialog.show();
+
         }
-    }
-}
+        if(view==btnHoraFinal){
+            final Calendar calendar= Calendar.getInstance();
+            hora=calendar.get(Calendar.HOUR_OF_DAY);
+            mes=calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog= new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int hor, int min) {
+                    HoraFinal.setText(hor+":"+min);
+                }
+            },hora,minutos,false);
+            timePickerDialog.show();
+        }
+
+        if (view==fabSelectImagePresencial){
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), GALERRY_PICK);
+
+        }
+    }};

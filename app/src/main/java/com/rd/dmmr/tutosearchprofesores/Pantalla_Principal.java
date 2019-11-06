@@ -115,7 +115,7 @@ public class Pantalla_Principal extends AppCompatActivity
             if (FUser==null){
                 VolverInicio();
             }else{
-                UserReference.addValueEventListener(new ValueEventListener() {
+                UserReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

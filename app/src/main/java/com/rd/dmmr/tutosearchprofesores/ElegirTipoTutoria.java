@@ -35,7 +35,7 @@ public class ElegirTipoTutoria extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if(view==crdPresencial){
-            Intent intent = new Intent(ElegirTipoTutoria.this, AgregarTutoria.class);
+            Intent intent = new Intent(ElegirTipoTutoria.this, AgregarTutoriaPresencial.class);
             ElegirTipoTutoria.this.startActivity(intent);
         }
         if (view==crdTransmisionLive){

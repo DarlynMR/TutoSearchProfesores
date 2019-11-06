@@ -98,7 +98,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
         android:background="@color/cardview_light_background"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingHorizontal="@dimen/_4sdp">
 
         <RelativeLayout
             android:id="@+id/LYContenido"
@@ -108,7 +109,7 @@
             android:paddingTop="24dp">
 
             <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spnMateria"
+                android:id="@+id/spnMateriaLive"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 app:ms_arrowColor="@color/GrisFondo"
@@ -125,7 +126,7 @@
                 android:id="@+id/LYTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/spnMateria"
+                android:layout_below="@id/spnMateriaLive"
                 android:orientation="horizontal">
 
                 <TextView

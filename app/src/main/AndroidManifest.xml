@@ -51,7 +51,7 @@
         </activity>
         <activity android:name=".RegistrarProf" />
         <activity android:name=".LoginProf" />
-        <activity android:name=".AgregarTutoria" />
+        <activity android:name=".AgregarTutoriaPresencial" />
         <activity
             android:name=".Pantalla_Principal"
             android:label="@string/title_activity_pantalla__principal"
