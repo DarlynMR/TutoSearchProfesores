@@ -10,7 +10,7 @@
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/MyAppbar"
+        android:id="@+id/MyAppbarLive"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_alignParentStart="true"
@@ -18,57 +18,33 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
         android:fitsSystemWindows="true"
-        app:expanded="false">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapse_toolbar"
+            android:id="@+id/collapse_toolbarLive"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-            app:contentInsetStart="72dp"
+            android:layout_height="wrap_content"
             app:contentScrim="@color/GrisFondo"
-            app:expandedTitleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-            app:layout_collapseParallaxMultiplier="0.8"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:theme="@style/Widget.AppCompat.Toolbar">
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/imgTutoLive"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="fitCenter"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/video_camera_live"
                         />
 
-                </RelativeLayout>
-            </LinearLayout>
+
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/MyToolbar"
+                android:id="@+id/MyToolbarLive"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:elevation="0dp"
-                android:minHeight="185dp"
-                android:theme="@style/AppTheme"
-                app:contentInsetStart="72dp"
-                app:layout_collapseMode="pin"
-                app:layout_collapseParallaxMultiplier="0.8"
-                app:popupTheme="@style/AppTheme"
-                app:titleTextColor="@color/colorBlanco" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+                app:titleTextAppearance="@dimen/_18sdp"/>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -165,7 +141,11 @@
                 android:layout_marginHorizontal="8sp"
                 android:background="@color/GrisParaTexto"
                 android:ems="10"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textAlignment="textStart"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideInset"
+                android:scrollIndicators="end"/>
 
 
             <Button

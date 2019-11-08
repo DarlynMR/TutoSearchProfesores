@@ -2,9 +2,11 @@ package com.rd.dmmr.tutosearchprofesores;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.rd.dmmr.tutosearchprofesores.R.id.nav_imagePorf;
 import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtCorreoProfMenu;
 import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtNombreProfMenu;
 
@@ -119,20 +123,39 @@ public class Pantalla_Principal extends AppCompatActivity
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        String nombresProf, apellidosProf, correoProf;
+                        String nombresProf, apellidosProf, correoProf, url_pic;
 
                         nombresProf = dataSnapshot.child("nombres").getValue(String.class);
                         apellidosProf = dataSnapshot.child("apellidos").getValue(String.class);
                         correoProf = dataSnapshot.child("correo").getValue(String.class);
+                        url_pic= dataSnapshot.child("url_pic").getValue(String.class);
 
                         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                         View headerview = navigationView.getHeaderView(0);
 
                         TextView txt_nombreprofNav =(TextView) headerview.findViewById(nav_txtNombreProfMenu);
                         TextView txt_correoNav =(TextView) headerview.findViewById(nav_txtCorreoProfMenu);
+                        ImageView img_navProf = (ImageView) headerview.findViewById(nav_imagePorf);
 
                         txt_nombreprofNav.setText(nombresProf + " " + apellidosProf);
                         txt_correoNav.setText(correoProf);
+
+                        if (url_pic.equals("defaultPicProf")){
+                            img_navProf.setImageResource(R.mipmap.default_profile_prof);
+                        } else {
+                            try {
+                                Glide.with(Pantalla_Principal.this)
+                                        .load(url_pic)
+                                        .fitCenter()
+                                        .centerCrop()
+                                        .into(img_navProf);
+
+                            }catch (Exception e){
+                                Log.i("Error", ""+e.getMessage());
+                            }
+
+                        }
+
                     }
 
                     @Override

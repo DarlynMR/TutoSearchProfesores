@@ -1,37 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_user"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/side_nav_bar"
-    android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/nav_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@mipmap/ic_launcher_round" />
-
-    <TextView
-        android:id="@+id/nav_txtNombreProfMenu"
+        android:id="@+id/nav_imgBackgroundProf"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Vacío"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_height="match_parent"
+        android:src="@mipmap/nav_backgroundprof"
+        android:scaleType="centerCrop"/>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#85000000"
+        android:alpha="0.7"
+        android:layout_alignParentTop="true"
+        />
 
-    <TextView
-        android:id="@+id/nav_txtCorreoProfMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Vacío" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/nav_imagePorf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:src="@mipmap/ic_launcher_round"
+            />
+
+
+        <TextView
+            android:id="@+id/nav_txtNombreProfMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:text="Vacío"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_below="@id/nav_imagePorf"/>
+
+        <TextView
+            android:id="@+id/nav_txtCorreoProfMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nav_txtNombreProfMenu"
+            android:text="Vacío"/>
+
+    </RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>

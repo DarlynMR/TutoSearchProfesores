@@ -1,22 +1,21 @@
 package com.rd.dmmr.tutosearchprofesores;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.bambuser.broadcaster.BroadcastStatus;
 import com.bambuser.broadcaster.Broadcaster;
 import com.bambuser.broadcaster.CameraError;
 import com.bambuser.broadcaster.ConnectionError;
-
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 
 
 public class TransmisionActivity2 extends AppCompatActivity implements View.OnClickListener {
@@ -24,7 +23,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     private SurfaceView mPreviewSurface;
     private Button btnIniciarTransmision;
 
-    private static final String APPLICATION_ID = "akr7NUsVfEpyOuJF7MkraQ";
+    private static final String APPLICATION_ID = "gn3xWy0C556si80X9aPkTA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +83,15 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         }
         @Override
         public void onCameraPreviewStateChanged() {
+
         }
         @Override
         public void onBroadcastInfoAvailable(String s, String s1) {
+            Log.w("Mybroadcastingapp", "Info disponible: " +s +"Otra: "+s1);
         }
         @Override
         public void onBroadcastIdAvailable(String s) {
+            Log.w("Mybroadcastingapp", "ID Transmision: " +s);
         }
     };
 

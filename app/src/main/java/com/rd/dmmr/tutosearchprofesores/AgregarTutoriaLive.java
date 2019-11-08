@@ -3,8 +3,10 @@ package com.rd.dmmr.tutosearchprofesores;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -21,10 +23,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -134,6 +139,24 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         btnHora = (Button) findViewById(R.id.btnHoraInicio);
         btnPublicar = (Button) findViewById(R.id.btnPublicar);
 
+        //LlAMANDO EL TOOLBAR
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbarLive);
+        //  toolbar.setTitleTextColor(Color.parseColor("#00FF00"));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Colapsando la barra
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbarLive);
+        collapsingToolbarLayout.setTitle("Agregar transmisión en vivo");
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
+
+        //Color de la barra
+        Context context = this;
+        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
+
+
         LlenarSpinner();
 
         fabImgChange.setOnClickListener(this);
@@ -143,6 +166,8 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
         txtFecha.setOnClickListener(this);
         txtHoraInicio.setOnClickListener(this);
+
+
     }
 
     private void mtdAgregarTutoriaLive() {
@@ -189,6 +214,9 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         TutoMap.put("image", download_url);
         TutoMap.put("thumb_image", thumb_downloadUrl);
         TutoMap.put("tipo_tuto","Live");
+        TutoMap.put("broadcastId","None");
+
+
 
 
         DBReference.setValue(TutoMap).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -362,7 +390,7 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    final List<String> materia = new ArrayList<String>();
+                    final List<String> materia = new ArrayList<>();
                     Iterable<DataSnapshot> dataSnapshotIterator = dataSnapshot.getChildren();
                     Iterator<DataSnapshot> iterator = dataSnapshotIterator.iterator();
 

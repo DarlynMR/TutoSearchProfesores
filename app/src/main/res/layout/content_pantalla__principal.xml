@@ -33,40 +33,50 @@
             android:layout_margin="5dp"
             app:cardCornerRadius="5dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imgAgregar"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/ic_agregar" />
+                    android:background="@drawable/ic_agregar"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    />
 
                 <TextView
+                    android:id="@+id/txtTituloAgregar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tutorías generales" />
+                    android:text="Agregar tutorías"
+                    android:layout_below="@id/imgAgregar"
+                    android:layout_centerHorizontal="true"/>
 
                 <View
+                    android:id="@+id/viewAgregar"
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:layout_margin="10dp"
-                    android:background="@color/lineaGris" />
+                    android:background="@color/lineaGris"
+                    android:layout_below="@id/txtTituloAgregar"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Ver todas las tutorías disponibles de personas no pertenecientes a una institución." />
+                    android:layout_below="@+id/viewAgregar"
+                    android:layout_centerHorizontal="true"
+                    android:text="Para elegir entre agregar tutorías: Presenciales, Documento o Transmisión en vivo." />
 
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
         </androidx.cardview.widget.CardView>
-
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_tutorias_inst"
@@ -75,38 +85,53 @@
             android:layout_margin="5dp"
             app:cardCornerRadius="5dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imgAgregadas"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think" />
+                    android:background="@drawable/ic_iconfinder_think"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    />
 
                 <TextView
+                    android:id="@+id/txtAgregadas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(Nombre variable)" />
+                    android:text="Tutorías agregadas"
+                    android:layout_below="@id/imgAgregadas"
+                    android:layout_centerHorizontal="true"/>
 
                 <View
+                    android:id="@+id/viewAgregadas"
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:layout_margin="10dp"
-                    android:background="@color/lineaGris" />
+                    android:background="@color/lineaGris"
+                    android:layout_below="@id/txtAgregadas"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Ver todas las tutorías disponibles a la institución a la que perteneces." />
+                    android:layout_below="@+id/viewAgregadas"
+                    android:layout_centerHorizontal="true"
+                    android:text="Ver todas las tutorías que ya has agregado." />
 
 
-            </LinearLayout>
+            </RelativeLayout>
+
 
         </androidx.cardview.widget.CardView>
+
+
+
 
 
     </LinearLayout>
@@ -127,36 +152,47 @@
             android:layout_margin="5dp"
             app:cardCornerRadius="5dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imgAceptadas"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think" />
+                    android:background="@drawable/ic_iconfinder_think"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_10sdp"/>
 
                 <TextView
+                    android:id="@+id/txtAceptadas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/imgAceptadas"
                     android:text="Aceptadas" />
 
                 <View
+                    android:id="@+id/viewAceptadas"
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:layout_margin="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/txtAceptadas"
                     android:background="@color/lineaGris" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/viewAceptadas"
                     android:text="Todas las tutorías a las que ha aceptado asistir." />
 
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
         </androidx.cardview.widget.CardView>
@@ -169,35 +205,46 @@
             android:layout_margin="5dp"
             app:cardCornerRadius="5dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imgMensajes"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think" />
+                    android:background="@drawable/ic_iconfinder_think"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_10sdp"/>
 
                 <TextView
+                    android:id="@+id/txtMensajes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mensajes" />
+                    android:text="Mensajes"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/imgMensajes"/>
 
                 <View
+                    android:id="@+id/viewMensajes"
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:layout_margin="10dp"
-                    android:background="@color/lineaGris" />
+                    android:background="@color/lineaGris"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/txtMensajes"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/viewMensajes"/>
 
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 

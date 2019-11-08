@@ -8,7 +8,7 @@
     tools:context="com.rd.dmmr.tutosearchprofesores.AgregarTutoriaPresencial">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/MyAppbar"
+        android:id="@+id/MyAppbarPresencial"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_alignParentStart="true"
@@ -16,20 +16,14 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
         android:fitsSystemWindows="true"
-        app:expanded="false">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapse_toolbar"
+            android:id="@+id/collapse_toolbarPresencial"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-            app:contentInsetStart="72dp"
+            android:layout_height="wrap_content"
             app:contentScrim="@color/GrisFondo"
-            app:expandedTitleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-            app:layout_collapseParallaxMultiplier="0.8"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:theme="@style/Widget.AppCompat.Toolbar">
 
             <LinearLayout
@@ -54,7 +48,7 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/MyToolbar"
+                android:id="@+id/MyToolbarPresencial"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentStart="true"
@@ -162,7 +156,8 @@
                     android:layout_marginHorizontal="8sp"
                     android:background="@color/GrisParaTexto"
                     android:ems="10"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:textAlignment="textStart"/>
 
 
             </LinearLayout>

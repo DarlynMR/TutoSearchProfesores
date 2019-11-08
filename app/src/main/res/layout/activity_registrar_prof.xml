@@ -40,7 +40,7 @@
     </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circularprofile"
+        android:id="@+id/circularprofileProf"
         android:layout_width="119dp"
         android:layout_height="129dp"
         android:layout_gravity="center"
@@ -62,7 +62,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
         android:background="@drawable/fondo_trans"
-        android:layout_below="@id/circularprofile"
+        android:layout_below="@id/circularprofileProf"
         android:orientation="vertical">
 
         <EditText

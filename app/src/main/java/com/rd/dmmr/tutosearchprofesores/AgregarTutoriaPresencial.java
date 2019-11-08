@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -21,10 +23,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -124,6 +129,23 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         FAutentic = FirebaseAuth.getInstance();
         FUser = FirebaseAuth.getInstance().getCurrentUser();
         DBRefGetid = FirebaseDatabase.getInstance().getReference();
+
+        //LlAMANDO EL TOOLBAR
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbarPresencial);
+        //  toolbar.setTitleTextColor(Color.parseColor("#00FF00"));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Colapsando la barra
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbarPresencial);
+        collapsingToolbarLayout.setTitle("Agregar transmisión en vivo");
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
+
+        //Color de la barra
+        Context context = this;
+        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
 
         DBRefGetMateria = FirebaseDatabase.getInstance().getReference().child("materias");
         UserReference= FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(FUser.getUid());

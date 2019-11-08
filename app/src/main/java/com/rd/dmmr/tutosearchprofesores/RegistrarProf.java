@@ -3,20 +3,25 @@ package com.rd.dmmr.tutosearchprofesores;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
@@ -24,26 +29,47 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+
+import id.zelory.compressor.Compressor;
 
 public class RegistrarProf extends AppCompatActivity implements View.OnClickListener {
 
+    //Variables Firebase de User y Referencia de base de datos
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
     private DatabaseReference DBReference;
 
+    //Variables Firebase de Storage
+    private StorageReference imgStorage;
+    private StorageReference urlStorage;
+
     private ProgressDialog progressDialog;
 
+    private ImageView ciruclarImageView;
 
-    private Button JbtnRegistrar;
+    private Button btnRegistrar, btnCargarFoto;
 
     private EditText nombres, apellidos, telefono, correo, password, password2;
 
     private TextView fecha_nacimiento;
 
+    //Variables
     private int ano, mes, dia, hora, minutos;
+    private static final int GALLERY_INTENT = 1;
+    private Uri uri = null;
+    byte[] thumb_byte;
+    private String keyid;
+    String download_url, thumb_downloadUrl,nombreProfCompleto;
 
     private FloatingActionButton fback_button;
 
@@ -59,13 +85,19 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         password = (EditText) findViewById(R.id.txtPassword);
         password2 = (EditText) findViewById(R.id.txtPassword2);
 
+        ciruclarImageView = (ImageView) findViewById(R.id.circularprofileProf);
+
         fback_button = (FloatingActionButton) findViewById(R.id.fBackButton);
 
         FAutentic = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         DBReference = FirebaseDatabase.getInstance().getReference();
 
-        JbtnRegistrar = (Button) findViewById(R.id.btnRegistrar);
+        imgStorage = FirebaseStorage.getInstance().getReference();
+        urlStorage = FirebaseStorage.getInstance().getReference();
+
+        btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
+        btnCargarFoto = (Button) findViewById(R.id.btncargarimage);
         FInicionIndicdor = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -80,9 +112,11 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         };
 
 
-        JbtnRegistrar.setOnClickListener(this);
+        btnRegistrar.setOnClickListener(this);
         fback_button.setOnClickListener(this);
         fecha_nacimiento.setOnClickListener(this);
+        ciruclarImageView.setOnClickListener(this);
+        btnCargarFoto.setOnClickListener(this);
 
 
     }
@@ -111,7 +145,8 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     hashMap.put("telefonos", telefono.getText().toString());
                     hashMap.put("fecha_nacimiento", fecha_nacimiento.getText().toString());
                     hashMap.put("correo", correo.getText().toString());
-                    hashMap.put("url_pic", "null");
+                    hashMap.put("url_pic", "defaultPicProf");
+                    hashMap.put("url_thumb_pic", "defaultPicProf");
 
 
                     DBReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -121,7 +156,11 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                             if (task.isSuccessful()) {
                                 FirebaseUser user = FAutentic.getCurrentUser();
                                 user.sendEmailVerification();
-                                FAutentic.signOut();
+                                if (uri!=null){
+                                    SubirImagen(user.getUid());
+                                } else {
+                                    FAutentic.signOut();
+                                }
 
                                 progressDialog.dismiss();
                                 Intent i = new Intent(RegistrarProf.this, LoginProf.class);
@@ -151,6 +190,160 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void SubirImagen(final String UIDProf) {
+
+        if (uri != null) {
+
+            StorageReference filePath = imgStorage.child("img_profile").child(UIDProf + ".jpg");
+            final StorageReference thumb_filePath = imgStorage.child("img_profile").child("thumbs").child(UIDProf + ".jpg");
+
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Cargando imagen...");
+            progressDialog.setMessage("Cargando imagen espere mientras se carga la imagen.");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+
+            File thumb_filepath = new File(uri.getPath());
+
+            final Bitmap thumb_bitmap = new Compressor(this)
+                    .setMaxWidth(200)
+                    .setMaxHeight(200)
+                    .setQuality(75)
+                    .compressToBitmap(thumb_filepath);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            final byte[] thumb_byte = baos.toByteArray();
+
+            try {
+
+                filePath.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            final StorageReference url_filePath = urlStorage.child("img_profile").child(UIDProf + ".jpg");
+                            url_filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+                                    download_url = uri.toString();
+                                    Map update_hashmMap=new HashMap();
+                                    update_hashmMap.put("url_pic",download_url);
+                                    DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(UIDProf);
+                                    DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
+
+                                }
+
+                            });
+
+                            //
+                            UploadTask uploadTask = thumb_filePath.putBytes(thumb_byte);
+                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
+
+                                    final StorageReference url_thumb_filePath = urlStorage.child("img_profile").child("thumbs").child(UIDProf + ".jpg");
+                                    url_thumb_filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+
+                                            thumb_downloadUrl = uri.toString();
+                                            Map update_hashmMap=new HashMap();
+                                            update_hashmMap.put("url_thumb_pic",thumb_downloadUrl);
+                                            DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(UIDProf);
+                                            DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(RegistrarProf.this, "Se ha subido la imagen con exito.", Toast.LENGTH_LONG).show();
+                                                        FAutentic.signOut();
+                                                        progressDialog.dismiss();
+                                                    }
+                                                    if (task.isCanceled()){
+                                                        Log.i("PruebaError", "Excepcion: "+task.getResult()+ " Result: "+task.getResult());
+                                                    }
+                                                }
+                                            });
+
+                                        }
+
+                                    });
+
+
+                                    if (thumb_task.isSuccessful()) {
+                                        FAutentic.signOut();
+
+                                    } else {
+                                        Toast.makeText(RegistrarProf.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
+                                        Log.i("PruebaError", "Excepcion: "+task.getResult()+ " Result: "+task.getResult());
+                                        FAutentic.signOut();
+                                        progressDialog.dismiss();
+                                    }
+                                }
+                            });
+
+                            //
+
+
+                        } else {
+                            Toast.makeText(RegistrarProf.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
+                            FAutentic.signOut();
+                            Log.i("PruebaError", "Excepcion: "+task.getResult()+ " Result: "+task.getResult());
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+
+            } catch (Exception e) {
+                Log.i("PruebaError", "Causa: "+e.getCause() + " Mensaje: "+e.getMessage());
+                FAutentic.signOut();
+            }
+
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
+
+            Uri imageurl = data.getData();
+
+            CropImage.activity(imageurl)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            uri = result.getUri();
+
+            File thumb_filePath = new File(uri.getPath());
+
+            final Bitmap thumb_bitmap = new Compressor(this)
+                    .setMaxWidth(200)
+                    .setMaxHeight(200)
+                    .setQuality(75)
+                    .compressToBitmap(thumb_filePath);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            thumb_byte = baos.toByteArray();
+        }
+
+        ciruclarImageView.setImageURI(uri);
+
+    }
 
     public void Alerta(String Titulo, String Mensaje) {
         AlertDialog alertDialog;
@@ -174,7 +367,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (view == JbtnRegistrar) {
+        if (view == btnRegistrar) {
             View ViewFocus = null;
             String pass,pass2;
             pass= password.getText().toString(); pass2= password2.getText().toString();
@@ -220,8 +413,15 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     fecha_nacimiento.setText(di + "/" + (me + 1) + "/" + an);
                 }
             }
-                    , dia, mes, ano);
+                    ,ano , mes, dia);
             datePickerDialog.show();
+        }
+
+        if (view== btnCargarFoto || view== ciruclarImageView){
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), GALLERY_INTENT);
         }
     }
 }
