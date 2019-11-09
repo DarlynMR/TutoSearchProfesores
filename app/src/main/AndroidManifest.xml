@@ -37,7 +37,6 @@
         <activity android:name=".ElegirTipoTutoria"></activity>
         <activity android:name=".AgregarTutoriaLive" />
         <activity android:name=".TransmisionActivity2" />
-        <activity android:name=".PruebaPush" />
         <activity
             android:name=".TransmisionActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />

@@ -44,6 +44,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
+    //Firestore
+    implementation 'com.google.firebase:firebase-firestore:21.2.1'
+
 
     implementation 'com.intuit.sdp:sdp-android:1.0.3'
     implementation 'de.hdodenhof:circleimageview:2.1.0'

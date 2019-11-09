@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,6 +50,9 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth FAutentic;
     private FirebaseAuth.AuthStateListener FInicionIndicdor;
     private DatabaseReference DBReference;
+
+    //FirebaseFirestore
+    private FirebaseFirestore fdb;
 
     //Variables Firebase de Storage
     private StorageReference imgStorage;
@@ -92,6 +97,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         FAutentic = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         DBReference = FirebaseDatabase.getInstance().getReference();
+        fdb = FirebaseFirestore.getInstance();
 
         imgStorage = FirebaseStorage.getInstance().getReference();
         urlStorage = FirebaseStorage.getInstance().getReference();
@@ -137,7 +143,6 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                             "entrar al enlace de verificación para activarla");
 
                     final FirebaseUser user = FAutentic.getCurrentUser();
-                    DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(user.getUid());
 
                     HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put("nombres", nombres.getText().toString());
@@ -148,39 +153,41 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     hashMap.put("url_pic", "defaultPicProf");
                     hashMap.put("url_thumb_pic", "defaultPicProf");
 
+                    fdb.collection("Profesores").document(user.getUid())
+                            .set(hashMap)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    FirebaseUser user = FAutentic.getCurrentUser();
+                                    user.sendEmailVerification();
+                                    if (uri!=null){
+                                        SubirImagen(user.getUid());
+                                    } else {
+                                        FAutentic.signOut();
+                                    }
 
-                    DBReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                                    progressDialog.dismiss();
+                                    Intent i = new Intent(RegistrarProf.this, LoginProf.class);
+                                    RegistrarProf.this.startActivity(i);
 
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = FAutentic.getCurrentUser();
-                                user.sendEmailVerification();
-                                if (uri!=null){
-                                    SubirImagen(user.getUid());
-                                } else {
-                                    FAutentic.signOut();
+                                    Mtoast("Usuario registrado correctamente");
                                 }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Mtoast("Ocurrio un error al registrar el usuario");
+                                    user.delete();
+                                    FAutentic.signOut();
+                                    progressDialog.dismiss();
 
-                                progressDialog.dismiss();
-                                Intent i = new Intent(RegistrarProf.this, LoginProf.class);
-                                RegistrarProf.this.startActivity(i);
-
-                                Mtoast("Usuario registrado correctamente");
-                            } else {
-
-                                Mtoast("Ocurrio un error al registrar el usuario");
-                                user.delete();
-                                FAutentic.signOut();
-                                progressDialog.dismiss();
-                            }
-
-                        }
-                    });
+                                }
+                            });
 
 
-                    Intent i = new Intent(RegistrarProf.this, LoginProf.class);
-                    RegistrarProf.this.startActivity(i);
+
+
+
 
                 }
                 progressDialog.dismiss();
@@ -188,11 +195,15 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         });
 
 
+
+
     }
 
     private void SubirImagen(final String UIDProf) {
 
         if (uri != null) {
+
+
 
             StorageReference filePath = imgStorage.child("img_profile").child(UIDProf + ".jpg");
             final StorageReference thumb_filePath = imgStorage.child("img_profile").child("thumbs").child(UIDProf + ".jpg");
@@ -230,6 +241,8 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                     download_url = uri.toString();
                                     Map update_hashmMap=new HashMap();
                                     update_hashmMap.put("url_pic",download_url);
+
+                                    /*
                                     DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(UIDProf);
                                     DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -239,6 +252,22 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                             }
                                         }
                                     });
+*/
+
+                                    fdb.collection("Profesores").document(UIDProf)
+                                            .update(update_hashmMap)
+                                            .addOnSuccessListener(new OnSuccessListener() {
+                                                @Override
+                                                public void onSuccess(Object o) {
+                                                    progressDialog.dismiss();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                        }
+                                    });
+
 
                                 }
 
@@ -256,8 +285,9 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                         public void onSuccess(Uri uri) {
 
                                             thumb_downloadUrl = uri.toString();
-                                            Map update_hashmMap=new HashMap();
-                                            update_hashmMap.put("url_thumb_pic",thumb_downloadUrl);
+                                            Map update_hashmMap_thumb=new HashMap();
+                                            update_hashmMap_thumb.put("url_thumb_pic",thumb_downloadUrl);
+                                            /*
                                             DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(UIDProf);
                                             DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -272,10 +302,25 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                                     }
                                                 }
                                             });
+                                                */
+                                            fdb.collection("Profesores").document(UIDProf)
+                                                    .update(update_hashmMap_thumb)
+                                                    .addOnSuccessListener(new OnSuccessListener() {
+                                                        @Override
+                                                        public void onSuccess(Object o) {
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
 
                                         }
 
                                     });
+
 
 
                                     if (thumb_task.isSuccessful()) {
@@ -406,6 +451,9 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
             ano = calendar.get(Calendar.YEAR);
             mes = calendar.get(Calendar.MONTH);
             dia = calendar.get(Calendar.DAY_OF_MONTH);
+            Integer hora, minuto;
+            hora = calendar.get(Calendar.HOUR_OF_DAY);
+            minuto = calendar.get(Calendar.MINUTE);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -414,7 +462,10 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                 }
             }
                     ,ano , mes, dia);
+
+            Log.i("Fecha", "Fecha: "+dia+"/"+(mes+1)+"/"+ano+ ", Hora:"+hora+":"+minuto);
             datePickerDialog.show();
+
         }
 
         if (view== btnCargarFoto || view== ciruclarImageView){

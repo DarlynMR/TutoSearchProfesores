@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,17 +28,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,7 +52,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +64,7 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
     private static final int GALLERY_INTENT = 1;
     byte[] thumb_byte;
     String download_url, thumb_downloadUrl,nombreProfCompleto;
+    private int pub_ano,pub_mes,pub_dia,pub_hora,pub_minutos;
 
     //Objetos
     private ImageView imgTutoLive;
@@ -84,6 +88,8 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
     private DatabaseReference DBRefGetMateria;
     private DatabaseReference UserReference;
 
+    private FirebaseFirestore fdb;
+
     //Firebase Storage
     private StorageReference imgStorage;
     private StorageReference urlStorage;
@@ -97,13 +103,36 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         imgStorage = FirebaseStorage.getInstance().getReference();
         urlStorage = FirebaseStorage.getInstance().getReference();
 
+        fdb = FirebaseFirestore.getInstance();
+
         FAutentic = FirebaseAuth.getInstance();
         FUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        Log.i("Fecha", ""+FUser.getMetadata().getCreationTimestamp()+" Otro "+FUser.getProviderData());
         UserReference= FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(FUser.getUid());
 
 
         try {
+            DocumentReference dc =  fdb.collection("Profesores").document(FUser.getUid());
 
+            dc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    DocumentSnapshot docS = task.getResult();
+                    if (task.isSuccessful()){
+
+                        nombreProfCompleto= docS.getString("nombres")+ " " + docS.getString("apellidos");
+                    }
+                    if (task.isCanceled()){
+                        Toast.makeText(AgregarTutoriaLive.this,"No se pudo obtener los datos del usuario",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+
+            /*
             UserReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -115,6 +144,7 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
                 }
             });
+            */
         }catch (Exception e){
             Toast.makeText(AgregarTutoriaLive.this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show();
         }
@@ -177,6 +207,8 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
+        ObtenerFechaHora();
+
         //Variables para los datos del profesor
 
         String materia = spnMateria.getSelectedItem().toString();
@@ -199,26 +231,44 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         SubirImagen(keyid);
 
         FirebaseUser user = FAutentic.getCurrentUser();
+        //DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
 
-        DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
+
 
 
         HashMap<String, String> TutoMap = new HashMap<>();
-        TutoMap.put("Materia", materia);
+        TutoMap.put("materia", materia);
         TutoMap.put("UIDProfesor", user.getUid());
-        TutoMap.put("Profesor", nombreProfCompleto);
-        TutoMap.put("Descripción", descripcion);
-        TutoMap.put("Fecha", fecha);
-        TutoMap.put("Hora inicial", horainicio);
-        TutoMap.put("Titulo", titulo);
-        TutoMap.put("image", download_url);
-        TutoMap.put("thumb_image", thumb_downloadUrl);
+        TutoMap.put("profesor", nombreProfCompleto);
+        TutoMap.put("descripcion", descripcion);
+        TutoMap.put("fecha", fecha);
+        TutoMap.put("hora_inicial", horainicio);
+        TutoMap.put("titulo", titulo);
+        TutoMap.put("url_image_portada", download_url);
+        TutoMap.put("url_thumb_image_portada", thumb_downloadUrl);
         TutoMap.put("tipo_tuto","Live");
         TutoMap.put("broadcastId","None");
+        TutoMap.put("fecha_pub",pub_dia + "/" + (pub_mes + 1) + "/" + pub_ano);
+        TutoMap.put("hora_pub",pub_hora+":"+pub_minutos);
 
 
-
-
+        fdb.collection("Tutorias_institucionales").document(keyid)
+                .set(TutoMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(AgregarTutoriaLive.this, Pantalla_Principal.class);
+                        AgregarTutoriaLive.this.startActivity(intent);
+                        Toast.makeText(AgregarTutoriaLive.this, "Se ha publicado la tutoría", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AgregarTutoriaLive.this, "Ha ocurrido un error al publicar la tutoría", Toast.LENGTH_SHORT).show();
+            }
+        });
+/*
         DBReference.setValue(TutoMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -229,11 +279,12 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                     Toast.makeText(AgregarTutoriaLive.this, "Se ha publicado la tutoría", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(AgregarTutoriaLive.this, "Ha ocurrido un error al publicar la tutoría", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
 
                 }
             }
         });
-
+*/
         progressDialog.dismiss();
 
 
@@ -273,7 +324,7 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void SubirImagen(String UIDTuto) {
+    private void SubirImagen(final String UIDTuto) {
 
         if (uri != null) {
 
@@ -312,7 +363,9 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
                                     download_url = uri.toString();
                                     Map update_hashmMap=new HashMap();
-                                    update_hashmMap.put("image",download_url);
+                                    update_hashmMap.put("url_image_portada",download_url);
+
+                                    /*
                                     DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
                                     DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -320,6 +373,21 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                                             if(task.isSuccessful()){
                                                 progressDialog.dismiss();
                                             }
+                                        }
+                                    });
+*/
+
+                                    fdb.collection("Tutorias_institucionales").document(UIDTuto)
+                                            .update(update_hashmMap)
+                                            .addOnSuccessListener(new OnSuccessListener() {
+                                                @Override
+                                                public void onSuccess(Object o) {
+                                                    progressDialog.dismiss();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
                                         }
                                     });
 
@@ -340,7 +408,9 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
                                             thumb_downloadUrl = uri.toString();
                                             Map update_hashmMap=new HashMap();
-                                            update_hashmMap.put("thumb_image",thumb_downloadUrl);
+                                            update_hashmMap.put("url_thumb_image_portada",thumb_downloadUrl);
+
+                                            /*
                                             DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
                                             DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -349,6 +419,22 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                                                         Toast.makeText(AgregarTutoriaLive.this, "Se ha subido la imagen con exito.", Toast.LENGTH_LONG).show();
                                                         progressDialog.dismiss();
                                                     }
+                                                }
+                                            });
+*/
+
+
+                                            fdb.collection("Tutorias_institucionales").document(UIDTuto)
+                                                    .update(update_hashmMap)
+                                                    .addOnSuccessListener(new OnSuccessListener() {
+                                                        @Override
+                                                        public void onSuccess(Object o) {
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
                                                 }
                                             });
 
@@ -386,6 +472,31 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
     private void LlenarSpinner() {
         try {
+
+            fdb.collection("Materias")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                            final List<String> materia = new ArrayList<>();
+
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                    materia.add(document.getId());
+                                    spnMateria = (Spinner) findViewById(R.id.spnMateriaLive);
+                                    ArrayAdapter<String> materiaAdapter = new ArrayAdapter<String>(AgregarTutoriaLive.this, android.R.layout.simple_spinner_item, materia);
+                                    materiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spnMateria.setAdapter(materiaAdapter);
+                                }
+                            } else {
+                                Log.i("ErrorSpinnerMateria", ""+task.getException());
+                            }
+                        }
+                    });
+
+/*
             DBRefGetMateria.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -411,6 +522,7 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
                 }
             });
+*/
 
         } catch (Exception e) {
 
@@ -424,6 +536,16 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         alertDialog.setMessage(Mensaje);
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
+
+    }
+
+    public void ObtenerFechaHora(){
+        final Calendar calendar = Calendar.getInstance();
+        pub_ano = calendar.get(Calendar.YEAR);
+        pub_mes = calendar.get(Calendar.MONTH);
+        pub_dia = calendar.get(Calendar.DAY_OF_MONTH);
+        pub_hora = calendar.get(Calendar.HOUR_OF_DAY);
+        pub_minutos = calendar.get(Calendar.MINUTE);
 
     }
 

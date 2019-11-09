@@ -21,11 +21,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +37,8 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
 
     private FirebaseDatabase FDatabase;
     private DatabaseReference DBReference;
+
+    private FirebaseFirestore fdb;
 
     private EditText LCorreo;
     private EditText LPassword;
@@ -67,6 +69,7 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
         FDatabase= FirebaseDatabase.getInstance();
         DBReference= FDatabase.getReference();
 
+        fdb = FirebaseFirestore.getInstance();
 
 
         progressDialog = new ProgressDialog(this);
@@ -146,16 +149,17 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
                                 }
                                 if (task.isSuccessful()) {
 
+                                    /*
                                     DBReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                        /*
+
                                         if (dataSnapshot==null){
                                             Alerta("Error al iniciar", "La cuenta que esta intentando acceder es de un estudiante, aqui solo se permite iniciar con cuenta de profesor");
                                             progressDialog.dismiss();
 
                                         }else {
-                                        */
+
                                             Log.i("Prueba", dataSnapshot.child("nombres").getValue(String.class));
                                             editor.putString("nombresProf", dataSnapshot.child("nombres").getValue(String.class));
                                             editor.putString("apellidosProf", dataSnapshot.child("apellidos").getValue(String.class));
@@ -173,6 +177,27 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
 
                                         }
                                     });
+                                    */
+
+                                    DocumentReference profesorRef = fdb.collection("Profesores").document(user.getUid());
+                                    profesorRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+
+                                                    DocumentSnapshot dc = task.getResult();
+
+                                                    Log.i("Prueba",  dc.getString("nombres"));
+                                                    editor.putString("nombresProf", dc.getString("nombres"));
+                                                    editor.putString("apellidosProf", dc.getString("apellidos"));
+                                                    editor.putString("TelefonoProf",  dc.getString("telefono"));
+                                                    editor.putString("FechaNacimiento", dc.getString("fecha_nacimiento"));
+                                                    editor.putString("Correo",  dc.getString("correo"));
+                                                    editor.apply();
+                                                    // }
+
+                                                }
+                                            });
 
 
 
