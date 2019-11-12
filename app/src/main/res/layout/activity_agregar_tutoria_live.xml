@@ -29,15 +29,27 @@
             app:theme="@style/Widget.AppCompat.Toolbar">
 
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
                     <ImageView
                         android:id="@+id/imgTutoLive"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
+                        android:layout_alignParentTop="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/video_camera_live"
                         />
 
 
+                </RelativeLayout>
+            </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/MyToolbarLive"
@@ -87,7 +99,7 @@
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@+id/spnMateriaLive"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="wrap_content"
                 app:ms_arrowColor="@color/GrisFondo"
                 app:ms_floatingLabelColor="#A9A9A9"
                 app:ms_floatingLabelText="Materia"

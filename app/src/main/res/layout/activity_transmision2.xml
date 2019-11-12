@@ -10,7 +10,18 @@
         android:id="@+id/PreviewSurfaceView"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_alignParentTop="true"
+        />
+
+    <TextView
+        android:id="@+id/txtTituloLive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Título"
+        android:layout_below="@id/PreviewSurfaceView"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_17sdp"
+        android:layout_marginTop="@dimen/_10sdp"/>
 
     <Button android:id="@+id/BroadcastButton"
         android:text="Iniciar transmisión"

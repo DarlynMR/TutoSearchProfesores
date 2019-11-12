@@ -38,7 +38,7 @@ import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtNombreProfMenu;
 public class Pantalla_Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    CardView crdAgregarTutoria, crdTutoriasAceptadas,crdMensajes;
+    CardView crdAgregarTutoria, crdTutoriasAceptadas,crdMensajes, crdTutoriasAgregadas;
 
     TextView txtNombreProf, txtCorreoProf;
 
@@ -79,11 +79,13 @@ public class Pantalla_Principal extends AppCompatActivity
         crdAgregarTutoria= (CardView)findViewById(R.id.crdAgregarTutoria);
         crdTutoriasAceptadas= (CardView)findViewById(R.id.card_tutorias_reservadas);
         crdMensajes= (CardView)findViewById(R.id.card_mensajes);
+        crdTutoriasAgregadas = (CardView)findViewById(R.id.card_tutorias_inst);
 
 
         crdAgregarTutoria.setOnClickListener(this);
         crdTutoriasAceptadas.setOnClickListener(this);
         crdMensajes.setOnClickListener(this);
+        crdTutoriasAgregadas.setOnClickListener(this);
 
     }
 
@@ -271,12 +273,19 @@ public class Pantalla_Principal extends AppCompatActivity
         if (view==crdAgregarTutoria){
                     Intent intent = new Intent(Pantalla_Principal.this, ElegirTipoTutoria.class);
                     Pantalla_Principal.this.startActivity(intent);
-        } else if (view==crdTutoriasAceptadas){
-            Intent intent = new Intent(Pantalla_Principal.this, TransmisionActivity.class);
-            Pantalla_Principal.this.startActivity(intent);
-        }else if (view==crdMensajes){
-            Intent intent = new Intent(Pantalla_Principal.this, TransmisionActivity2.class);
+        }
+        if (view==crdTutoriasAceptadas){
+
+        }
+        if (view==crdMensajes){
+
+        }
+
+        if (view==crdTutoriasAgregadas){
+            Intent intent = new Intent(Pantalla_Principal.this, TutoriasAgregadas.class);
             Pantalla_Principal.this.startActivity(intent);
         }
+
+
     }
 }
