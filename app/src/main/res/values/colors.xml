@@ -28,5 +28,9 @@
     <color name="tabTextColor">#ffffff</color>
     <color name="tabIndicador">#ffffff</color>
 
+    <color name="Bluedark">#2f333f</color>
+    <color name="Bluelight">#49acd5</color>
+    <color name="Green">#45bc62</color>
+    <color name="Orange">#eaad43</color>
 
 </resources>

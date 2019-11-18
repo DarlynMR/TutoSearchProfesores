@@ -1,8 +1,9 @@
 package com.rd.dmmr.tutosearchprofesores;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,4 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 }

@@ -74,7 +74,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
     private Uri uri = null;
     byte[] thumb_byte;
     private String keyid;
-    String download_url, thumb_downloadUrl,nombreProfCompleto;
+    String download_url, thumb_downloadUrl, nombreProfCompleto;
 
     private FloatingActionButton fback_button;
 
@@ -160,7 +160,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                 public void onSuccess(Void aVoid) {
                                     FirebaseUser user = FAutentic.getCurrentUser();
                                     user.sendEmailVerification();
-                                    if (uri!=null){
+                                    if (uri != null) {
                                         SubirImagen(user.getUid());
                                     } else {
                                         FAutentic.signOut();
@@ -185,16 +185,10 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                             });
 
 
-
-
-
-
                 }
                 progressDialog.dismiss();
             }
         });
-
-
 
 
     }
@@ -202,7 +196,6 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
     private void SubirImagen(final String UIDProf) {
 
         if (uri != null) {
-
 
 
             StorageReference filePath = imgStorage.child("img_profile").child(UIDProf + ".jpg");
@@ -239,20 +232,9 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                 public void onSuccess(Uri uri) {
 
                                     download_url = uri.toString();
-                                    Map update_hashmMap=new HashMap();
-                                    update_hashmMap.put("url_pic",download_url);
+                                    Map update_hashmMap = new HashMap();
+                                    update_hashmMap.put("url_pic", download_url);
 
-                                    /*
-                                    DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(UIDProf);
-                                    DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                progressDialog.dismiss();
-                                            }
-                                        }
-                                    });
-*/
 
                                     fdb.collection("Profesores").document(UIDProf)
                                             .update(update_hashmMap)
@@ -273,7 +255,6 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
                             });
 
-                            //
                             UploadTask uploadTask = thumb_filePath.putBytes(thumb_byte);
                             uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -285,24 +266,9 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                         public void onSuccess(Uri uri) {
 
                                             thumb_downloadUrl = uri.toString();
-                                            Map update_hashmMap_thumb=new HashMap();
-                                            update_hashmMap_thumb.put("url_thumb_pic",thumb_downloadUrl);
-                                            /*
-                                            DBReference = FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(UIDProf);
-                                            DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if(task.isSuccessful()){
-                                                        Toast.makeText(RegistrarProf.this, "Se ha subido la imagen con exito.", Toast.LENGTH_LONG).show();
-                                                        FAutentic.signOut();
-                                                        progressDialog.dismiss();
-                                                    }
-                                                    if (task.isCanceled()){
-                                                        Log.i("PruebaError", "Excepcion: "+task.getResult()+ " Result: "+task.getResult());
-                                                    }
-                                                }
-                                            });
-                                                */
+                                            Map update_hashmMap_thumb = new HashMap();
+                                            update_hashmMap_thumb.put("url_thumb_pic", thumb_downloadUrl);
+
                                             fdb.collection("Profesores").document(UIDProf)
                                                     .update(update_hashmMap_thumb)
                                                     .addOnSuccessListener(new OnSuccessListener() {
@@ -321,34 +287,29 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
                                     });
 
-
-
                                     if (thumb_task.isSuccessful()) {
                                         FAutentic.signOut();
 
                                     } else {
                                         Toast.makeText(RegistrarProf.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
-                                        Log.i("PruebaError", "Excepcion: "+task.getResult()+ " Result: "+task.getResult());
+                                        Log.i("PruebaError", "Excepcion: " + task.getResult() + " Result: " + task.getResult());
                                         FAutentic.signOut();
                                         progressDialog.dismiss();
                                     }
                                 }
                             });
 
-                            //
-
-
                         } else {
                             Toast.makeText(RegistrarProf.this, "Error al subir la imagen.", Toast.LENGTH_LONG).show();
                             FAutentic.signOut();
-                            Log.i("PruebaError", "Excepcion: "+task.getResult()+ " Result: "+task.getResult());
+                            Log.i("PruebaError", "Excepcion: " + task.getResult() + " Result: " + task.getResult());
                             progressDialog.dismiss();
                         }
                     }
                 });
 
             } catch (Exception e) {
-                Log.i("PruebaError", "Causa: "+e.getCause() + " Mensaje: "+e.getMessage());
+                Log.i("PruebaError", "Causa: " + e.getCause() + " Mensaje: " + e.getMessage());
                 FAutentic.signOut();
             }
 
@@ -362,7 +323,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
 
             Uri imageurl = data.getData();
-
+        
             CropImage.activity(imageurl)
                     .setAspectRatio(1, 1)
                     .start(this);
@@ -372,6 +333,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             uri = result.getUri();
+
 
             File thumb_filePath = new File(uri.getPath());
 
@@ -399,9 +361,9 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void campos_vacios(EditText campo, View view){
+    public void campos_vacios(EditText campo, View view) {
         campo.setError("No puede dejar este campo vacío.");
-        view= campo;
+        view = campo;
     }
 
     public void Mtoast(String mensaje) {
@@ -414,30 +376,31 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         if (view == btnRegistrar) {
             View ViewFocus = null;
-            String pass,pass2;
-            pass= password.getText().toString(); pass2= password2.getText().toString();
+            String pass, pass2;
+            pass = password.getText().toString();
+            pass2 = password2.getText().toString();
 
 
             if (nombres.getText().toString().length() == 0) {
-                campos_vacios(nombres,ViewFocus);
+                campos_vacios(nombres, ViewFocus);
             } else if (apellidos.getText().toString().length() == 0) {
-                campos_vacios(apellidos,ViewFocus);
-            }else if (fecha_nacimiento.getText().toString().length() == 0) {
+                campos_vacios(apellidos, ViewFocus);
+            } else if (fecha_nacimiento.getText().toString().length() == 0) {
                 Alerta("Fecha vacía", "Favor de introducir su fecha de nacimiento.");
-            }else if (telefono.getText().toString().length() == 0) {
-                campos_vacios(telefono,ViewFocus);
-            }else if (correo.getText().toString().length() == 0) {
-                campos_vacios(correo,ViewFocus);
-            }else if (apellidos.getText().toString().length() == 0) {
-                campos_vacios(apellidos,ViewFocus);
+            } else if (telefono.getText().toString().length() == 0) {
+                campos_vacios(telefono, ViewFocus);
+            } else if (correo.getText().toString().length() == 0) {
+                campos_vacios(correo, ViewFocus);
+            } else if (apellidos.getText().toString().length() == 0) {
+                campos_vacios(apellidos, ViewFocus);
             } else if (password.getText().toString().length() == 0) {
-                campos_vacios(password,ViewFocus);
+                campos_vacios(password, ViewFocus);
             } else if (password2.getText().toString().length() == 0) {
-                campos_vacios(password2,ViewFocus);
-            }else if (!pass.equals(pass2)) {
-                Log.i("Prueba", ""+pass.equals(pass2));
+                campos_vacios(password2, ViewFocus);
+            } else if (!pass.equals(pass2)) {
+                Log.i("Prueba", "" + pass.equals(pass2));
                 password2.setError("Las contraseñas no coinciden.");
-                ViewFocus =password2;
+                ViewFocus = password2;
             } else {
                 Registrar(correo.getText().toString(), password.getText().toString());
             }
@@ -461,14 +424,14 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     fecha_nacimiento.setText(di + "/" + (me + 1) + "/" + an);
                 }
             }
-                    ,ano , mes, dia);
+                    , ano, mes, dia);
 
-            Log.i("Fecha", "Fecha: "+dia+"/"+(mes+1)+"/"+ano+ ", Hora:"+hora+":"+minuto);
+            Log.i("Fecha", "Fecha: " + dia + "/" + (mes + 1) + "/" + ano + ", Hora:" + hora + ":" + minuto);
             datePickerDialog.show();
 
         }
 
-        if (view== btnCargarFoto || view== ciruclarImageView){
+        if (view == btnCargarFoto || view == ciruclarImageView) {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);

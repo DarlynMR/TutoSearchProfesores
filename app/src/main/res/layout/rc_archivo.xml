@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RC_Archivo"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:layout_marginHorizontal="2dp"
+    android:layout_marginTop="7sp"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imgType"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/defaultimage"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"/>
+
+
+
+
+        <TextView
+            android:id="@+id/txtFilename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Filename"
+            android:textSize="@dimen/_22sdp"
+            android:layout_toEndOf="@id/imgType"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_toStartOf="@id/btnDescargar"/>
+
+        <TextView
+            android:id="@+id/txtFilesize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="File size"
+            android:layout_below="@id/txtFilename"
+            android:textSize="@dimen/_11sdp"
+            android:layout_toEndOf="@id/imgType"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_toStartOf="@id/btnDescargar"/>
+
+
+
+
+        <ProgressBar
+            android:id="@+id/progresBar"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"/>
+
+
+        <Button
+            android:id="@+id/btnDescargar"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_file_download_black_24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"/>
+
+
+    </RelativeLayout>
+
+
+
+
+
+</androidx.cardview.widget.CardView>
