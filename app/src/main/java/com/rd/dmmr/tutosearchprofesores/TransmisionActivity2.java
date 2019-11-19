@@ -12,8 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -248,6 +248,10 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
         else if (!hasPermission(Manifest.permission.CAMERA))
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+        else if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        else if (!hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
         mBroadcaster.setCameraSurface(mPreviewSurface);
         mBroadcaster.onActivityResume();
@@ -290,6 +294,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         btnImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -590,7 +595,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         }
     }
 
-
+/*
     private void Permissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -606,7 +611,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         }
 
     }
-
+*/
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -622,24 +627,31 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
     void savefile(Uri sourceuri) {
         String sourceFilename = sourceuri.getPath();
-        File destinationFilename = new File(getFilesDir() + "/" + "Documentos/" + idTuto + "/" + nameF);
+        File destinationFilename = new File(Environment.getExternalStorageDirectory() + "/Tutosearch/Documentos/"+ idTuto+"/"+nameF);
+
 
         Log.i("ProbandoFile", "El archivo que se lee: " + sourceFilename);
 
-        String ruta = getFilesDir() + "/Documentos/" + idTuto;
+        String ruta = Environment.getExternalStorageDirectory() + "/Tutosearch/Documentos/"+ idTuto;
 
-        File file_ruth = new File(ruta);
 
-        if (!file_ruth.mkdirs()) {
-            file_ruth.mkdirs();
+        File compFile = new File(ruta);
+
+        if (!compFile.exists()) {
+            compFile.mkdirs();
         }
+
+        File file_ruth = new File(ruta, nameF);
 
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
 
-        File a_file = new File(file_ruth, nameF);
         try {
-            a_file.createNewFile();
+            if (!destinationFilename.exists()) {
+
+                file_ruth.createNewFile();
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
             Log.i("ProbandoFileError", "No se creo el archivo vacio: " + e.getMessage());
@@ -654,7 +666,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
             do {
                 bos.write(buf);
             } while (bis.read(buf) != -1);
-            Log.i("ProbandoFile", "Se gualdo");
+            Log.i("ProbandoFile", "Se gualdo en: "+destinationFilename);
         } catch (IOException e) {
             e.printStackTrace();
             Log.i("ProbandoFileError", "Excepcion al escribir el archivo: " + e.getMessage());
@@ -697,10 +709,10 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
                             url = docS.getString("url_file");
                             idDoc = docS.getId();
 
-                            Log.i("Probando", "" + docS);
+                            Log.i("ProbandoLlegada", "" + docS);
 
 
-                            mListDown.add(new DownloadModel(name, url, idDoc));
+                            mListDown.add(new DownloadModel(name, url, idDoc, idTuto));
 
                             downloadAdapter.notifyDataSetChanged();
 
@@ -719,7 +731,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
                             index = getRCIndex(docS.getId());
 
 
-                            mListDown.set(index, new DownloadModel(name, url, idDoc));
+                            mListDown.set(index, new DownloadModel(name, url, idDoc, idTuto));
 
 
                             downloadAdapter.notifyItemChanged(index);
@@ -777,7 +789,8 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
             switch (which) {
                 case DialogInterface
                         .BUTTON_POSITIVE:
-                    Permissions();
+                    CualMethod();
+
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

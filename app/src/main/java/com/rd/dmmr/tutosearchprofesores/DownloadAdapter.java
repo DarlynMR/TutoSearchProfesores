@@ -3,30 +3,35 @@ package com.rd.dmmr.tutosearchprofesores;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.io.FilenameUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadAdapter extends RecyclerView.Adapter<DownloadHolder> {
 
     TransmisionActivity2 transmisionActivity2;
-    List<DownloadModel> downloadModels;
-    String linkDown;
+    List<DownloadModel> mListDownload;
+    String linkDown,idTuto;
 
     public DownloadAdapter(TransmisionActivity2 transmisionActivity2, ArrayList<DownloadModel> downloadModels) {
         this.transmisionActivity2 = transmisionActivity2;
-        this.downloadModels = downloadModels;
+        this.mListDownload = downloadModels;
     }
 
     public DownloadAdapter(List<DownloadModel> mListDown) {
-        this.downloadModels = mListDown;
+        this.mListDownload = mListDown;
     }
 
     @NonNull
@@ -38,13 +43,19 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DownloadHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DownloadHolder holder, final int position) {
 
         String extension;
-        holder.filename.setText(downloadModels.get(position).getName());
-        linkDown = downloadModels.get(position).getLinkFile();
+        holder.filename.setText(mListDownload.get(position).getName());
+        linkDown = mListDownload.get(position).getLinkFile();
+        idTuto = mListDownload.get(position).idTuto;
+        final String ruta =  Environment.getExternalStorageDirectory() +  "/Tutosearch/Documentos/" + idTuto;
 
-        extension = FilenameUtils.getExtension(downloadModels.get(position).getName());
+        Log.i("ProbandoDown", ""+mListDownload.get(position).getLinkFile());
+
+        final File file = new File(ruta);
+        final File fileC = new File(ruta+"/"+mListDownload.get(position).getName());
+        extension = FilenameUtils.getExtension(mListDownload.get(position).getName());
 
         if (extension.equals("png")){
             holder.imgType.setImageResource(R.drawable.ic_png);
@@ -65,10 +76,32 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadHolder> {
         }
 
 
+        if (fileC.exists()){
+            holder.btnDescargar.setVisibility(View.INVISIBLE);
+            Log.i("ProbandoRuta", "Existe");
+        }else {
+            holder.btnDescargar.setVisibility(View.VISIBLE);
+        }
+
+        Log.i("ProbandoRuta", ruta+"/"+mListDownload.get(position).getName());
+
+        holder.btnDescargar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!file.mkdirs()) {
+                    file.mkdirs();
+                }
+                if (fileC.exists()){
+                    Toast.makeText(transmisionActivity2, "Este archivo ya se ha descargado", Toast.LENGTH_SHORT).show();
+                }else{
+                    downloadFile(holder.filename.getContext(),mListDownload.get(position).getName(),"/Tutosearch/Documentos/"+idTuto,linkDown);
+                }
+
+            }
+        });
 
     }
-
-
 
 
     public void downloadFile(Context context, String fileName, String destinationDirectory, String url) {
@@ -79,13 +112,18 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadHolder> {
         DownloadManager.Request request = new DownloadManager.Request(uri);
 
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName);
+        request.setDestinationInExternalPublicDir(destinationDirectory, fileName);
 
         downloadmanager.enqueue(request);
+        downloadmanager.addCompletedDownload("Tutosearch", "Se esta descargando el archivo"+fileName,false,
+                "nada","nada 2",1,true);
     }
 
     @Override
     public int getItemCount() {
-        return downloadModels.size();
+        return mListDownload.size();
+
+
     }
+
 }

@@ -2,13 +2,14 @@ package com.rd.dmmr.tutosearchprofesores;
 
 public class DownloadModel {
 
-    String name, linkFile, idDoc;
+    public String name, linkFile, idDoc, idTuto;
 
 
-    public DownloadModel(String name, String linkFile, String idDoc) {
+    public DownloadModel(String name, String linkFile, String idDoc, String idTuto) {
         this.name = name;
         this.linkFile = linkFile;
         this.idDoc = idDoc;
+        this.idTuto= idTuto;
     }
 
 
