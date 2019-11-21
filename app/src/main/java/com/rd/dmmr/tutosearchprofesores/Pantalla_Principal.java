@@ -197,7 +197,7 @@ public class Pantalla_Principal extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_perfil) {
-            // Handle the camera action
+           Intent intent = new Intent(this,PerfilProf.class);startActivity(intent);
         } else if (id == R.id.nav_ajustes) {
 
         } else if (id == R.id.nav_compartir) {

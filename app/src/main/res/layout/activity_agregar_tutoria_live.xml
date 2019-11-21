@@ -89,6 +89,18 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingHorizontal="@dimen/_4sdp">
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:paddingStart="@dimen/_3sdp"
+            android:paddingEnd="@dimen/_3sdp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp" >
+
+
+
         <RelativeLayout
             android:id="@+id/LYContenido"
             android:layout_width="match_parent"
@@ -196,13 +208,19 @@
                 android:id="@+id/btnPublicar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:text="Publicar"
-                android:layout_below="@id/btnHoraInicio"/>
-
+                android:layout_below="@id/txtHoraInicio"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:textColor="@color/darkColor"
+                android:textSize="@dimen/_14sdp"
+                android:backgroundTint="#3085C9"
+                android:background="@drawable/button_style"/>
 
         </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
 
     </androidx.core.widget.NestedScrollView>
 

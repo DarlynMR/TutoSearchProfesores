@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment_DatosPerfil">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="24dp">
+
+        <TextView
+            android:id="@+id/TEXTO"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:text="Detalles\n"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/textBasico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TEXTO"
+            android:paddingBottom="5dp"
+            android:paddingTop="3dp"
+            android:text="Información básica"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/viewBasico"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:alpha="0.7"
+            android:background="@color/colorPrimaryLgn"
+            android:layout_below="@id/textBasico"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"/>
+
+
+        <TextView
+            android:id="@+id/textNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewBasico"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="3dp"
+            android:text="Nombre(s):"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textNombre"
+            android:paddingBottom="8dp"
+            android:paddingLeft="20dp"
+            android:text="William  Esteban" />
+
+
+
+
+        <TextView
+            android:id="@+id/textApellidos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtNombre"
+            android:paddingLeft="20dp"
+            android:text="Apellido(s)"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtApellidos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textApellidos"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="Hernandez López" />
+
+        <View
+            android:id="@+id/viewPrivadoTop"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:alpha="0.7"
+            android:background="@color/colorPrimaryLgn"
+            android:layout_below="@id/txtApellidos"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginTop="7dp"/>
+
+        <TextView
+            android:id="@+id/textPrivado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewPrivadoTop"
+            android:paddingBottom="5dp"
+            android:paddingTop="3dp"
+            android:text="Información privada"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/viewPrivadoBottom"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:alpha="0.7"
+            android:background="@color/colorPrimaryLgn"
+            android:layout_below="@id/textBasico"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"/>
+
+
+        <TextView
+            android:id="@+id/textFechaNacimiento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textPrivado"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="Fecha de nacimiento:"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtFechaNacimiento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textFechaNacimiento"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="13/08/1994" />
+
+
+
+        <TextView
+            android:id="@+id/textCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtFechaNacimiento"
+            android:paddingLeft="20dp"
+            android:paddingTop="3dp"
+            android:text="Correo:"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/txtCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textCorreo"
+            android:paddingLeft="20dp"
+            android:text="williamhl@gmail.com" />
+
+
+        <TextView
+            android:id="@+id/textTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtCorreo"
+            android:layout_marginTop="5dp"
+            android:paddingBottom="22dp"
+            android:paddingLeft="20dp"
+            android:text="Telefono:"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textTelefono"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="20dp"
+            android:text="829-123-4567" />
+
+        <TextView
+            android:id="@+id/textDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtTelefono"
+            android:layout_marginTop="5dp"
+            android:paddingBottom="22dp"
+            android:paddingLeft="20dp"
+            android:text="Dirección:"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textDireccion"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="20dp"
+            android:text="Calle #5 Res. Don Pepin, La Vega" />
+
+
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

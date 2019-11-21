@@ -295,7 +295,8 @@
                     android:layout_marginTop="@dimen/_7sdp"
                     android:textColor="@color/darkColor"
                     android:textSize="@dimen/_14sdp"
-                    android:backgroundTint="#3085C9"/>
+                    android:backgroundTint="#3085C9"
+                    android:background="@drawable/button_style"/>
 
 
 
