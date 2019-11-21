@@ -16,10 +16,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,12 +75,14 @@ import id.zelory.compressor.Compressor;
 public class TransmisionActivity2 extends AppCompatActivity implements View.OnClickListener {
 
     private SurfaceView mPreviewSurface;
-    private Button btnIniciarTransmision, btnAbrirLY;
+    private Button btnIniciarTransmision;
+    private ImageButton btnAbrirLY;
 
     private StorageReference imgStorage;
     private StorageReference urlStorage;
     private StorageReference refDoc;
     private DatabaseReference DBRefGetid;
+    private StorageReference archivoReference;
 
     private Bundle datosTuto;
     private TextView titulo;
@@ -122,7 +126,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         DBRefGetid = FirebaseDatabase.getInstance().getReference();
 
         btnIniciarTransmision = (Button) findViewById(R.id.BroadcastButton);
-        btnAbrirLY = (Button) findViewById(R.id.btnAbrirLY);
+        btnAbrirLY = (ImageButton) findViewById(R.id.btnAbrirLY);
 
         mListDown = new ArrayList<>();
         downloadAdapter = new DownloadAdapter(mListDown);
@@ -147,6 +151,8 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
             Log.i("ProbandoLive", "" + datosTuto.getString(idTuto));
         }
 
+
+        archivoReference = FirebaseStorage.getInstance().getReference();
 
         btnIniciarTransmision.setOnClickListener(this);
         btnAbrirLY.setOnClickListener(this);
@@ -267,9 +273,10 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         RecyclerView rvArchivos;
         Button btnImagen, btnDocs;
 
+
         mDialog.setContentView(R.layout.ly_archivos_tuto);
         txtCerrar = (TextView) mDialog.findViewById(R.id.txtCerrar);
-        rvArchivos = (RecyclerView) mDialog.findViewById(R.id.RCAbajo);
+        rvArchivos = (RecyclerView) mDialog.findViewById(R.id.RC_Archivo);
         btnImagen = (Button) mDialog.findViewById(R.id.btnImagen);
         btnDocs = (Button) mDialog.findViewById(R.id.btnDoc);
 
@@ -356,86 +363,6 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void subirArchivo() {
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Subiendo archivo...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-
-        final String keyid, filename, extension;
-
-        filename = ObtenerNombreFile(docUri);
-        nameF = filename;
-        extension = FilenameUtils.getExtension(filename);
-
-        keyid = DBRefGetid.child("Archivos").push().getKey();
-        StorageReference reference = refDoc.child("tuto_files/" + idTuto + "/" + keyid + "." + extension);
-
-        reference.putFile(docUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-
-                        Toast.makeText(TransmisionActivity2.this, "Se ha subido el archivo", Toast.LENGTH_SHORT).show();
-
-                        final StorageReference url_filePath = urlStorage.child("tuto_files").child(idTuto).child(keyid + "." + extension);
-                        url_filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-
-                                download_url = uri.toString();
-                                Map hashmMap = new HashMap();
-                                hashmMap.put("file_name", filename);
-                                hashmMap.put("url_file", download_url);
-
-                                fdb.collection("tuto_files").document(idTuto).collection("files").document(keyid)
-                                        .set(hashmMap)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                progressDialog.dismiss();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                    }
-                                });
-
-
-                            }
-
-                        });
-
-
-                        ///
-
-                        download_url = uriTask.toString();
-
-
-                        progressDialog.dismiss();
-
-
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-
-                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                progressDialog.setMessage("Subiendo: " + (int) progress + "%");
-
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-    }
 
     private String ObtenerNombreFile(Uri uri) {
 
@@ -482,10 +409,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
             final StorageReference thumb_filePath = imgStorage.child("tuto_files").child(idTuto).child("thumbs").child(keyid + "." + extension);
 
             progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Cargando imagen...");
-            progressDialog.setMessage("Cargando imagen espere mientras se carga la imagen.");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+
 
             File thumb_filepath = new File(imgUri.getPath());
 
@@ -585,6 +509,15 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
                             progressDialog.dismiss();
                         }
                     }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        progressDialog.setTitle("Cargando imagen...");
+                        progressDialog.setMessage("Cargando imagen espere mientras se carga la imagen. \nSubiendo: " + (int) progress + "%");
+                        progressDialog.setCanceledOnTouchOutside(false);
+                        progressDialog.show();
+                    }
                 });
 
             } catch (Exception e) {
@@ -595,44 +528,150 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         }
     }
 
-/*
-    private void Permissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permissions, WRITE_EXTERNAL_STORAGE_CODE);
-            } else {
-                CualMethod();
+
+    private void SubirArchivo() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Subiendo archivo...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        final String keyid, filename, extension;
+
+        filename = ObtenerNombreFile(docUri);
+        nameF = filename;
+        extension = FilenameUtils.getExtension(filename);
+
+        keyid = DBRefGetid.child("Archivos").push().getKey();
+        StorageReference reference = refDoc.child("tuto_files/" + idTuto + "/" + keyid + "." + extension);
+
+        reference.putFile(docUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+
+                        Toast.makeText(TransmisionActivity2.this, "Se ha subido el archivo", Toast.LENGTH_SHORT).show();
+
+                        final StorageReference url_filePath = urlStorage.child("tuto_files").child(idTuto).child(keyid + "." + extension);
+                        url_filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                download_url = uri.toString();
+                                Map hashmMap = new HashMap();
+                                hashmMap.put("file_name", filename);
+                                hashmMap.put("url_file", download_url);
+
+                                fdb.collection("tuto_files").document(idTuto).collection("files").document(keyid)
+                                        .set(hashmMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
+
+
+                            }
+
+                        });
+
+
+                        ///
+
+                        download_url = uriTask.toString();
+
+
+                        progressDialog.dismiss();
+
+
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+
+                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                progressDialog.setMessage("Subiendo: " + (int) progress + "%");
 
 
             }
-        } else {
-            CualMethod();
-        }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
 
     }
-*/
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case WRITE_EXTERNAL_STORAGE_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    CualMethod();
-                } else {
-                    Toast.makeText(TransmisionActivity2.this, "Ha negado el permiso al almacenamiento.", Toast.LENGTH_SHORT).show();
-                }
-            }
+
+
+    private void EliminarArchivos(final Integer pos) {
+
+        String ruta = Environment.getExternalStorageDirectory() + "/Tutosearch/Documentos/" + idTuto;
+
+        Log.i("Borrar", "Entro");
+
+        File compFile = new File(ruta+mListDown.get(pos).name);
+
+        if (compFile.exists()){
+            compFile.delete();
+
         }
+
+        String storageUrl = mListDown.get(pos).linkFile;
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(storageUrl);
+        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+
+                mListDown.remove(pos);
+                downloadAdapter.notifyItemRemoved(pos);
+                Log.i("Borrar", "onSuccess: deleted file");
+                Toast.makeText(TransmisionActivity2.this, "Se ha borrado el archivo exitosamente", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.i("BorrarFail", "onFailure: did not delete file");
+            }
+        });
+
+        fdb.collection("tuto_files").document(idTuto).collection("files").document(mListDown.get(pos).idDoc)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(TransmisionActivity2.this, "Ocurrió un error al tratar de borrar el archivo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
     }
+
+
 
     void savefile(Uri sourceuri) {
         String sourceFilename = sourceuri.getPath();
-        File destinationFilename = new File(Environment.getExternalStorageDirectory() + "/Tutosearch/Documentos/"+ idTuto+"/"+nameF);
+        File destinationFilename = new File(Environment.getExternalStorageDirectory() + "/Tutosearch/Documentos/" + idTuto + "/" + nameF);
 
 
         Log.i("ProbandoFile", "El archivo que se lee: " + sourceFilename);
 
-        String ruta = Environment.getExternalStorageDirectory() + "/Tutosearch/Documentos/"+ idTuto;
+        String ruta = Environment.getExternalStorageDirectory() + "/Tutosearch/Documentos/" + idTuto;
 
 
         File compFile = new File(ruta);
@@ -666,7 +705,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
             do {
                 bos.write(buf);
             } while (bis.read(buf) != -1);
-            Log.i("ProbandoFile", "Se gualdo en: "+destinationFilename);
+            Log.i("ProbandoFile", "Se gualdo en: " + destinationFilename);
         } catch (IOException e) {
             e.printStackTrace();
             Log.i("ProbandoFileError", "Excepcion al escribir el archivo: " + e.getMessage());
@@ -769,6 +808,40 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case WRITE_EXTERNAL_STORAGE_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    CualMethod();
+                } else {
+                    Toast.makeText(TransmisionActivity2.this, "Ha negado el permiso al almacenamiento.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Log.i("Borrar", "Entroo");
+        switch (item.getItemId()){
+            case 0:
+
+                EliminarArchivos(item.getGroupId());
+                return true;
+
+            case 1:
+
+                break;
+
+        }
+
+
+        return super.onContextItemSelected(item);
+    }
+
+
 
     private void CualMethod() {
         if (cualMethod.equals("Image")) {
@@ -777,7 +850,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
         }
         if (cualMethod.equals("Doc")) {
-            subirArchivo();
+            SubirArchivo();
             savefile(docUri);
         }
     }

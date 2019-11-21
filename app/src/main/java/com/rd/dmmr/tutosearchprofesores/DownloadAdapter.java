@@ -25,6 +25,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadHolder> {
     List<DownloadModel> mListDownload;
     String linkDown,idTuto;
 
+
     public DownloadAdapter(TransmisionActivity2 transmisionActivity2, ArrayList<DownloadModel> downloadModels) {
         this.transmisionActivity2 = transmisionActivity2;
         this.mListDownload = downloadModels;
@@ -44,6 +45,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final DownloadHolder holder, final int position) {
+
 
         String extension;
         holder.filename.setText(mListDownload.get(position).getName());
@@ -100,6 +102,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadHolder> {
 
             }
         });
+
+
 
     }
 

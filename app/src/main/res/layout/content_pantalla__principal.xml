@@ -1,256 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:orientation="vertical"
     tools:context="com.rd.dmmr.tutosearchprofesores.Pantalla_Principal"
     tools:showIn="@layout/app_bar_pantalla__principal">
 
 
-    <ImageView
-        android:id="@+id/imgPrincipal"
-        android:layout_width="match_parent"
-        android:layout_height="125sp"
-        app:srcCompat="@drawable/tuto"/>
+    <ScrollView
+        android:id="@+id/mainScrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#E9E6E6">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
-        android:clipToPadding="false"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/crdAgregarTutoria"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-                <ImageView
-                    android:id="@+id/imgAgregar"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_agregar"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    />
-
-                <TextView
-                    android:id="@+id/txtTituloAgregar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Agregar tutorías"
-                    android:layout_below="@id/imgAgregar"
-                    android:layout_centerHorizontal="true"/>
-
-                <View
-                    android:id="@+id/viewAgregar"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/lineaGris"
-                    android:layout_below="@id/txtTituloAgregar"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="230dp"
+                    android:background="@mipmap/blur_image_bombillo"
                     android:gravity="center"
-                    android:layout_below="@+id/viewAgregar"
-                    android:layout_centerHorizontal="true"
-                    android:text="Para elegir entre agregar tutorías: Presenciales, Documento o Transmisión en vivo." />
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_overlay"/>
+
+                    <ImageView
+                        android:id="@+id/imgTop"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_iconfinder_professor"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Bienvenido Darly"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/imgTop"
+                        android:layout_centerHorizontal="true"/>
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="215dp"
+                    android:layout_marginEnd="1dp"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/crdAgregarTutoria"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/imgView11"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_circle" />
+
+                                <ImageView
+                                    android:id="@+id/imgView1"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="17.5dp"
+                                    android:src="@drawable/ic_iconfinder_server_add" />
+
+
+                                <TextView
+                                    android:id="@+id/txtTituloAgregar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView11"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="Agregar tutorías"
+                                    android:textStyle="bold"
+                                    />
+
+                                <View
+                                    android:id="@+id/viewAgregar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/txtTituloAgregar"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewAgregar"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="Para elegir entre agregar tutorías: Presenciales, Documento o Transmisión en vivo"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnAgregarTutoria"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
+
+
+                            </RelativeLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_tutorias_agregadas"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/imgView2"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_iconfinder_circledlist" />
+
+                                <TextView
+                                    android:id="@+id/txtAgregadas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView2"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="Tutorías agregadas"
+                                    android:textStyle="bold"
+                                    />
+
+                                <View
+                                    android:id="@+id/viewAgregadas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/txtAgregadas"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewAgregadas"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="Ver todas las tutorías que ya has agregado."
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnTutoriasAgregadas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
+
+
+                            </RelativeLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_tutorias_agenda"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/imgView33"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_circle" />
+
+                                <ImageView
+                                    android:id="@+id/imgView3"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="17.5dp"
+                                    android:src="@drawable/ic_iconfinder_calendar" />
+
+                                <TextView
+                                    android:id="@+id/txtAceptadas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView33"
+                                    android:layout_centerHorizontal="true"
+                                    android:textStyle="bold"
+                                    android:text="Agenda" />
+
+                                <View
+                                    android:id="@+id/viewAceptadas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/txtAceptadas"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewAceptadas"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="Verifica el horario que ocupan tus tutorías"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnAgenda"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
+
+
+                            </RelativeLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_mensajes"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/imgView4"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_iconfinder_smartphone_message" />
+
+                                <TextView
+                                    android:id="@+id/txtMensajes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/imgView4"
+                                    android:layout_centerHorizontal="true"
+                                    android:textStyle="bold"
+                                    android:text="Mensajes" />
+
+                                <View
+                                    android:id="@+id/viewMensajes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@id/txtMensajes"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:background="@color/lineaGris" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/viewMensajes"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center"
+                                    android:text="Interactúa con tus alumnos."
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnMensajes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent" />
+
+
+                            </RelativeLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
 
             </RelativeLayout>
 
 
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_tutorias_inst"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imgAgregadas"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    />
-
-                <TextView
-                    android:id="@+id/txtAgregadas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tutorías agregadas"
-                    android:layout_below="@id/imgAgregadas"
-                    android:layout_centerHorizontal="true"/>
-
-                <View
-                    android:id="@+id/viewAgregadas"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/lineaGris"
-                    android:layout_below="@id/txtAgregadas"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_below="@+id/viewAgregadas"
-                    android:layout_centerHorizontal="true"
-                    android:text="Ver todas las tutorías que ya has agregado." />
+    </ScrollView>
 
 
-            </RelativeLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_tutorias_reservadas"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imgAceptadas"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="@dimen/_10sdp"/>
-
-                <TextView
-                    android:id="@+id/txtAceptadas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/imgAceptadas"
-                    android:text="Aceptadas" />
-
-                <View
-                    android:id="@+id/viewAceptadas"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/txtAceptadas"
-                    android:background="@color/lineaGris" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/viewAceptadas"
-                    android:text="Todas las tutorías a las que ha aceptado asistir." />
-
-
-            </RelativeLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_mensajes"
-            android:layout_width="160dp"
-            android:layout_height="190dp"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imgMensajes"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/ic_iconfinder_think"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="@dimen/_10sdp"/>
-
-                <TextView
-                    android:id="@+id/txtMensajes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mensajes"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/imgMensajes"/>
-
-                <View
-                    android:id="@+id/viewMensajes"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/lineaGris"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/txtMensajes"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/viewMensajes"/>
-
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.rd.dmmr.tutosearchprofesores;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -130,6 +131,22 @@ public class TutoriasAgregadas extends AppCompatActivity {
         });
 
 
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case 0:
+                return true;
+
+            case 1:
+
+                break;
+
+        }
+        return super.onContextItemSelected(item);
     }
 
     private int getRCIndex(String iTuto) {

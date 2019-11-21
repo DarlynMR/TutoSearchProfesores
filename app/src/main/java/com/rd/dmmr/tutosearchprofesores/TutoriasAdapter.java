@@ -94,7 +94,6 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
             @Override
             public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
                 contextMenu.add(holder.getAdapterPosition(), 0, 0,"Ver más detalles");
-                contextMenu.add(holder.getAdapterPosition(), 1, 0,"Asistir");
             }
         });
 

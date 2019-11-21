@@ -11,44 +11,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/_5sdp"
-        android:background="@color/Bluelight">
+        android:background="@color/colorBlanco">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/LYtop"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Documentos"
-            android:textAlignment="center"
-            android:textSize="@dimen/_18sdp" />
+            android:background="@color/colorPrimaryDark">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Documentos"
+                android:textAlignment="center"
+                android:textSize="@dimen/_18sdp" />
+
+
+
+            <TextView
+                android:id="@+id/txtCerrar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/cerclebackground"
+                android:text="X"
+                android:textAlignment="center"
+                android:textColor="@color/colorBlanco"
+                android:textSize="@dimen/_18sdp"
+                android:backgroundTint="@color/Rojo"/>
+
+        </RelativeLayout>
+
+
 
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_below="@id/txtCerrar"
+            android:layout_below="@id/LYtop"
             android:alpha="0.7"
             android:background="@color/colorPrimaryLgn" />
 
-        <TextView
-            android:id="@+id/txtCerrar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/cerclebackground"
-            android:text="X"
-            android:textAlignment="center"
-            android:textColor="@color/colorBlanco"
-            android:textSize="@dimen/_18sdp"
-            android:backgroundTint="@color/Rojo"/>
-
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RCAbajo"
+            android:id="@+id/RC_Archivo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/txtCerrar"
+            android:layout_below="@id/view"
             android:layout_above="@id/view2"
             android:layout_marginTop="@dimen/_5sdp"
             android:tooltipText="Aun no hay archivos">
@@ -78,7 +90,7 @@
                 android:text="Imagen"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/buttonstyle"
-                android:textColor="@color/colorBlanco"
+                android:textColor="@color/colorPrimaryDarkLgn"
                 android:layout_marginHorizontal="5dp"/>
 
             <Button
@@ -89,7 +101,7 @@
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/buttonstyle"
                 android:layout_toEndOf="@id/btnImagen"
-                android:textColor="@color/colorBlanco"
+                android:textColor="@color/colorPrimaryDarkLgn"
                 android:layout_marginHorizontal="5dp"/>
 
 

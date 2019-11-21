@@ -9,6 +9,6 @@
         android:bottomRightRadius="10dp"/>
     <stroke android:color="#845e5e" android:width="2px"/>
 
-
+    <padding android:top="5dp" android:bottom="5dp" android:left="5dp" android:right="5dp"/>
 
 </shape>

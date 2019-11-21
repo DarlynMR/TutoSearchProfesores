@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -38,7 +38,7 @@ import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtNombreProfMenu;
 public class Pantalla_Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    CardView crdAgregarTutoria, crdTutoriasAceptadas,crdMensajes, crdTutoriasAgregadas;
+    Button btnAgregarTutoria,btnTutoriasAgregadas , btnMensajes,btnAgenda;
 
     TextView txtNombreProf, txtCorreoProf;
 
@@ -76,16 +76,17 @@ public class Pantalla_Principal extends AppCompatActivity
         fdb = FirebaseFirestore.getInstance();
 
 
-        crdAgregarTutoria= (CardView)findViewById(R.id.crdAgregarTutoria);
-        crdTutoriasAceptadas= (CardView)findViewById(R.id.card_tutorias_reservadas);
-        crdMensajes= (CardView)findViewById(R.id.card_mensajes);
-        crdTutoriasAgregadas = (CardView)findViewById(R.id.card_tutorias_inst);
+        btnAgregarTutoria= (Button) findViewById(R.id.btnAgregarTutoria);
+        btnTutoriasAgregadas = (Button)findViewById(R.id.btnTutoriasAgregadas);
+        btnAgenda = (Button)findViewById(R.id.btnAgenda);
+        btnMensajes= (Button)findViewById(R.id.btnMensajes);
 
 
-        crdAgregarTutoria.setOnClickListener(this);
-        crdTutoriasAceptadas.setOnClickListener(this);
-        crdMensajes.setOnClickListener(this);
-        crdTutoriasAgregadas.setOnClickListener(this);
+
+        btnAgregarTutoria.setOnClickListener(this);
+        btnAgenda.setOnClickListener(this);
+        btnMensajes.setOnClickListener(this);
+        btnTutoriasAgregadas.setOnClickListener(this);
 
     }
 
@@ -128,52 +129,7 @@ public class Pantalla_Principal extends AppCompatActivity
                 VolverInicio();
             }else{
 
-                /*
-                UserReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        String nombresProf, apellidosProf, correoProf, url_pic;
-
-                        nombresProf = dataSnapshot.child("nombres").getValue(String.class);
-                        apellidosProf = dataSnapshot.child("apellidos").getValue(String.class);
-                        correoProf = dataSnapshot.child("correo").getValue(String.class);
-                        url_pic= dataSnapshot.child("url_pic").getValue(String.class);
-
-                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                        View headerview = navigationView.getHeaderView(0);
-
-                        TextView txt_nombreprofNav =(TextView) headerview.findViewById(nav_txtNombreProfMenu);
-                        TextView txt_correoNav =(TextView) headerview.findViewById(nav_txtCorreoProfMenu);
-                        ImageView img_navProf = (ImageView) headerview.findViewById(nav_imagePorf);
-
-                        txt_nombreprofNav.setText(nombresProf + " " + apellidosProf);
-                        txt_correoNav.setText(correoProf);
-
-                        if (url_pic.equals("defaultPicProf")){
-                            img_navProf.setImageResource(R.mipmap.default_profile_prof);
-                        } else {
-                            try {
-                                Glide.with(Pantalla_Principal.this)
-                                        .load(url_pic)
-                                        .fitCenter()
-                                        .centerCrop()
-                                        .into(img_navProf);
-
-                            }catch (Exception e){
-                                Log.i("Error", ""+e.getMessage());
-                            }
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(Pantalla_Principal.this,"Ha ocurrido un problema para obtener la información del usuario", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                */
 
                 DocumentReference dc = fdb.collection("Profesores").document(FUser.getUid());
                 dc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -217,13 +173,7 @@ public class Pantalla_Principal extends AppCompatActivity
                     }
                 });
 
-
-
             }
-
-
-
-
 
         }catch (Exception e){
             Toast.makeText(Pantalla_Principal.this,"Ha ocurrido un error al tratar de abrir la aplicación", Toast.LENGTH_SHORT).show();
@@ -270,18 +220,18 @@ public class Pantalla_Principal extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        if (view==crdAgregarTutoria){
+        if (view==btnAgregarTutoria){
                     Intent intent = new Intent(Pantalla_Principal.this, ElegirTipoTutoria.class);
                     Pantalla_Principal.this.startActivity(intent);
         }
-        if (view==crdTutoriasAceptadas){
+        if (view== btnAgenda){
 
         }
-        if (view==crdMensajes){
+        if (view==btnMensajes){
 
         }
 
-        if (view==crdTutoriasAgregadas){
+        if (view==btnTutoriasAgregadas){
             Intent intent = new Intent(Pantalla_Principal.this, TutoriasAgregadas.class);
             Pantalla_Principal.this.startActivity(intent);
         }

@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.3'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.denzcoskun:imageslideshow:0.0.6'
 
     implementation 'de.hdodenhof:circleimageview:2.1.0'
 

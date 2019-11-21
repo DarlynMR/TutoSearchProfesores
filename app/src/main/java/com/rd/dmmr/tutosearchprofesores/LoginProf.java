@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +29,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,7 +56,6 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,17 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
         LPassword = (EditText) findViewById(R.id.txtPassword);
         JbtnEntrar = (Button)   findViewById(R.id.btnEntrarLogin);
         JbtnRegistrar = (Button) findViewById(R.id.btnRegistroLogin);
+
+        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
+        //Slider
+        ImageSlider imageSlider= findViewById(R.id.lgnSlider);
+        List<SlideModel> slideModels = new ArrayList<>();
+        slideModels.add(new SlideModel(R.drawable.primer_plano_manos, "Aprende desde tu móvil"));
+        slideModels.add(new SlideModel(R.drawable.tutoria_exterior, "Reúnete y aprende con un maestro"));
+        slideModels.add(new SlideModel(R.drawable.live_stream_tool_blog, "Mira tutorías en vivo"));
+        imageSlider.setImageList(slideModels, true);
 
 
 
@@ -95,8 +109,6 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
                 LoginProf.this.startActivity(activityChangeIntent);
             }
         });
-
-
 
 
     }
