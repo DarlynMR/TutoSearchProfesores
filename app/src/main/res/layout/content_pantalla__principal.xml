@@ -82,7 +82,8 @@
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:layout_weight="1"
-                            app:cardCornerRadius="15dp">
+                            app:cardCornerRadius="15dp"
+                            >
 
                             <RelativeLayout
                                 android:layout_width="match_parent"

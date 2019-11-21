@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E9E6E6"
     android:orientation="vertical"
     tools:context="com.rd.dmmr.tutosearchprofesores.AgregarTutoriaPresencial">
 
@@ -41,8 +42,7 @@
                         android:layout_height="fill_parent"
                         android:layout_alignParentTop="true"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/presencial_background"
-                        />
+                        android:src="@mipmap/presencial_background" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -90,37 +90,46 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
         android:background="@color/cardview_light_background"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingHorizontal="@dimen/_4sdp">
+        android:paddingHorizontal="@dimen/_4sdp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:id="@+id/LYContenido"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:paddingStart="@dimen/_3sdp"
+            android:paddingEnd="@dimen/_3sdp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp">
 
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spnMateriaPresencial"
+            <RelativeLayout
+                android:id="@+id/LYContenido"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ms_arrowColor="@color/GrisFondo"
-                app:ms_floatingLabelColor="#A9A9A9"
-                app:ms_floatingLabelText="Materia"
-                app:ms_hint="Seleccione la materia"
-                app:ms_hintColor="#000000"
-                app:ms_multiline="true"
-                android:layout_marginTop="@dimen/_12sdp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            </fr.ganfra.materialspinner.MaterialSpinner>
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spnMateriaPresencial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:ms_arrowColor="@color/GrisFondo"
+                    app:ms_floatingLabelColor="#A9A9A9"
+                    app:ms_floatingLabelText="Materia"
+                    app:ms_hint="Seleccione la materia"
+                    app:ms_hintColor="#000000"
+                    app:ms_multiline="true">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                </fr.ganfra.materialspinner.MaterialSpinner>
+
 
                 <TextView
-                    android:layout_width="60sp"
+                    android:id="@+id/textTitulo"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/spnMateriaPresencial"
                     android:layout_marginStart="8sp"
                     android:text="@string/t_tulo"
                     android:textSize="16sp" />
@@ -129,96 +138,108 @@
                     android:id="@+id/txtTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/spnMateriaPresencial"
+                    android:layout_marginEnd="8sp"
+                    android:layout_toEndOf="@id/textTitulo"
                     android:background="@color/GrisParaTexto"
-                    android:inputType=""
-                    android:layout_marginEnd="8sp"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                    android:inputType="text" />
 
 
                 <TextView
+                    android:id="@+id/textDescripcion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/txtTitulo"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:text="Descripción"
-                    android:textSize="16sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
                 <EditText
                     android:id="@+id/txtDescripcion"
                     android:layout_width="match_parent"
-                    android:layout_height="75sp"
+                    android:layout_height="150sp"
+                    android:layout_below="@id/textDescripcion"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginHorizontal="8sp"
                     android:background="@color/GrisParaTexto"
                     android:ems="10"
                     android:inputType="textMultiLine"
-                    android:textAlignment="textStart"/>
+                    android:textAlignment="textStart" />
+
+                <Button
+                    android:id="@+id/btnUbicacion"
+                    android:layout_width="50sp"
+                    android:layout_height="55sp"
+                    android:layout_below="@id/txtDescripcion"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/button_style"
+                    android:drawableBottom="@drawable/ic_add_location_black_24dp"/>
+
+                <EditText
+                    android:id="@+id/txtUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtDescripcion"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_toEndOf="@id/btnFecha"
+                    android:hint="Ubicación"
+                    android:editable="false" />
 
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/textLugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnUbicacion"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:text="Descripcion de lugar"
+                    android:textSize="20sp"
+                    android:layout_centerHorizontal="true"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/txtLugar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textLugar"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@color/GrisParaTexto" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btnFecha"
+                    android:layout_width="50sp"
+                    android:layout_height="55sp"
+                    android:layout_below="@id/txtLugar"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:drawableBottom="@drawable/ic_if_christmas_date_1651909" />
+
+                <EditText
+                    android:id="@+id/txtFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtLugar"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_toEndOf="@id/btnFecha"
+                    android:editable="false" />
+
 
                 <LinearLayout
+                    android:id="@+id/LyHora"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6sp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lugar:"
-                            android:textSize="20sp" />
-
-                        <EditText
-                            android:id="@+id/txtLugar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/GrisParaTexto" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-
-                        <Button
-                            android:id="@+id/btnFecha"
-                            android:layout_width="50sp"
-                            android:layout_height="55sp"
-                            android:drawableBottom="@drawable/ic_if_christmas_date_1651909" />
-
-                        <EditText
-                            android:id="@+id/txtFecha"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:editable="false"/>
-
-
-                    </LinearLayout>
-
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnFecha"
+                    android:layout_marginTop="@dimen/_7sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:orientation="horizontal">
 
 
@@ -227,7 +248,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hora Inicio"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:background="@drawable/button_style"/>
 
                         <EditText
                             android:id="@+id/txtHoraInicio"
@@ -240,6 +262,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:editable="false"
                         android:orientation="horizontal">
 
@@ -248,50 +271,42 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hora final "
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:background="@drawable/button_style"/>
+
                         <EditText
                             android:id="@+id/txtHoraFinal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:editable="false"/>
+                            android:editable="false" />
 
                     </LinearLayout>
+
                 </LinearLayout>
 
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
 
                 <Button
                     android:id="@+id/btnPublicar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Publicar"
-                    android:layout_gravity="bottom"
-                    />
+                    android:layout_below="@id/LyHora"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:textColor="@color/darkColor"
+                    android:textSize="@dimen/_14sdp"
+                    android:backgroundTint="#3085C9"/>
 
 
-            </LinearLayout>
 
 
-        </LinearLayout>
+            </RelativeLayout>
 
 
-
+        </androidx.cardview.widget.CardView>
 
 
     </androidx.core.widget.NestedScrollView>
-
-
-
-
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
