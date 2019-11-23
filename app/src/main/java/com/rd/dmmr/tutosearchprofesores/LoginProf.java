@@ -62,7 +62,7 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_login_prof);
 
 
-        LCorreo = (EditText) findViewById(R.id.txtCorreo);
+        LCorreo = (EditText) findViewById(R.id.txtCorreoProf);
         LPassword = (EditText) findViewById(R.id.txtPassword);
         JbtnEntrar = (Button)   findViewById(R.id.btnEntrarLogin);
         JbtnRegistrar = (Button) findViewById(R.id.btnRegistroLogin);

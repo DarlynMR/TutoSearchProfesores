@@ -131,20 +131,6 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
             });
 
 
-
-            /*
-            UserReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    nombreProfCompleto= dataSnapshot.child("nombres").getValue(String.class)+ " " + dataSnapshot.child("apellidos").getValue(String.class);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-            */
         }catch (Exception e){
             Toast.makeText(AgregarTutoriaLive.this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show();
         }

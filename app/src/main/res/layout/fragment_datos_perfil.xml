@@ -11,25 +11,12 @@
         android:orientation="vertical"
         android:paddingTop="24dp">
 
-        <TextView
-            android:id="@+id/TEXTO"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:text="Detalles\n"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@color/cardview_dark_background"
-            android:textStyle="bold" />
 
 
         <TextView
-            android:id="@+id/textBasico"
+            android:id="@+id/textBasicoProf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/TEXTO"
             android:paddingBottom="5dp"
             android:paddingTop="3dp"
             android:text="Información básica"
@@ -39,21 +26,21 @@
             android:textStyle="bold" />
 
         <View
-            android:id="@+id/viewBasico"
+            android:id="@+id/viewBasicoProf"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:alpha="0.7"
             android:background="@color/colorPrimaryLgn"
-            android:layout_below="@id/textBasico"
+            android:layout_below="@id/textBasicoProf"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"/>
 
 
         <TextView
-            android:id="@+id/textNombre"
+            android:id="@+id/textNombreProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/viewBasico"
+            android:layout_below="@+id/viewBasicoProf"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingBottom="5dp"
@@ -64,58 +51,58 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtNombre"
+            android:id="@+id/txtNombreProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textNombre"
+            android:layout_below="@+id/textNombreProf"
             android:paddingBottom="8dp"
             android:paddingLeft="20dp"
-            android:text="William  Esteban" />
+            android:text="Nombre(s)" />
 
 
 
 
         <TextView
-            android:id="@+id/textApellidos"
+            android:id="@+id/textApellidosProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/txtNombre"
+            android:layout_below="@+id/txtNombreProf"
             android:paddingLeft="20dp"
-            android:text="Apellido(s)"
+            android:text="Apellido(s):"
             android:textColor="@color/cardview_dark_background"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtApellidos"
+            android:id="@+id/txtApellidosProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textApellidos"
+            android:layout_below="@+id/textApellidosProf"
             android:paddingLeft="20dp"
             android:paddingTop="5dp"
-            android:text="Hernandez López" />
+            android:text="Apellido(s)" />
 
         <View
-            android:id="@+id/viewPrivadoTop"
+            android:id="@+id/viewPrivadoTopProf"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:alpha="0.7"
             android:background="@color/colorPrimaryLgn"
-            android:layout_below="@id/txtApellidos"
+            android:layout_below="@id/txtApellidosProf"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"
             android:layout_marginTop="7dp"/>
 
         <TextView
-            android:id="@+id/textPrivado"
+            android:id="@+id/textPrivadoProf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/viewPrivadoTop"
+            android:layout_below="@+id/viewPrivadoTopProf"
             android:paddingBottom="5dp"
             android:paddingTop="3dp"
             android:text="Información privada"
@@ -125,23 +112,23 @@
             android:textStyle="bold" />
 
         <View
-            android:id="@+id/viewPrivadoBottom"
+            android:id="@+id/viewPrivadoBottomProf"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:alpha="0.7"
             android:background="@color/colorPrimaryLgn"
-            android:layout_below="@id/textBasico"
+            android:layout_below="@id/textBasicoProf"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"/>
 
 
         <TextView
-            android:id="@+id/textFechaNacimiento"
+            android:id="@+id/textFechaNacimientoProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textPrivado"
+            android:layout_below="@+id/textPrivadoProf"
             android:paddingLeft="20dp"
             android:paddingTop="5dp"
             android:text="Fecha de nacimiento:"
@@ -149,25 +136,25 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtFechaNacimiento"
+            android:id="@+id/txtFechaNacimientoProf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textFechaNacimiento"
+            android:layout_below="@+id/textFechaNacimientoProf"
             android:paddingLeft="20dp"
             android:paddingTop="5dp"
-            android:text="13/08/1994" />
+            android:text="Fecha de nacimiento" />
 
 
 
         <TextView
-            android:id="@+id/textCorreo"
+            android:id="@+id/textCorreoProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/txtFechaNacimiento"
+            android:layout_below="@+id/txtFechaNacimientoProf"
             android:paddingLeft="20dp"
             android:paddingTop="3dp"
             android:text="Correo:"
@@ -176,23 +163,23 @@
 
 
         <TextView
-            android:id="@+id/txtCorreo"
+            android:id="@+id/txtCorreoProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textCorreo"
+            android:layout_below="@+id/textCorreoProf"
             android:paddingLeft="20dp"
-            android:text="williamhl@gmail.com" />
+            android:text="Correo" />
 
 
         <TextView
-            android:id="@+id/textTelefono"
+            android:id="@+id/textTelefonoProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/txtCorreo"
+            android:layout_below="@+id/txtCorreoProf"
             android:layout_marginTop="5dp"
             android:paddingBottom="22dp"
             android:paddingLeft="20dp"
@@ -201,22 +188,22 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtTelefono"
+            android:id="@+id/txtTelefonoProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textTelefono"
+            android:layout_alignBottom="@+id/textTelefonoProf"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingLeft="20dp"
-            android:text="829-123-4567" />
+            android:text="Telefono" />
 
         <TextView
-            android:id="@+id/textDireccion"
+            android:id="@+id/textDireccionProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/txtTelefono"
+            android:layout_below="@+id/txtTelefonoProf"
             android:layout_marginTop="5dp"
             android:paddingBottom="22dp"
             android:paddingLeft="20dp"
@@ -225,14 +212,14 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtDireccion"
+            android:id="@+id/txtDireccionProf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textDireccion"
+            android:layout_alignBottom="@+id/textDireccionProf"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingLeft="20dp"
-            android:text="Calle #5 Res. Don Pepin, La Vega" />
+            android:text="Dirección" />
 
 
 

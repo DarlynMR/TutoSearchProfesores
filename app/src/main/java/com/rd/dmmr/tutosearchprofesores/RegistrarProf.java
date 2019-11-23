@@ -85,8 +85,8 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         nombres = (EditText) findViewById(R.id.txt_nombres_reg);
         apellidos = (EditText) findViewById(R.id.txt_apellidos_reg);
         fecha_nacimiento = (TextView) findViewById(R.id.txt_fechanacimiento_reg);
-        telefono = (EditText) findViewById(R.id.txtTelefono);
-        correo = (EditText) findViewById(R.id.txtCorreo);
+        telefono = (EditText) findViewById(R.id.txtTelefonoProf);
+        correo = (EditText) findViewById(R.id.txtCorreoProf);
         password = (EditText) findViewById(R.id.txtPassword);
         password2 = (EditText) findViewById(R.id.txtPassword2);
 
@@ -150,8 +150,10 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     hashMap.put("telefonos", telefono.getText().toString());
                     hashMap.put("fecha_nacimiento", fecha_nacimiento.getText().toString());
                     hashMap.put("correo", correo.getText().toString());
+                    hashMap.put("direccion", "none");
                     hashMap.put("url_pic", "defaultPicProf");
                     hashMap.put("url_thumb_pic", "defaultPicProf");
+                    hashMap.put("about_me","null");
 
                     fdb.collection("Profesores").document(user.getUid())
                             .set(hashMap)
