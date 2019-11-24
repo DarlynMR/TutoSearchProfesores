@@ -104,6 +104,20 @@
             android:drawablePadding="6sp"
             android:inputType="phone" />
 
+        <fr.ganfra.materialspinner.MaterialSpinner
+            android:id="@+id/spnProvincia"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            app:ms_arrowColor="@color/GrisFondo"
+            app:ms_floatingLabelColor="#A9A9A9"
+            app:ms_floatingLabelText="Provincia"
+            app:ms_hint="Seleccione su provincia"
+            app:ms_hintColor="#000000"
+            app:ms_multiline="true"
+            >
+
+        </fr.ganfra.materialspinner.MaterialSpinner>
+
         <EditText
             android:id="@+id/txtCorreoProf"
             android:layout_width="match_parent"
@@ -135,7 +149,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btncargarimage"
+            android:id="@+id/btn`garimage"
             android:layout_width="165sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

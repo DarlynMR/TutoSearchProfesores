@@ -28,7 +28,7 @@ public class AdapterMaterias extends RecyclerView.Adapter<AdapterMaterias.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderMaterias holder, int position) {
-        holder.traerMaterias(listaMaterias.get(position));
+        holder.traerMaterias(listaMaterias.get(position), position);
 
     }
 
@@ -47,8 +47,8 @@ public class AdapterMaterias extends RecyclerView.Adapter<AdapterMaterias.ViewHo
             materia = itemView.findViewById(R.id.txtMateriaRC);
         }
 
-        public void traerMaterias(String s) {
-            materia.setText(s);
+        public void traerMaterias(String s, int pos) {
+            materia.setText((pos+1)+". "+s);
 
         }
     }

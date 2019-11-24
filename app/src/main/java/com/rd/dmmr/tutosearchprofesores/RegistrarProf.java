@@ -8,10 +8,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,8 +43,10 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import id.zelory.compressor.Compressor;
@@ -66,6 +72,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
     private Button btnRegistrar, btnCargarFoto;
 
     private EditText nombres, apellidos, telefono, correo, password, password2;
+    private Spinner spnProvincia;
 
     private TextView fecha_nacimiento;
 
@@ -87,6 +94,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         apellidos = (EditText) findViewById(R.id.txt_apellidos_reg);
         fecha_nacimiento = (TextView) findViewById(R.id.txt_fechanacimiento_reg);
         telefono = (EditText) findViewById(R.id.txtTelefonoProf);
+        spnProvincia  = (Spinner) findViewById(R.id.spnProvincia);
         correo = (EditText) findViewById(R.id.txtCorreoProf);
         password = (EditText) findViewById(R.id.txtPassword);
         password2 = (EditText) findViewById(R.id.txtPassword2);
@@ -118,7 +126,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
             }
         };
 
-
+        LlenarSpinner();
         btnRegistrar.setOnClickListener(this);
         fback_button.setOnClickListener(this);
         fecha_nacimiento.setOnClickListener(this);
@@ -150,6 +158,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     hashMap.put("apellidos", apellidos.getText().toString());
                     hashMap.put("telefonos", telefono.getText().toString());
                     hashMap.put("fecha_nacimiento", fecha_nacimiento.getText().toString());
+                    hashMap.put("provincia", spnProvincia.getSelectedItem().toString());
                     hashMap.put("correo", correo.getText().toString());
                     hashMap.put("direccion", "none");
                     hashMap.put("url_pic", "defaultPicProf");
@@ -357,6 +366,39 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void LlenarSpinner() {
+        try {
+
+            fdb.collection("Provincias")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                            final List<String> provincias = new ArrayList<>();
+
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                    provincias.add(document.getId());
+                                    spnProvincia = (Spinner) findViewById(R.id.spnProvincia);
+                                    ArrayAdapter<String> provinciasAdapter = new ArrayAdapter<String>(RegistrarProf.this, android.R.layout.simple_spinner_item, provincias);
+                                    provinciasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spnProvincia.setAdapter(provinciasAdapter);
+                                }
+                            } else {
+                                Log.i("ErrorSpinnerMateria", ""+task.getException());
+                            }
+                        }
+                    });
+
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
     public void Alerta(String Titulo, String Mensaje) {
         AlertDialog alertDialog;
         alertDialog = new AlertDialog.Builder(RegistrarProf.this).setNegativeButton("Ok", null).create();
@@ -406,6 +448,8 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                 Log.i("Prueba", "" + pass.equals(pass2));
                 password2.setError("Las contraseñas no coinciden.");
                 ViewFocus = password2;
+            } else if (spnProvincia.getSelectedItem()==null) {
+                Alerta("Elegir provincia", "Debe elegir la provincia de donde usted.");
             } else {
                 Registrar(correo.getText().toString(), password.getText().toString());
             }

@@ -174,7 +174,7 @@ public class fragment_DatosPerfil extends Fragment {
                                     .addOnSuccessListener(new OnSuccessListener() {
                                         @Override
                                         public void onSuccess(Object o) {
-
+                                            CargarDatosProf();
                                             progressDialog.dismiss();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
@@ -213,7 +213,7 @@ public class fragment_DatosPerfil extends Fragment {
     private void CargarDatosProf() {
 
         // try {
-        DocumentReference docRef = fdb.collection("Profesores").document(current_uid);
+        final DocumentReference docRef = fdb.collection("Profesores").document(current_uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -266,6 +266,7 @@ public class fragment_DatosPerfil extends Fragment {
                 }
 
             }
+
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

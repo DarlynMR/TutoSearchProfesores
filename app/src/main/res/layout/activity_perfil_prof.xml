@@ -89,7 +89,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="1000dp"
         android:layout_gravity="fill_vertical"
         android:background="@color/cardview_light_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -132,7 +132,7 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPagerP"
                     android:layout_width="match_parent"
-                    android:layout_height="680dp"
+                    android:layout_height="990dp"
                     android:layout_below="@id/tabLayout"
                     />
 

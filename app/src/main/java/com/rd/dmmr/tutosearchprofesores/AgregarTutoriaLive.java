@@ -482,33 +482,6 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                         }
                     });
 
-/*
-            DBRefGetMateria.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    final List<String> materia = new ArrayList<>();
-                    Iterable<DataSnapshot> dataSnapshotIterator = dataSnapshot.getChildren();
-                    Iterator<DataSnapshot> iterator = dataSnapshotIterator.iterator();
-
-                    while (iterator.hasNext()) {
-                        final DataSnapshot idmateria = (DataSnapshot) iterator.next();
-                        materia.add(idmateria.getKey());
-                        spnMateria = (Spinner) findViewById(R.id.spnMateriaLive);
-                        ArrayAdapter<String> materiaAdapter = new ArrayAdapter<String>(AgregarTutoriaLive.this, android.R.layout.simple_spinner_item, materia);
-                        materiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spnMateria.setAdapter(materiaAdapter);
-
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-*/
 
         } catch (Exception e) {
 
