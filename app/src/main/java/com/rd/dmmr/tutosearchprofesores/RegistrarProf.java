@@ -38,6 +38,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -154,6 +155,8 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     hashMap.put("url_pic", "defaultPicProf");
                     hashMap.put("url_thumb_pic", "defaultPicProf");
                     hashMap.put("about_me","null");
+
+                    HashMap<Array, String> hasprueba = new HashMap<>();
 
                     fdb.collection("Profesores").document(user.getUid())
                             .set(hashMap)

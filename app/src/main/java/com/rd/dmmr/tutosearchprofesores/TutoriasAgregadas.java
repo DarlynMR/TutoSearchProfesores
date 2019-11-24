@@ -42,6 +42,7 @@ public class TutoriasAgregadas extends AppCompatActivity {
 
         RCAbajo = (RecyclerView) findViewById(R.id.RCAbajo);
 
+
         fdb = FirebaseFirestore.getInstance();
         FUser = FirebaseAuth.getInstance().getCurrentUser();
 

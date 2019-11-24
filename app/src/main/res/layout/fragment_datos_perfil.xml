@@ -222,6 +222,64 @@
             android:text="Dirección" />
 
 
+        <View
+            android:id="@+id/viewMaterias"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:alpha="0.7"
+            android:background="@color/colorPrimaryLgn"
+            android:layout_below="@id/txtDireccionProf"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginTop="7dp"/>
+
+
+        <TextView
+            android:id="@+id/textMaterias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewMaterias"
+            android:paddingBottom="5dp"
+            android:paddingTop="3dp"
+            android:text="Materias"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RCMaterias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textMaterias"
+            android:layout_marginTop="7dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+
+        <TextView
+            android:id="@+id/textEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="No hay materias agregadas"
+            android:layout_below="@id/textMaterias"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_20sdp"
+            android:visibility="invisible"
+            />
+
+        <Button
+            android:id="@+id/btnAgregarMaterias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar materias"
+            android:layout_marginTop="7dp"
+            android:layout_below="@id/RCMaterias"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/buttonstyle"/>
+
+
+
 
     </RelativeLayout>
 

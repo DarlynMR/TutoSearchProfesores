@@ -187,7 +187,7 @@ public class PerfilProf extends AppCompatActivity {
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-                Uri resultUri = result.getUri();
+                final Uri resultUri = result.getUri();
 
                 //CREANDO EL PROGREES BAR
                 mProgressDialog = new ProgressDialog(this);
@@ -222,14 +222,17 @@ public class PerfilProf extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
 
+                                    img_perfilProf.setImageURI(resultUri);
+
                                     download_url = uri.toString();
                                     Map update_hashmMap=new HashMap();
                                     update_hashmMap.put("url_pic",download_url);
-                                    fdb.collection("Estudiantes").document(current_user_id)
+                                    fdb.collection("Profesores").document(current_user_id)
                                             .update(update_hashmMap)
                                             .addOnSuccessListener(new OnSuccessListener() {
                                                 @Override
                                                 public void onSuccess(Object o) {
+
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -261,7 +264,7 @@ public class PerfilProf extends AppCompatActivity {
                                                 Map update_hashmMap=new HashMap();
                                                 update_hashmMap.put("url_thumb_pic",thumb_downloadUrl);
 
-                                                fdb.collection("Estudiantes").document(current_user_id)
+                                                fdb.collection("Profesores").document(current_user_id)
                                                         .update(update_hashmMap)
                                                         .addOnSuccessListener(new OnSuccessListener() {
                                                             @Override
