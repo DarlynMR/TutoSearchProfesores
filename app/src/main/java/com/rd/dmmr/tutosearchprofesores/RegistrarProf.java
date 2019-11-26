@@ -112,7 +112,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         urlStorage = FirebaseStorage.getInstance().getReference();
 
         btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
-        btnCargarFoto = (Button) findViewById(R.id.btncargarimage);
+        btnCargarFoto = (Button) findViewById(R.id.btnCargarimage);
         FInicionIndicdor = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -180,9 +180,11 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                                         FAutentic.signOut();
                                     }
 
+
                                     progressDialog.dismiss();
                                     Intent i = new Intent(RegistrarProf.this, LoginProf.class);
                                     RegistrarProf.this.startActivity(i);
+                                    finish();
 
                                     Mtoast("Usuario registrado correctamente");
                                 }

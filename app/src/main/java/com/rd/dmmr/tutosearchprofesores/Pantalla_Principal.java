@@ -224,7 +224,8 @@ public class Pantalla_Principal extends AppCompatActivity
 
         }
         if (view==btnMensajes){
-
+            Intent intent = new Intent(Pantalla_Principal.this, PantallaMensajes.class);
+            Pantalla_Principal.this.startActivity(intent);
         }
 
         if (view==btnTutoriasAgregadas){

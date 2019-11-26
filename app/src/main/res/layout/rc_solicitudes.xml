@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:elevation="@dimen/_15sdp"
+    android:backgroundTint="#B6B3B3"
+    android:id="@+id/card_Contenido"
+    android:layout_marginTop="7sp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgCircularSolicitud"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:layout_centerVertical="true"
+            android:src="@drawable/imageprofile"
+            />
+
+        <TextView
+            android:id="@+id/txtnamePerson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imgCircularSolicitud"
+            android:hint="Nombre (aun sin cargar)"
+            android:textSize="@dimen/_16sdp"
+            android:layout_marginStart="5dp"
+            android:fontFamily="serif"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_17sdp"/>
+
+        <TextView
+            android:id="@+id/tipoUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imgCircularSolicitud"
+            android:hint="Tipo usuario (aun sin cargar)"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginStart="5dp"
+            android:fontFamily="serif"
+            android:textStyle="italic"
+            android:layout_below="@id/txtnamePerson"/>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_Aceptar"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:backgroundTint="#5BE21C"
+                app:cardCornerRadius="@dimen/_10sdp"
+                android:elevation="@dimen/_15sdp"
+                android:layout_toStartOf="@id/cardRechazar"
+            android:layout_below="@id/imgCircularSolicitud"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_7sdp">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✔"
+                    android:textSize="@dimen/_17sdp"
+                    android:background="@android:color/transparent"/>
+
+            </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardRechazar"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:backgroundTint="#FF0000"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:elevation="@dimen/_15sdp"
+            android:layout_below="@+id/imgCircularSolicitud"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_17sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_7sdp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:textSize="@dimen/_17sdp"
+                android:background="@android:color/transparent"/>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

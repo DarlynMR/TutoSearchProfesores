@@ -149,7 +149,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btn`garimage"
+            android:id="@+id/btnCargarimage"
             android:layout_width="165sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

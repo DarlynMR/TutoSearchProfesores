@@ -2,14 +2,18 @@ package com.rd.dmmr.tutosearchprofesores;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +51,7 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
 
     private EditText LCorreo;
     private EditText LPassword;
+    private TextView txtOlvidoPass;
 
 
 
@@ -66,6 +72,7 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
         LPassword = (EditText) findViewById(R.id.txtPassword);
         JbtnEntrar = (Button)   findViewById(R.id.btnEntrarLogin);
         JbtnRegistrar = (Button) findViewById(R.id.btnRegistroLogin);
+        txtOlvidoPass  = (TextView) findViewById(R.id.txtRecuperarPass);
 
         //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -87,6 +94,7 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
 
 
         progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
 
         FAutentic = FirebaseAuth.getInstance();
 
@@ -103,6 +111,7 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
         };
 
         JbtnEntrar.setOnClickListener(this);
+        txtOlvidoPass.setOnClickListener(this);
         JbtnRegistrar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent activityChangeIntent = new Intent(LoginProf.this, RegistrarProf.class);
@@ -132,7 +141,6 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
         }
 
         progressDialog.setMessage("Iniciando sesión...");
-        progressDialog.setCancelable(false);
         progressDialog.show();
 
 
@@ -218,6 +226,7 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
                                     progressDialog.dismiss();
                                     Intent intent = new Intent(LoginProf.this, Pantalla_Principal.class);
                                     LoginProf.this.startActivity(intent);
+                                    finish();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(LoginProf.this, "Fallo en el inicio de sesión",
@@ -239,6 +248,63 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
 
 
         }
+
+    private void abrirDialogRecuperarPass() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Recuperar contraseña");
+
+
+
+        LinearLayout linearLayout = new LinearLayout(this);
+        final EditText txtEmailSent = new EditText(this);
+        txtEmailSent.setHint("Correo");
+        txtEmailSent.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        txtEmailSent.setMinEms(16);
+
+        linearLayout.addView(txtEmailSent);
+        linearLayout.setPadding(10,10,10,10);
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Solicitar recuperación", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String email = txtEmailSent.getText().toString().trim();
+                startRecoveEmail(email);
+
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.create().show();
+
+    }
+
+    private void startRecoveEmail(String email) {
+        progressDialog.setMessage("Enviando correo recuperación...");
+        progressDialog.show();
+        FAutentic.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                progressDialog.dismiss();
+                if (task.isSuccessful()){
+                    Toast.makeText(LoginProf.this, "Se envio un correo de recuperación, por favor revise su correo", Toast.LENGTH_LONG).show();
+                }else  {
+                    Toast.makeText(LoginProf.this, "Fallo al enviar el correo de recuperación", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(LoginProf.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
 
 
     public static boolean Validad_email(String email) {
@@ -307,7 +373,11 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
                 Login(LCorreo.getText().toString(),LPassword.getText().toString());
             }
         }
+        if (view==txtOlvidoPass){
+            abrirDialogRecuperarPass();
+        }
     }
+
 
     public void campos_vacios(EditText campo, View view){
         campo.setError("No puede dejar este campo vacío.");
