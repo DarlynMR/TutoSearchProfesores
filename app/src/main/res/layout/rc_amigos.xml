@@ -5,13 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/_10sdp"
     android:elevation="@dimen/_15sdp"
-    android:backgroundTint="#B6B3B3"
-    android:id="@+id/card_Contenido"
+    android:backgroundTint="#FFFCFC"
+    android:id="@+id/card_ContenidoAmigos"
     android:layout_marginTop="7sp">
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgCircularAmigos"
@@ -28,7 +31,7 @@
 
         <TextView
             android:id="@+id/txtnamePersonFriend"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/imgCircularAmigos"
             android:hint="Nombre (aun sin cargar)"

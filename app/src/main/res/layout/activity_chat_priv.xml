@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1EDED"
+    tools:context=".ChatPriv">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarChatPriv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgCircularChat"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/imageprofile"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txtNombreUsiarioChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre usuario"
+                android:textColor="@color/Blanco"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/estadoUserChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="estado"
+                android:textColor="@color/Blanco"/>
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RCChatPriv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarChatPriv"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/Blanco"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/txtMensajeEnviar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="Escribir..."
+            android:inputType="textCapSentences|textMultiLine"
+            android:padding="15dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:id="@+id/btnEnviar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:src="@drawable/ic_menu_send"/>
+
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

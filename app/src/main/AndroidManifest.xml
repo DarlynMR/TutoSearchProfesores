@@ -35,7 +35,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PantallaMensajes"></activity>
+        <activity android:name=".ChatPriv"></activity>
+        <activity android:name=".PantallaMensajes" />
         <activity android:name=".PerfilProf" />
         <activity android:name=".TutoriasAgregadas" />
         <activity android:name=".ElegirTipoTutoria" />
