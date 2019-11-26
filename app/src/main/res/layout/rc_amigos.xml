@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:elevation="@dimen/_15sdp"
+    android:backgroundTint="#B6B3B3"
+    android:id="@+id/card_Contenido"
+    android:layout_marginTop="7sp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgCircularAmigos"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:layout_centerVertical="true"
+            android:src="@drawable/imageprofile"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            />
+
+        <TextView
+            android:id="@+id/txtnamePersonFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imgCircularAmigos"
+            android:hint="Nombre (aun sin cargar)"
+            android:textSize="@dimen/_16sdp"
+            android:layout_marginStart="5dp"
+            android:fontFamily="serif"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <TextView
+            android:id="@+id/tipoUserFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imgCircularAmigos"
+            android:hint="Tipo usuario (aun sin cargar)"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginStart="5dp"
+            android:fontFamily="serif"
+            android:textStyle="italic"
+            android:layout_below="@id/txtnamePersonFriend"/>
+
+
+
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

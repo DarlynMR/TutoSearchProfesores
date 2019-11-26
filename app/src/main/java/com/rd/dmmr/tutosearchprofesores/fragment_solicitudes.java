@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class fragment_solicitudes extends Fragment {
 
     private List<ModelSolicitud> mListSolicitud;
 
+    private TextView textAviso;
+
     private String idProf;
 
     @Override
@@ -54,7 +57,8 @@ public class fragment_solicitudes extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_solicitudes, container, false);
 
-        RCSolicitud =(RecyclerView) view.findViewById(R.id.RCSolicitud);
+        RCSolicitud = (RecyclerView) view.findViewById(R.id.RCSolicitud);
+        textAviso = (TextView) view.findViewById(R.id.textAviso);
 
         fdb = FirebaseFirestore.getInstance();
         FUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -71,6 +75,7 @@ public class fragment_solicitudes extends Fragment {
 
         //CrearTTutorias();
 
+
         adapterSolicitud = new AdapterSolicitud(mListSolicitud);
 
         RCSolicitud.setAdapter(adapterSolicitud);
@@ -82,9 +87,8 @@ public class fragment_solicitudes extends Fragment {
 
 
     private void upSolicitudes() {
-
-        Query ref = fdb.collection("Solicitudes").document(idProf).collection("Recibidas")
-                .whereEqualTo("estado", "NoAcept");
+        checkSize();
+        CollectionReference ref = fdb.collection("Solicitudes").document(idProf).collection("Recibidas");
         ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
@@ -102,27 +106,17 @@ public class fragment_solicitudes extends Fragment {
                         case ADDED:
 
 
-
-                            Log.i("ProbandoSoli", ""+modelSoli.getTipouser());
-
-
-                            Log.i("ProbandoSoli2", "" + docS);
-
-
                             mListSolicitud.add(new ModelSolicitud(docS.getId(), modelSoli.getEmisor(), modelSoli.getEstado(), modelSoli.getTipouser()));
-
                             adapterSolicitud.notifyDataSetChanged();
+                            checkSize();
 
                             break;
                         case MODIFIED:
-                            Log.i("Probando", "" + docS.getData());
-
-
                             index = getRCIndex(docS.getId());
 
-                                mListSolicitud.set(index, new ModelSolicitud(docS.getId(), modelSoli.getEmisor(), modelSoli.getEstado(), modelSoli.getTipouser()));
-
+                            mListSolicitud.set(index, new ModelSolicitud(docS.getId(), modelSoli.getEmisor(), modelSoli.getEstado(), modelSoli.getTipouser()));
                             adapterSolicitud.notifyItemChanged(index);
+                            checkSize();
                             break;
                         case REMOVED:
 
@@ -131,6 +125,7 @@ public class fragment_solicitudes extends Fragment {
 
                             mListSolicitud.remove(index);
                             adapterSolicitud.notifyItemRemoved(index);
+                            checkSize();
 
                             break;
                     }
@@ -140,6 +135,14 @@ public class fragment_solicitudes extends Fragment {
         });
 
 
+    }
+
+    private void checkSize() {
+        if (mListSolicitud.isEmpty()) {
+            textAviso.setVisibility(View.VISIBLE);
+        } else {
+            textAviso.setVisibility(View.INVISIBLE);
+        }
     }
 
     private int getRCIndex(String idSolicitud) {

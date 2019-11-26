@@ -63,6 +63,7 @@
             android:layout_marginBottom="@dimen/_7sdp">
 
                 <Button
+                    android:id="@+id/btnAceptar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="✔"
@@ -85,6 +86,7 @@
             android:layout_marginBottom="@dimen/_7sdp">
 
             <Button
+                android:id="@+id/btnRechazar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="X"
