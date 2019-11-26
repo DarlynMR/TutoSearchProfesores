@@ -3,18 +3,18 @@ package com.rd.dmmr.tutosearchprofesores;
 public class ModelChat {
 
     String idMensaje, mensaje, emisor, receptor, timestamp;
-    boolean visto;
+    boolean Isvisto;
 
     public ModelChat() {
     }
 
-    public ModelChat(String idMensaje, String mensaje, String emisor, String receptor, String timestamp, boolean visto) {
+    public ModelChat(String idMensaje, String mensaje, String emisor, String receptor, String timestamp, boolean isvisto) {
         this.idMensaje = idMensaje;
         this.mensaje = mensaje;
         this.emisor = emisor;
         this.receptor = receptor;
         this.timestamp = timestamp;
-        this.visto = visto;
+        this.Isvisto = isvisto;
     }
 
     public String getIdMensaje() {
@@ -57,11 +57,11 @@ public class ModelChat {
         this.timestamp = timestamp;
     }
 
-    public boolean isVisto() {
-        return visto;
+    public boolean isIsvisto() {
+        return Isvisto;
     }
 
-    public void setVisto(boolean visto) {
-        this.visto = visto;
+    public void setIsvisto(boolean isvisto) {
+        Isvisto = isvisto;
     }
 }

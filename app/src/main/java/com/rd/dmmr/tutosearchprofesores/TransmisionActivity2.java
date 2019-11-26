@@ -102,7 +102,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     private Uri imgUri = null, docUri = null, nameImage, nameDoc;
 
 
-    private static final String APPLICATION_ID = "gn3xWy0C556si80X9aPkTA";
+    private static final String APPLICATION_ID = "kBOAwsuh7RgyF8w2CqPjmg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

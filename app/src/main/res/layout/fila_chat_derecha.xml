@@ -18,18 +18,17 @@
             android:layout_height="50dp"
             android:src="@drawable/imageprofile"
             app:civ_border_color="@null"
-            android:visibility="gone"
             />
 
         <TextView
-            android:id="@+id/tiempoLeft"
+            android:id="@+id/tiempo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="26/11/2019 03:25PM"
             android:textSize="12sp"/>
 
         <TextView
-            android:id="@+id/textMensajeLeft"
+            android:id="@+id/textMensaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,14 +44,14 @@
 
 
     <TextView
-        android:id="@+id/estadoLeft"
+        android:id="@+id/estado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:textAlignment="textEnd"
         android:text="Enviado"
         android:textSize="12sp"
-        android:visibility="gone"/>
+        />
 
 
 
