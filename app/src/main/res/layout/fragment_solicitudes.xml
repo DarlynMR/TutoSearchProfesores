@@ -28,6 +28,7 @@
         android:textSize="@dimen/_25sdp"
         android:layout_gravity="center_vertical"
         android:gravity="center"
+        android:layout_centerVertical="true"
         android:visibility="invisible"/>
 
 

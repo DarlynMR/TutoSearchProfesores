@@ -62,6 +62,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
 
         Log.i("ProbandoChat", "Probando en adapter: "+mensaje);
 
+        Log.i("DatosAMadar", chatList.get(position).emisor +" "+ dateTime+" "+mensaje);
 
         holder.mensajeRC.setText(mensaje);
         holder.timeRC.setText(dateTime);

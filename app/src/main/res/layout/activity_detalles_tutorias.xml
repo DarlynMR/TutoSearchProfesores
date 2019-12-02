@@ -22,7 +22,8 @@
         android:layout_height="300dp"
         android:layout_below="@+id/imgTuto"
         app:cardCornerRadius="25dp"
-        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
         >
 
         <RelativeLayout
@@ -94,6 +95,25 @@
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/textLista"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cr"
+        android:layout_centerHorizontal="true"
+        android:text="Lista de estudiantes:"
+        android:textSize="@dimen/_20sdp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcListaAsistir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textLista"
+        android:layout_above="@id/btnAsistir"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"/>
 
 
     <androidx.cardview.widget.CardView

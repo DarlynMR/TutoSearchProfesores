@@ -142,21 +142,20 @@ public class Pantalla_Principal extends AppCompatActivity
                         nombresProf = docS.getString("nombres");
                         apellidosProf = docS.getString("apellidos");
                         correoProf = docS.getString("correo");
-                        url_pic= docS.getString("url_pic");
+                        url_pic = docS.getString("url_pic");
 
                         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                         View headerview = navigationView.getHeaderView(0);
 
-                        TextView txt_nombreprofNav =(TextView) headerview.findViewById(nav_txtNombreProfMenu);
-                        TextView txt_correoNav =(TextView) headerview.findViewById(nav_txtCorreoProfMenu);
+                        TextView txt_nombreprofNav = (TextView) headerview.findViewById(nav_txtNombreProfMenu);
+                        TextView txt_correoNav = (TextView) headerview.findViewById(nav_txtCorreoProfMenu);
                         ImageView img_navProf = (ImageView) headerview.findViewById(nav_imagePorf);
 
                         txt_nombreprofNav.setText(nombresProf + " " + apellidosProf);
                         txt_correoNav.setText(correoProf);
 
-                        if (url_pic.equals("defaultPicProf")){
-                            img_navProf.setImageResource(R.mipmap.default_profile_prof);
-                        } else {
+
+                        if (!url_pic.equals("defaultPicProf")) {
                             try {
                                 Glide.with(Pantalla_Principal.this)
                                         .load(url_pic)
@@ -164,12 +163,12 @@ public class Pantalla_Principal extends AppCompatActivity
                                         .centerCrop()
                                         .into(img_navProf);
 
-                            }catch (Exception e){
-                                Log.i("Error", ""+e.getMessage());
+                            } catch (Exception e) {
+                                Log.i("Error", "" + e.getMessage());
                             }
 
-                        }
-
+                        } else
+                            img_navProf.setImageResource(R.mipmap.default_profile_prof);
                     }
                 });
 

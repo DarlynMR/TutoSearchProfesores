@@ -27,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Usted aun no ha agregado ningun amigo D:"
+        android:layout_centerVertical="true"
         android:textSize="@dimen/_25sdp"
         android:layout_gravity="center_vertical"
         android:gravity="center"
