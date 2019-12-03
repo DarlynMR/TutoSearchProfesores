@@ -71,7 +71,6 @@ public class TutoriasAgregadas extends AppCompatActivity {
 
         CollectionReference ref = fdb.collection("Tutorias_institucionales");
         Query queryTuto = ref.whereEqualTo("UIDProfesor", FUser.getUid());
-        Log.i("Probando", FUser.getUid());
 
         queryTuto.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -90,8 +89,7 @@ public class TutoriasAgregadas extends AppCompatActivity {
                     int index = -1;
                     switch (dc.getType()) {
                         case ADDED:
-                            Log.i("Probando", "" + docS.getData());
-                            Log.i("Probando", "" + modelProf.getTitulo());
+
                             if (modelProf.getTipo_tuto().equals("Live")) {
                                 mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), modelProf.getFecha(), modelProf.getFecha_pub(), modelProf.getHora_inicial(), modelProf.getHora_pub(), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
                             } else {
@@ -101,8 +99,6 @@ public class TutoriasAgregadas extends AppCompatActivity {
 
                             break;
                         case MODIFIED:
-
-                            Log.i("Probando", "" + docS.getData());
 
                             index = getRCIndex(docS.getId());
 

@@ -1,11 +1,9 @@
 package com.rd.dmmr.tutosearchprofesores;
 
 import android.content.Intent;
-import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +26,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class DetallesTutorias extends AppCompatActivity implements View.OnClickListener {
 
@@ -79,7 +76,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
         adapterListado = new AdapterListado(mListListado);
 
         RCListadoEstudiantes.setAdapter(adapterListado);
-        CargarEstudiantes();
+
         adapterListado.notifyDataSetChanged();
 
         Intent intent = getIntent();
@@ -87,7 +84,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
         datosTuto = intent.getExtras();
         if (datosTuto != null) {
             idTuto = datosTuto.getString("idTuto");
-            Log.i("Prueba", idTuto);
+            Log.i("PruebaClass", idTuto);
 
             fecha.setText(datosTuto.getString("Fecha"));
             hora.setText(datosTuto.getString("Hora"));
@@ -95,6 +92,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
             titulo.setText(datosTuto.getString("Titulo"));
             descripcion.setText(datosTuto.getString("Descripcion"));
             Log.i("ProbandoAsistir", "" + datosTuto.getString("TipoEs"));
+
         }
 
 
@@ -106,6 +104,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
     private void CargarEstudiantes() {
 
+        Log.i("ProbandoListado", idTuto);
         CollectionReference ref = fdb.collection("Tutorias_institucionales").document(idTuto).collection("Lista_asistir");
         ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -126,10 +125,11 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
                             idEstduante = docS.getId();
 
-                            Log.i("Probando", "" + docS);
+                            Log.i("Probando", "" +  modelListado.getTimestamp());
 
 
-                            mListListado.add(new ModelListado(modelListado.getIdEstudiante(), modelListado.getTimestamp()));
+
+                            mListListado.add(new ModelListado(docS.getId(), modelListado.getTimestamp()));
 
                             adapterListado.notifyDataSetChanged();
 

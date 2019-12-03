@@ -14,17 +14,19 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgEstListado"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/imageprofile"/>
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:src="@drawable/imageprofile"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"/>
 
         <TextView
             android:id="@+id/txtNombreEstudiante"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/imgEstListado"
             android:text="Nombre estudiante"
-            android:textSize="23sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"/>
@@ -35,7 +37,7 @@
             android:layout_toEndOf="@id/imgEstListado"
             android:text="Tiempo listado"
             android:layout_below="@id/txtNombreEstudiante"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"/>
 

@@ -46,7 +46,6 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
     public void onBindViewHolder(final ViewPos holder, final int position) {
 
         ModelTutoriasProf itemTutoria= mList.get(position);
-        Log.i("Probando lista",mList.get(position).toString()+" Otra: "+itemTutoria.hora);
 
         holder.item_txtMateriaPrev.setText(itemTutoria.materia);
         holder.item_txtTituloPrev.setText(itemTutoria.titulo);
@@ -151,7 +150,6 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
                     Intent detalles = new Intent(vcontext, clase);
                     detalles.putExtra("idTuto",mList.get(idfila).idTuto);
-                    Log.i("Prueba",mList.get(idfila).idTuto+" "+idfila);
                     detalles.putExtra("Materia",mList.get(idfila).materia);
                     detalles.putExtra("imgTuto",mList.get(idfila).url_image_portada);
                     detalles.putExtra("Titulo", mList.get(idfila).titulo);

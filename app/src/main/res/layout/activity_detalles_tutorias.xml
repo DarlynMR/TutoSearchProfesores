@@ -104,7 +104,8 @@
         android:layout_below="@id/cr"
         android:layout_centerHorizontal="true"
         android:text="Lista de estudiantes:"
-        android:textSize="@dimen/_20sdp"/>
+        android:textSize="@dimen/_17sdp"
+        android:textStyle="bold"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcListaAsistir"

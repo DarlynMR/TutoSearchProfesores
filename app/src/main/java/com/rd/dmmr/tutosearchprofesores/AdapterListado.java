@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,9 +21,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class AdapterListado extends RecyclerView.Adapter<AdapterListado.ViewHolderListado> {
 
@@ -47,6 +47,7 @@ public class AdapterListado extends RecyclerView.Adapter<AdapterListado.ViewHold
         idEstu= mListListado.get(position).getIdEstudiante();
         timestamp= mListListado.get(position).getTimestamp();
 
+        fdb = FirebaseFirestore.getInstance();
         DocumentReference docRef = fdb.collection("Estudiantes").document(idEstu);
                 docRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
