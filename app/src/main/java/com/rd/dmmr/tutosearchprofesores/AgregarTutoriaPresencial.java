@@ -71,7 +71,7 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
     private String urlImgT;
     private static final int GALERRY_PICK = 1;
     byte[] thumb_byte;
-    private int ano, mes, dia, hora, minutos;
+    private int ano, mes, dia, hora, minutos,horaF,minutosF;
     private int pub_ano, pub_mes, pub_dia, pub_hora, pub_minutos;
     private Uri uri = null;
     private String keyid;
@@ -82,7 +82,7 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
 
     private EditText Titulo, Descripcion, Lugar, Fecha, HoraInicio, HoraFinal;
 
-    private Button btnFecha, btnHoraInicio, btnHoraFinal, btnPublicar;
+    private Button btnFecha, btnHoraInicio, btnHoraFinal, btnPublicar, btnUbicacion;
 
     private FloatingActionButton fabSelectImagePresencial;
 
@@ -112,6 +112,7 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         btnFecha = (Button) findViewById(R.id.btnFecha);
         btnHoraInicio = (Button) findViewById(R.id.btnHoraInicio);
         btnHoraFinal = (Button) findViewById(R.id.btnHoraFinal);
+        btnUbicacion = (Button) findViewById(R.id.btnUbicacion);
 
         imgTutoPresencial = (ImageView) findViewById(R.id.imgTutoPresencial);
 
@@ -175,20 +176,7 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
                 }
             });
 
-            /*
-            UserReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    nombreProfCompleto= dataSnapshot.child("nombres").getValue(String.class)+ " " + dataSnapshot.child("apellidos").getValue(String.class);
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-            */
         } catch (Exception e) {
             Toast.makeText(AgregarTutoriaPresencial.this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show();
         }
@@ -196,6 +184,7 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         LlenarSpinner();
 
         btnPublicar.setOnClickListener(this);
+        btnUbicacion.setOnClickListener(this);
         fabSelectImagePresencial.setOnClickListener(this);
 
     }
@@ -221,32 +210,37 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         String titulo = Titulo.getText().toString();
         String descripcion = Descripcion.getText().toString();
         String lugar = Lugar.getText().toString();
-        String fecha = Fecha.getText().toString();
+        /*String fecha = Fecha.getText().toString();
         String horainicio = HoraInicio.getText().toString();
         String horafinal = HoraFinal.getText().toString();
-
+*/
 
         keyid = DBRefGetid.child("tutorias").child("institucionales").push().getKey();
         SubirImagen(keyid);
         FirebaseUser user = FAutentic.getCurrentUser();
 
-        //DBReference= FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
+        Calendar calInicial = Calendar.getInstance();
+        Calendar calFinal = Calendar.getInstance();
 
-        HashMap<String, String> TutoMap = new HashMap<>();
+
+        //Para la fecha y hora inicial
+        calInicial.set(ano,mes,dia,hora,minutos,0);
+        //Para la hora final
+        calFinal.set(ano,mes,dia,horaF,minutosF,0);
+
+        HashMap<String, Object> TutoMap = new HashMap<>();
         TutoMap.put("materia", materia);
         TutoMap.put("UIDProfesor", user.getUid());
         TutoMap.put("profesor", nombreProfCompleto);
         TutoMap.put("descripcion", descripcion);
         TutoMap.put("lugar", lugar);
-        TutoMap.put("fecha", fecha);
-        TutoMap.put("hora_inicial", horainicio);
-        TutoMap.put("hora_final", horafinal);
+        TutoMap.put("timestamp_inicial", String.valueOf(calInicial.getTimeInMillis()));
+        TutoMap.put("timestamp_final", String.valueOf(calFinal.getTimeInMillis()));
         TutoMap.put("titulo", titulo);
         TutoMap.put("url_image_portada", download_url);
         TutoMap.put("url_thumb_image_portada", thumb_downloadUrl);
         TutoMap.put("tipo_tuto", "Presencial");
-        TutoMap.put("fecha_pub", pub_dia + "/" + (pub_mes + 1) + "/" + pub_ano);
-        TutoMap.put("hora_pub", pub_hora + ":" + pub_minutos);
+        TutoMap.put("timestamp_pub", String.valueOf(System.currentTimeMillis()));
 
         fdb.collection("Tutorias_institucionales").document(keyid)
                 .set(TutoMap)
@@ -264,24 +258,7 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
                 Toast.makeText(AgregarTutoriaPresencial.this, "Ha ocurrido un error al publicar la tutoría", Toast.LENGTH_SHORT).show();
             }
         });
-/*
 
-        DBReference.setValue(TutoMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(AgregarTutoriaPresencial.this, Pantalla_Principal.class);
-                    AgregarTutoriaPresencial.this.startActivity(intent);
-
-                    Toast.makeText(AgregarTutoriaPresencial.this, "Se ha publicado la tutoría", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AgregarTutoriaPresencial.this, "Ha ocurrido un error al publicar la tutoría", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                }
-            }
-        });
-*/
         progressDialog.dismiss();
 
     }
@@ -356,17 +333,6 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
                                     Map update_hashmMap = new HashMap();
                                     update_hashmMap.put("url_image_portada", download_url);
 
-                                    /*
-                                    DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
-                                    DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-
-                                            }
-                                        }
-                                    });
-*/
 
                                     fdb.collection("Tutorias_institucionales").document(UIDTuto)
                                             .update(update_hashmMap)
@@ -402,18 +368,6 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
                                             Map update_hashmMap = new HashMap();
                                             update_hashmMap.put("url_thumb_image_portada", thumb_downloadUrl);
 
-                                            /*
-                                            DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
-                                            DBReference.updateChildren(update_hashmMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(AgregarTutoriaPresencial.this, "Se ha subido la imagen con exito.", Toast.LENGTH_LONG).show();
-
-                                                    }
-                                                }
-                                            });
-*/
 
                                             fdb.collection("Tutorias_institucionales").document(UIDTuto)
                                                     .update(update_hashmMap)
@@ -487,34 +441,6 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
                         }
                     });
 
-            /*
-
-            DBRefGetMateria.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    final List<String> materia = new ArrayList<String>();
-                    Iterable<DataSnapshot> dataSnapshotIterator = dataSnapshot.getChildren();
-                    Iterator<DataSnapshot> iterator = dataSnapshotIterator.iterator();
-
-                    while (iterator.hasNext()) {
-                        final DataSnapshot idmateria = (DataSnapshot) iterator.next();
-                        materia.add(idmateria.getKey());
-                        spnMateriaPresencial = (Spinner) findViewById(R.id.spnMateriaPresencial);
-                        ArrayAdapter<String> materiaAdapter = new ArrayAdapter<String>(AgregarTutoriaPresencial.this, android.R.layout.simple_spinner_item, materia);
-                        materiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spnMateriaPresencial.setAdapter(materiaAdapter);
-
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-*/
         } catch (Exception e) {
 
         }
@@ -548,6 +474,9 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
                 @Override
                 public void onDateSet(DatePicker datePicker, int an, int me, int di) {
                     Fecha.setText(di + "/" + (me + 1) + "/" + an);
+                    ano = an;
+                    mes= me;
+                    dia= di;
                 }
             }
                     , ano, mes, dia);
@@ -563,6 +492,8 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
                 @Override
                 public void onTimeSet(TimePicker timePicker, int hor, int min) {
                     HoraInicio.setText(hor + ":" + min);
+                    hora= hor;
+                    minutos=min;
                 }
             }, hora, minutos, false);
             timePickerDialog.show();
@@ -570,15 +501,17 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         }
         if (view == btnHoraFinal) {
             final Calendar calendar = Calendar.getInstance();
-            hora = calendar.get(Calendar.HOUR_OF_DAY);
-            mes = calendar.get(Calendar.MINUTE);
+            horaF = calendar.get(Calendar.HOUR_OF_DAY);
+            minutosF = calendar.get(Calendar.MINUTE);
 
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int hor, int min) {
                     HoraFinal.setText(hor + ":" + min);
+                    horaF= hor;
+                    minutosF=min;
                 }
-            }, hora, minutos, false);
+            }, horaF, minutosF, false);
             timePickerDialog.show();
         }
 
@@ -588,6 +521,13 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), GALERRY_PICK);
 
+        }
+        if (view == btnUbicacion) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(2018,1,24, 11,45,0);
+            Log.i("ProbandoFecha", ""+cal.getTimeInMillis());
+            Log.i("ProbandoFecha", "La Fecha seleccionada es: "+cal.get(Calendar.DAY_OF_MONTH)+"/"+cal.get(Calendar.MONTH)+"/"+cal.get(Calendar.YEAR)+" La Hora seleccionada es: "+cal.get(Calendar.HOUR)+":"+cal.get(Calendar.MINUTE));
+            Log.i("ProbandoFecha", ""+dia+"/"+mes+"/"+ano);
         }
     }
 };

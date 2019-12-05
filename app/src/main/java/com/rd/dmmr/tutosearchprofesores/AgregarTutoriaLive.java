@@ -219,24 +219,22 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         FirebaseUser user = FAutentic.getCurrentUser();
         //DBReference = FirebaseDatabase.getInstance().getReference().child("tutorias").child("institucionales").child(keyid);
 
+        Calendar calInicial = Calendar.getInstance();
 
+        calInicial.set(ano,mes,dia,hora,minutos,0);
 
-
-        HashMap<String, String> TutoMap = new HashMap<>();
+        HashMap<String, Object> TutoMap = new HashMap<>();
         TutoMap.put("materia", materia);
         TutoMap.put("UIDProfesor", user.getUid());
         TutoMap.put("profesor", nombreProfCompleto);
         TutoMap.put("descripcion", descripcion);
-        TutoMap.put("fecha", fecha);
-        TutoMap.put("hora_inicial", horainicio);
+        TutoMap.put("timestamp_inicial", String.valueOf(calInicial.getTimeInMillis()));
         TutoMap.put("titulo", titulo);
         TutoMap.put("url_image_portada", download_url);
         TutoMap.put("url_thumb_image_portada", thumb_downloadUrl);
         TutoMap.put("tipo_tuto","Live");
         TutoMap.put("broadcastId","None");
-        TutoMap.put("fecha_pub",pub_dia + "/" + (pub_mes + 1) + "/" + pub_ano);
-        TutoMap.put("hora_pub",pub_hora+":"+pub_minutos);
-
+        TutoMap.put("timestamp_pub", String.valueOf(System.currentTimeMillis()));
 
         fdb.collection("Tutorias_institucionales").document(keyid)
                 .set(TutoMap)
@@ -291,22 +289,27 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            uri = result.getUri();
 
-            File thumb_filePath = new File(uri.getPath());
+            if (result!=null) {
+                uri = result.getUri();
 
-            final Bitmap thumb_bitmap = new Compressor(this)
-                    .setMaxWidth(200)
-                    .setMaxHeight(200)
-                    .setQuality(75)
-                    .compressToBitmap(thumb_filePath);
+                File thumb_filePath = new File(uri.getPath());
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            thumb_byte = baos.toByteArray();
+                final Bitmap thumb_bitmap = new Compressor(this)
+                        .setMaxWidth(200)
+                        .setMaxHeight(200)
+                        .setQuality(75)
+                        .compressToBitmap(thumb_filePath);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                thumb_byte = baos.toByteArray();
+            }
         }
 
-        imgTutoLive.setImageURI(uri);
+        if (uri!=null) {
+            imgTutoLive.setImageURI(uri);
+        }
 
     }
 
@@ -525,6 +528,8 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onTimeSet(TimePicker timePicker, int hor, int min) {
                     txtHoraInicio.setText(hor + ":" + min);
+                    hora=hor;
+                    minutos=min;
                 }
             }, hora, minutos, false);
             timePickerDialog.show();
@@ -540,6 +545,9 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onDateSet(DatePicker datePicker, int an, int me, int di) {
                     txtFecha.setText(di + "/" + (me + 1) + "/" + an);
+                    ano=an;
+                    mes=me;
+                    dia= di;
                 }
             }
                     , ano, mes, dia);

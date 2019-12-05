@@ -7,133 +7,165 @@
     tools:context="com.rd.dmmr.tutosearchprofesores.DetallesTutorias">
 
     <ImageView
-        android:id="@+id/imgTuto"
+        android:id="@+id/imgDetalleTuto"
         android:layout_width="match_parent"
-        android:layout_height="150sp"
+        android:layout_height="wrap_content"
+        android:maxHeight="260dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/defaultimage">
+        app:srcCompat="@drawable/defaultimage"
+        android:scaleType="centerCrop">
 
     </ImageView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cr"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/imgTuto"
-        app:cardCornerRadius="25dp"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/imgDetalleTuto"
         >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="5dp">
+            android:layout_height="wrap_content">
 
-
-
-            <TextView
-                android:id="@+id/textTitulo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_centerHorizontal="true"
-                android:hint="Titulo"
-                android:textSize="18sp" />
-
-
-            <TextView
-                android:id="@+id/textDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Descripción"
-                android:layout_below="@+id/textTitulo"
-                android:layout_centerHorizontal="true"
-                />
-
-            <ScrollView
-                android:id="@+id/scrollView2"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textDesc">
+                app:cardCornerRadius="25dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                >
 
-
-                <TextView
-                    android:id="@+id/textDescripcion"
+                <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="5dp">
+
+
+
+                    <TextView
+                        android:id="@+id/textTitulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_centerHorizontal="true"
+                        android:textAlignment="center"
+                        android:hint="Titulo"
+                        android:textSize="@dimen/_20sdp"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtMateria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Materia"
+                        android:layout_below="@+id/textTitulo"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/textDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Descripción"
+                        android:layout_below="@+id/txtMateria"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="18sp"
+                        />
+
+                    <ScrollView
+                        android:id="@+id/scrollView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textDesc">
+
+
+                        <TextView
+                            android:id="@+id/textDescripcion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"/>
+
+                    </ScrollView>
+
+                    <TextView
+                        android:id="@+id/textFecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_below="@id/scrollView2"
+                        android:hint="Fecha"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/textHora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textFecha"
+                        android:hint="Hora"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/textLugar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textHora"
+                        android:hint="Lugar"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="@dimen/_7sdp"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/textLista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cr"
+                android:layout_centerHorizontal="true"
+                android:text="Lista de estudiantes:"
+                android:textSize="@dimen/_17sdp"
+                android:textStyle="bold"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcListaAsistir"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_below="@id/textLista"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnAsistir"
+                android:layout_width="125dp"
+                android:layout_height="40dp"
+                app:cardCornerRadius="25dp"
+                android:layout_below="@id/rcListaAsistir"
+                android:layout_marginBottom="10dp"
+                android:layout_centerHorizontal="true">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"/>
+                    android:text="None"
+                    android:layout_gravity="center_horizontal|center_vertical"
 
-            </ScrollView>
+                    android:textSize="20sp"
+                    />
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/textFecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_below="@id/scrollView2"
-                android:hint="Fecha"
-                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/textHora"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textFecha"
-                android:hint="Hora"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/textLugar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textHora"
-                android:hint="Lugar"
-                android:textSize="18sp" />
 
         </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
 
 
-    <TextView
-        android:id="@+id/textLista"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cr"
-        android:layout_centerHorizontal="true"
-        android:text="Lista de estudiantes:"
-        android:textSize="@dimen/_17sdp"
-        android:textStyle="bold"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcListaAsistir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textLista"
-        android:layout_above="@id/btnAsistir"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"/>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btnAsistir"
-        android:layout_width="125dp"
-        android:layout_height="40dp"
-        app:cardCornerRadius="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_centerHorizontal="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="None"
-            android:layout_gravity="center_horizontal|center_vertical"
-
-            android:textSize="20sp"
-            />
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 
 
 

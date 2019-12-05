@@ -83,7 +83,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
-        rcChat.setHasFixedSize(true);
+        //rcChat.setHasFixedSize(true);
         rcChat.setLayoutManager(linearLayoutManager);
 
 
@@ -102,6 +102,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         } else if (tipoAmigo.equals("Estudiante")) {
             rutaUser = "Estudiantes";
         }
+
 
         leerMensajes();
         cargarDatosAmigo();
@@ -172,15 +173,18 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                     int index = -1;
                     switch (dc.getType()) {
                         case ADDED:
-                            mChatList.clear();
-                            if (modelChat.getReceptor().equals(myUID) && modelChat.getEmisor().equals(idAmigo) ||
-                                    modelChat.getReceptor().equals(idAmigo) && modelChat.getEmisor().equals(myUID)){
+                            //mChatList.clear();
+                            if (modelChat.receptor.equals(myUID) && modelChat.emisor.equals(idAmigo) ||
+                                    modelChat.receptor.equals(idAmigo) && modelChat.emisor.equals(myUID)){
                                 mChatList.add(new ModelChat(docS.getId(),docS.getString("mensaje"),docS.getString("emisor"),docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
 
                             }
+
                             adapterChat = new AdapterChat(ChatPriv.this, mChatList,suIMG);
-                            adapterChat.notifyDataSetChanged();
                             rcChat.setAdapter(adapterChat);
+                            adapterChat.notifyDataSetChanged();
+
+
                             break;
                         case MODIFIED:
 
@@ -191,9 +195,9 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                             break;
                     }
                 }
-
             }
         });
+
     }
 
     private void cargarDatosAmigo() {

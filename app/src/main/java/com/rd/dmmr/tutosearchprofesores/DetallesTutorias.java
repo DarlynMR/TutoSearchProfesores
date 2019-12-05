@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
@@ -25,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DetallesTutorias extends AppCompatActivity implements View.OnClickListener {
@@ -38,7 +41,9 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
     private CardView btnAsistir;
 
-    private TextView fecha, hora, lugar, titulo, descripcion;
+    private ImageView imgDetalleTuto;
+
+    private TextView fecha, hora, lugar, titulo, descripcion, txtMateria, textListado;
 
     private String idTuto, idEstduante, tutoes;
 
@@ -56,11 +61,16 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
         fdb = FirebaseFirestore.getInstance();
         FAuth = FirebaseAuth.getInstance();
 
+        imgDetalleTuto = (ImageView) findViewById(R.id.imgDetalleTuto);
+
         fecha = (TextView) findViewById(R.id.textFecha);
         hora = (TextView) findViewById(R.id.textHora);
         lugar = (TextView) findViewById(R.id.textLugar);
         titulo = (TextView) findViewById(R.id.textTitulo);
+        txtMateria = (TextView) findViewById(R.id.txtMateria);
         descripcion = (TextView) findViewById(R.id.textDescripcion);
+
+        textListado = (TextView) findViewById(R.id.textLista);
 
         btnAsistir = (CardView) findViewById(R.id.btnAsistir);
 
@@ -83,23 +93,56 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
         datosTuto = intent.getExtras();
         if (datosTuto != null) {
+            String urlImg = datosTuto.getString("imgTuto");
             idTuto = datosTuto.getString("idTuto");
-            Log.i("PruebaClass", idTuto);
 
-            fecha.setText(datosTuto.getString("Fecha"));
-            hora.setText(datosTuto.getString("Hora"));
-            lugar.setText(datosTuto.getString("Lugar"));
+            Calendar calInicial = Calendar.getInstance();
+            Calendar calFinal = Calendar.getInstance();
+
+
+
+            calInicial.setTimeInMillis(Long.parseLong(datosTuto.getString("timestampI")));
+            calFinal.setTimeInMillis(Long.parseLong(datosTuto.getString("timestampF")));
+
+            String fechaCal =  calInicial.get(Calendar.DAY_OF_MONTH)+"/"+(calInicial.get(Calendar.MONTH)+1)+"/"+calInicial.get(Calendar.YEAR);
+            String horaCal = "";
+
             titulo.setText(datosTuto.getString("Titulo"));
+            txtMateria.setText(datosTuto.getString("Materia"));
             descripcion.setText(datosTuto.getString("Descripcion"));
-            Log.i("ProbandoAsistir", "" + datosTuto.getString("TipoEs"));
+            fecha.setText("Fecha: "+fechaCal);
+            lugar.setText("Lugar: "+datosTuto.getString("Lugar"));
+
+
+            if (urlImg.equals("defaultPresencial")){
+                calFinal.setTimeInMillis(Long.parseLong(datosTuto.getString("timestampF")));
+                horaCal = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE)+" - " + calFinal.get(Calendar.HOUR)+":"+ calFinal.get(Calendar.MINUTE);
+                hora.setText("Hora: "+horaCal);
+
+                imgDetalleTuto.setImageResource(R.mipmap.presencial_background);
+            } else if(urlImg.equals("defaultLive")){
+                horaCal = calInicial.get(Calendar.HOUR)+":"+calInicial.get(Calendar.MINUTE);
+                hora.setText("Hora: "+horaCal);
+                imgDetalleTuto.setImageResource(R.drawable.video_camera_live);
+
+            } else {
+                try {
+                    Glide.with(this)
+                            .load(urlImg)
+                            .fitCenter()
+                            .centerCrop()
+                            .into(imgDetalleTuto);
+                } catch (Exception e) {
+                    Toast.makeText(this, "Ha ocurrido un error al cargar la imagen", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+
+            btnAsistir.setOnClickListener(this);
+            CargarEstudiantes();
 
         }
-
-
-        btnAsistir.setOnClickListener(this);
-        CargarEstudiantes();
-
-
     }
 
     private void CargarEstudiantes() {
@@ -132,6 +175,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
                             mListListado.add(new ModelListado(docS.getId(), modelListado.getTimestamp()));
 
                             adapterListado.notifyDataSetChanged();
+                            textListado.setText("Lista de estudiantes: "+mListListado.size());
 
                             break;
                         case MODIFIED:
@@ -147,6 +191,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
 
                             adapterListado.notifyItemChanged(index);
+                            textListado.setText("Lista de estudiantes: "+mListListado.size());
                             break;
                         case REMOVED:
 
@@ -155,7 +200,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
                             mListListado.remove(index);
                             adapterListado.notifyItemRemoved(index);
-
+                            textListado.setText("Lista de estudiantes: "+mListListado.size());
                             break;
                     }
                 }

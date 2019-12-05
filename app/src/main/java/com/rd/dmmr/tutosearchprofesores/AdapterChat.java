@@ -22,8 +22,8 @@ import java.util.Locale;
 
 public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
 
-    private static  final int MSG_TYPE_LEFT= 0;
-    private static  final int MSG_TYPE_RIGHT= 1;
+    private static final int MSG_TYPE_LEFT = 0;
+    private static final int MSG_TYPE_RIGHT = 1;
     Context context;
     List<ModelChat> chatList;
     String imageURL;
@@ -33,18 +33,18 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
         this.context = context;
         this.chatList = chatList;
         this.imageURL = imageURL;
+        notifyDataSetChanged();
     }
 
 
     @NonNull
     @Override
     public HolderChat onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("ProbandoChat", "Probando en creacion "+ viewType);
-        if (viewType==MSG_TYPE_RIGHT){
-            View view = LayoutInflater.from(context).inflate(R.layout.fila_chat_derecha, parent, false);
+        if (viewType == MSG_TYPE_RIGHT) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fila_chat_derecha, parent, false);
             return new HolderChat(view);
-        }else {
-            View view = LayoutInflater.from(context).inflate(R.layout.fila_chat_izquierda, parent, false);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fila_chat_izquierda, parent, false);
             return new HolderChat(view);
         }
 
@@ -60,46 +60,47 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
         cal.setTimeInMillis(Long.parseLong(timestamp));
         String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
 
-        Log.i("ProbandoChat", "Probando en adapter: "+mensaje);
+        Log.i("ProbandoChatAdapter", "Probando en adapter: " + mensaje);
 
-        Log.i("DatosAMadar", chatList.get(position).emisor +" "+ dateTime+" "+mensaje);
+        Log.i("DatosAMadar", chatList.get(position).emisor + " " + dateTime + " " + mensaje);
 
         holder.mensajeRC.setText(mensaje);
         holder.timeRC.setText(dateTime);
-        if (!imageURL.equals("defaultPicUser") || !imageURL.equals("defaultPicProf")) {
-            try {
-                Glide.with(holder.itemView.getContext())
-                        .load(imageURL)
-                        .fitCenter()
-                        .centerCrop()
-                        .into(holder.imgUser);
+        if (imageURL != null) {
+            if (!imageURL.equals("defaultPicUser") || !imageURL.equals("defaultPicProf")) {
+                try {
+                    Glide.with(holder.itemView.getContext())
+                            .load(imageURL)
+                            .fitCenter()
+                            .centerCrop()
+                            .into(holder.imgUser);
 
-            } catch (Exception e) {
-                Log.i("ErrorImg", "" + e.getMessage());
+                } catch (Exception e) {
+                    Log.i("ErrorImg", "" + e.getMessage());
+                }
             }
         }
-
-        if (position==chatList.size()-1){
-            if (chatList.get(position).Isvisto){
+        /*
+        if (position == chatList.size() - 1) {
+            if (chatList.get(position).Isvisto) {
                 holder.vistoRC.setText("Visto");
-            }else {
+            } else {
                 holder.vistoRC.setText("Enviado");
             }
-        }else {
+        } else {
             holder.vistoRC.setVisibility(View.GONE);
         }
-
+*/
 
     }
 
     @Override
     public int getItemViewType(int position) {
-        Log.i("ProbandoChat", "Probando en adapter:"+position);
+        Log.i("ProbandoChatAdapter", "Probando en adapter type:" + position);
         FUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (chatList.get(position).emisor.equals(FUser.getUid())){
+        if (chatList.get(position).emisor.equals(FUser.getUid())) {
             return MSG_TYPE_RIGHT;
-        }
-        else {
+        } else {
             return MSG_TYPE_LEFT;
         }
 
@@ -107,9 +108,11 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
 
     @Override
     public int getItemCount() {
-        return chatList.size();
-    }
+        Log.i("ProbandoChatAdapter", "" + chatList.size());
 
+        return chatList.size();
+
+    }
 
 
     class HolderChat extends RecyclerView.ViewHolder {
@@ -121,10 +124,10 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
         public HolderChat(@NonNull View itemView) {
             super(itemView);
 
-            imgUser= itemView.findViewById(R.id.imgCircularUserProfile);
-            mensajeRC= itemView.findViewById(R.id.textMensaje);
-            timeRC= itemView.findViewById(R.id.tiempo);
-            vistoRC= itemView.findViewById(R.id.estado);
+            imgUser = itemView.findViewById(R.id.imgCircularUserProfile);
+            mensajeRC = itemView.findViewById(R.id.textMensaje);
+            timeRC = itemView.findViewById(R.id.tiempo);
+            vistoRC = itemView.findViewById(R.id.estado);
 
         }
     }

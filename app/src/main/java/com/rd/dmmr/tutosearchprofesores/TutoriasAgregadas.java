@@ -91,9 +91,9 @@ public class TutoriasAgregadas extends AppCompatActivity {
                         case ADDED:
 
                             if (modelProf.getTipo_tuto().equals("Live")) {
-                                mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), modelProf.getFecha(), modelProf.getFecha_pub(), modelProf.getHora_inicial(), modelProf.getHora_pub(), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
+                                mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub") , modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
                             } else {
-                                mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), modelProf.getFecha(), modelProf.getFecha_pub(), modelProf.getHora_inicial() + " - " + modelProf.getHora_final(), modelProf.getHora_pub(), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
+                                mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
                             }
                             tutoriasAdapter.notifyDataSetChanged();
 
@@ -103,9 +103,9 @@ public class TutoriasAgregadas extends AppCompatActivity {
                             index = getRCIndex(docS.getId());
 
                             if (modelProf.getTipo_tuto().equals("Live")) {
-                                mListTutoria.set(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), modelProf.getFecha(), modelProf.getFecha_pub(), modelProf.getHora_inicial(), modelProf.getHora_pub(), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
+                                mListTutoria.set(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(),docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
                             } else {
-                                mListTutoria.add(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), modelProf.getFecha(), modelProf.getFecha_pub(), modelProf.getHora_inicial() + " - " + modelProf.getHora_final(), modelProf.getHora_pub(), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
+                                mListTutoria.add(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(),docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
                             }
                             tutoriasAdapter.notifyDataSetChanged();
 

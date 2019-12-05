@@ -15,7 +15,9 @@
         android:background="@color/colorAccentLgn"
         android:elevation="4dp"
         android:paddingTop="@dimen/_8sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
