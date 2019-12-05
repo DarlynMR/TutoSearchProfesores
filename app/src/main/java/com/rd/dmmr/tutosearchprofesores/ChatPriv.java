@@ -83,6 +83,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         //rcChat.setHasFixedSize(true);
         rcChat.setLayoutManager(linearLayoutManager);
 
