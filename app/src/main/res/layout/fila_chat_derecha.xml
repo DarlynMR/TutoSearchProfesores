@@ -7,40 +7,42 @@
     android:padding="10dp">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgCircularUserProfile"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/imageprofile"
-            app:civ_border_color="@null"
-            />
+
+        <LinearLayout
+            android:id="@+id/lyMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/textMensaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:background="@drawable/bg_sender"
+                android:padding="15dp"
+                android:hint="Mensaje..."/>
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/tiempo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="26/11/2019 03:25PM"
-            android:textSize="12sp"/>
+            android:layout_alignParentEnd="true"
+            android:textSize="12sp"
+            android:layout_below="@id/lyMensaje"/>
 
-        <TextView
-            android:id="@+id/textMensaje"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:background="@drawable/bg_sender"
-            android:padding="15dp"
-            android:hint="Mensaje..."/>
-
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <TextView

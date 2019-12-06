@@ -34,6 +34,10 @@
     <string name="mensajes">Mensajes</string>
     <string name="solicitudes">Solicitudes</string>
     <string name="amigos">Amigos</string>
+    <string name="aviso">Usted es libre de copiar y compartir esta aplicación móvil siempre y cuando proporcione los creditos de autoría correspondientes, la utilice para fines no comerciales y disponga de ella en su estado original, sin transformación o modificación alguna.</string>
+    <string name="creators">Desarrollado por Darly Marmolejos y Anderson Ferreras</string>
+    <string name="copy">© 2019-2019 Tutosearch Inc.</string>
+    <string name="version">V 1.0</string>
 
 
 </resources>

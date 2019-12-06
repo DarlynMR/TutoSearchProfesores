@@ -2,6 +2,7 @@ package com.rd.dmmr.tutosearchprofesores;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -77,21 +79,23 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         btnImgEnviar = (ImageButton) findViewById(R.id.btnEnviar);
         fdb = FirebaseFirestore.getInstance();
 
+        FAuth = FirebaseAuth.getInstance();
+        FUser = FAuth.getCurrentUser();
+        fdb = FirebaseFirestore.getInstance();
+
         mChatList = new ArrayList<>();
 
         refVisto = fdb.collection("Mensajes");
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         linearLayoutManager.setStackFromEnd(true);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        //rcChat.setHasFixedSize(true);
+        //linearLayoutManager.setReverseLayout(true);
+        //linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rcChat.setHasFixedSize(true);
         rcChat.setLayoutManager(linearLayoutManager);
 
 
-        FAuth = FirebaseAuth.getInstance();
-        FUser = FAuth.getCurrentUser();
 
-        fdb = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();
 
@@ -104,9 +108,8 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
             rutaUser = "Estudiantes";
         }
 
-
-        leerMensajes();
         cargarDatosAmigo();
+        leerMensajes();
         vistoMensajes();
 
         btnImgEnviar.setOnClickListener(this);
@@ -128,14 +131,13 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                     int index = -1;
                     switch (dc.getType()) {
                         case ADDED:
-                            mChatList.clear();
                             if (modelChat.getReceptor().equals(myUID) && modelChat.getEmisor().equals(idAmigo)){
                                 HashMap<String, Object> hasVisto  = new HashMap<>();
                                 hasVisto.put("visto",true);
 
                             }
 
-                            adapterChat = new AdapterChat(ChatPriv.this, mChatList,suIMG);
+                            adapterChat = new AdapterChat(ChatPriv.this, mChatList);
                             adapterChat.notifyDataSetChanged();
                             rcChat.setAdapter(adapterChat);
 
@@ -156,9 +158,8 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void leerMensajes() {
-        mChatList = new ArrayList<>();
 
-        CollectionReference ref = fdb.collection("Mensajes");
+        Query ref = fdb.collection("Mensajes").orderBy("timestamp", Query.Direction.ASCENDING);
         ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
@@ -168,22 +169,35 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                 }
 
                 for (DocumentChange dc : snapshot.getDocumentChanges()) {
-                    DocumentSnapshot docS = dc.getDocument();
+                    final DocumentSnapshot docS = dc.getDocument();
 
-                    ModelChat modelChat = docS.toObject(ModelChat.class);
+                    final ModelChat modelChat = docS.toObject(ModelChat.class);
                     int index = -1;
                     switch (dc.getType()) {
                         case ADDED:
                             //mChatList.clear();
-                            if (modelChat.receptor.equals(myUID) && modelChat.emisor.equals(idAmigo) ||
-                                    modelChat.receptor.equals(idAmigo) && modelChat.emisor.equals(myUID)){
-                                mChatList.add(new ModelChat(docS.getId(),docS.getString("mensaje"),docS.getString("emisor"),docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
 
-                            }
+                            Handler handler = new Handler();
 
-                            adapterChat = new AdapterChat(ChatPriv.this, mChatList,suIMG);
-                            rcChat.setAdapter(adapterChat);
-                            adapterChat.notifyDataSetChanged();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (modelChat.receptor.equals(myUID) && modelChat.emisor.equals(idAmigo) ||
+                                            modelChat.receptor.equals(idAmigo) && modelChat.emisor.equals(myUID)){
+                                        mChatList.add(new ModelChat(docS.getId(),docS.getString("mensaje"),docS.getString("emisor"),docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
+                                        Log.i("ProbandoPrincipal", "Tamaño: "+ mChatList.size());
+                                    }
+
+                                    adapterChat = new AdapterChat(ChatPriv.this, mChatList);
+                                    rcChat.setAdapter(adapterChat);
+                                    adapterChat.notifyDataSetChanged();
+
+
+                                }
+                            },500);
+
+
 
 
                             break;
@@ -192,6 +206,9 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                             break;
                         case REMOVED:
 
+                            index = getRCIndex(docS.getId());
+                            mChatList.remove(index);
+                            adapterChat.notifyItemRemoved(index);
 
                             break;
                     }
@@ -200,6 +217,35 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         });
 
     }
+
+    private void enviarMensaje(String mensaje) {
+        String timestamp = String.valueOf(System.currentTimeMillis());
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("emisor", myUID);
+        hashMap.put("receptor", idAmigo);
+        hashMap.put("mensaje", mensaje);
+        hashMap.put("timestamp", timestamp);
+        hashMap.put("visto", false);
+
+        String keyid = fdb.collection("Mensajes").document().getId();
+
+        fdb.collection("Mensajes").document(keyid)
+                .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ChatPriv.this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
 
     private void cargarDatosAmigo() {
 
@@ -215,6 +261,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
                 if (!suIMG.equals("defaultPicUser") && !suIMG.equals("defaultPicProf")) {
                     try {
+
                         Glide.with(ChatPriv.this)
                                 .load(suIMG)
                                 .fitCenter()
@@ -255,6 +302,21 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
     }
 
+    private int getRCIndex(String iMensaje) {
+
+        int index = -1;
+        for (int i = 0; i < mChatList.size(); i++) {
+            if (mChatList.get(i).idMensaje.equals(iMensaje)) {
+
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+
+    }
+
     @Override
     protected void onStart() {
         verifEstadoUser();
@@ -282,31 +344,5 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private void enviarMensaje(String mensaje) {
-        String timestamp = String.valueOf(System.currentTimeMillis());
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("emisor", myUID);
-        hashMap.put("receptor", idAmigo);
-        hashMap.put("mensaje", mensaje);
-        hashMap.put("timestamp", timestamp);
-        hashMap.put("visto", false);
-
-        String keyid = fdb.collection("Mensajes").document().getId();
-
-        fdb.collection("Mensajes").document(keyid)
-                .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ChatPriv.this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-    }
 }

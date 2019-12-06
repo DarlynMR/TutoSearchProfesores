@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Acercade"
+    android:background="#efede3"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:background="@drawable/fondo_trans"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/logoApp"
+            android:layout_width="@dimen/_175sdp"
+            android:layout_height="@dimen/_175sdp"
+            android:src="@drawable/logo_transparente"
+            android:layout_marginTop="-35dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"/>
+
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logoApp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-50dp"
+            android:text="@string/version"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/corp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/version"
+            android:layout_centerHorizontal="true"
+            android:text="@string/copy"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/creators"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/creators"
+            android:textSize="@dimen/_17sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_below="@id/corp"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:id="@+id/aviso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/aviso"
+            android:textSize="@dimen/_17sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_below="@id/creators"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_marginBottom="@dimen/_15sdp"
+            />
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

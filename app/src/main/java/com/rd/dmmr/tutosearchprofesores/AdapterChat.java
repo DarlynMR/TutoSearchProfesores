@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -29,11 +28,9 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
     String imageURL;
     FirebaseUser FUser;
 
-    public AdapterChat(Context context, List<ModelChat> chatList, String imageURL) {
+    public AdapterChat(Context context, List<ModelChat> chatList) {
         this.context = context;
         this.chatList = chatList;
-        this.imageURL = imageURL;
-        notifyDataSetChanged();
     }
 
 
@@ -53,8 +50,10 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
     @Override
     public void onBindViewHolder(@NonNull HolderChat holder, int position) {
 
-        String mensaje = chatList.get(position).getMensaje();
-        String timestamp = chatList.get(position).getTimestamp();
+        ModelChat itemModelChat =chatList.get(position);
+
+        String mensaje = itemModelChat.getMensaje();
+        String timestamp =itemModelChat.getTimestamp();
 
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(timestamp));
@@ -62,25 +61,11 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
 
         Log.i("ProbandoChatAdapter", "Probando en adapter: " + mensaje);
 
-        Log.i("DatosAMadar", chatList.get(position).emisor + " " + dateTime + " " + mensaje);
+        Log.i("DatosAMadar", itemModelChat.emisor + " " + dateTime + " " + mensaje);
 
         holder.mensajeRC.setText(mensaje);
         holder.timeRC.setText(dateTime);
-        if (imageURL != null) {
-            if (!imageURL.equals("defaultPicUser") || !imageURL.equals("defaultPicProf")) {
-                try {
-                    Glide.with(holder.itemView.getContext())
-                            .load(imageURL)
-                            .fitCenter()
-                            .centerCrop()
-                            .into(holder.imgUser);
 
-                } catch (Exception e) {
-                    Log.i("ErrorImg", "" + e.getMessage());
-                }
-            }
-        }
-        /*
         if (position == chatList.size() - 1) {
             if (chatList.get(position).Isvisto) {
                 holder.vistoRC.setText("Visto");
@@ -90,7 +75,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
         } else {
             holder.vistoRC.setVisibility(View.GONE);
         }
-*/
+
 
     }
 
@@ -124,7 +109,6 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
         public HolderChat(@NonNull View itemView) {
             super(itemView);
 
-            imgUser = itemView.findViewById(R.id.imgCircularUserProfile);
             mensajeRC = itemView.findViewById(R.id.textMensaje);
             timeRC = itemView.findViewById(R.id.tiempo);
             vistoRC = itemView.findViewById(R.id.estado);

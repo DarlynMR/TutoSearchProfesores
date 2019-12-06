@@ -43,6 +43,7 @@
         <activity android:name=".AgregarTutoriaLive" />
         <activity android:name=".DetallesTutorias" />
         <activity android:name=".TransmisionActivity2" />
+        <activity android:name=".Acercade" />
         <activity
             android:name=".TransmisionActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />

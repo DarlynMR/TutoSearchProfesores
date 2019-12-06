@@ -201,6 +201,8 @@ public class Pantalla_Principal extends AppCompatActivity
 
         } else if (id == R.id.nav_compartir) {
 
+        } else if (id == R.id.nav_acercaD) {
+            Intent intent = new Intent(this,Acercade.class);startActivity(intent);
         } else if (id == R.id.logout) {
 
             FAuth.signOut();

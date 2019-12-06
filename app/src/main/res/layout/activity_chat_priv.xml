@@ -56,10 +56,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCChatPriv"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_centerInParent="true"
-        android:background="@color/TransparencyWhite"
-        android:layout_marginTop="?android:attr/actionBarSize"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarChatPriv"
+        android:layout_above="@id/lyDown"/>
 
     <LinearLayout
         android:id="@+id/lyDown"

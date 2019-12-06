@@ -7,18 +7,12 @@
     android:padding="10dp">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgCircularUserProfile"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/imageprofile"
-            app:civ_border_color="@null"
-            />
+
 
         <TextView
             android:id="@+id/textMensaje"
@@ -36,19 +30,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="26/11/2019 03:25PM"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:layout_below="@id/textMensaje" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <TextView
         android:id="@+id/estado"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:textAlignment="textEnd"
         android:text="Enviado"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
 
 
