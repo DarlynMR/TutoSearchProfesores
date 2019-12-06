@@ -14,14 +14,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,10 +40,13 @@ import com.bambuser.broadcaster.BroadcastStatus;
 import com.bambuser.broadcaster.Broadcaster;
 import com.bambuser.broadcaster.CameraError;
 import com.bambuser.broadcaster.ConnectionError;
+import com.github.zagum.switchicon.SwitchIconView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
@@ -48,6 +55,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -76,7 +84,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
     private SurfaceView mPreviewSurface;
     private Button btnIniciarTransmision;
-    private ImageButton btnAbrirLY;
+    private LinearLayout btnAbrirLY;
 
     private StorageReference imgStorage;
     private StorageReference urlStorage;
@@ -92,6 +100,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     private DownloadAdapter downloadAdapter;
 
     private FirebaseFirestore fdb;
+    private FirebaseUser user;
 
     private ProgressDialog progressDialog;
 
@@ -103,6 +112,19 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
 
     private static final String APPLICATION_ID = "kBOAwsuh7RgyF8w2CqPjmg";
+
+    //Variables para el chat en vivo
+    private RecyclerView rcChatLive;
+    private EditText txtMensaje;
+    private ImageButton btnEnviar;
+
+    //
+    private LinearLayout btnOpenChatlive, btnSilencio;
+    private SwitchIconView swichtOpenChat, switchSilencio, swicthAbrirLY;
+
+    List<ModelChatLive> mChatList;
+    AdapterChatLive adapterChatLive;
+    //---------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +140,29 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         progressDialog.setMessage("Preparando para transmitir, por favor espere.");
         progressDialog.setCanceledOnTouchOutside(false);
 
+        //Variables para el chat en vivo
+        rcChatLive = (RecyclerView) findViewById(R.id.RCChatLive);
+        txtMensaje = (EditText) findViewById(R.id.txtMensajeEnviarLive);
+        btnEnviar = (ImageButton) findViewById(R.id.btnEnviarLive);
+
+        btnOpenChatlive = (LinearLayout) findViewById(R.id.btnOpenChatLive);
+        btnSilencio = (LinearLayout) findViewById(R.id.btnSilencio);
+
+        swichtOpenChat = (SwitchIconView) findViewById(R.id.swithiconChat);
+        switchSilencio = (SwitchIconView) findViewById(R.id.swicthSilencio);
+        swicthAbrirLY = (SwitchIconView) findViewById(R.id.swicthAbrirLY);
+
+
+        mChatList = new ArrayList<>();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager.setStackFromEnd(true);
+        rcChatLive.setHasFixedSize(true);
+        rcChatLive.setLayoutManager(linearLayoutManager);
+
+
+        //------------------------------------
+
 
         imgStorage = FirebaseStorage.getInstance().getReference();
         urlStorage = FirebaseStorage.getInstance().getReference();
@@ -126,7 +171,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         DBRefGetid = FirebaseDatabase.getInstance().getReference();
 
         btnIniciarTransmision = (Button) findViewById(R.id.BroadcastButton);
-        btnAbrirLY = (ImageButton) findViewById(R.id.btnAbrirLY);
+        btnAbrirLY = (LinearLayout) findViewById(R.id.btnAbrirLY);
 
         mListDown = new ArrayList<>();
         downloadAdapter = new DownloadAdapter(mListDown);
@@ -138,6 +183,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
 
         fdb = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         Intent intent = getIntent();
 
         datosTuto = intent.getExtras();
@@ -156,6 +202,9 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
         btnIniciarTransmision.setOnClickListener(this);
         btnAbrirLY.setOnClickListener(this);
+        btnEnviar.setOnClickListener(this);
+        btnOpenChatlive.setOnClickListener(this);
+        btnSilencio.setOnClickListener(this);
 
     }
 
@@ -229,6 +278,8 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
                         public void onSuccess(Object o) {
 
                             progressDialog.dismiss();
+                            LeerMensajeLive();
+                            findViewById(R.id.lyControls).setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -268,6 +319,86 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     }
 
 
+    private void EnviarMensajeLive(String mensaje) {
+
+
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("emisor", user.getUid());
+        hashMap.put("mensaje", mensaje);
+        hashMap.put("timestamp", timestamp);
+        hashMap.put("tipo_user", "Profesores");
+
+        String keyid = fdb.collection("Tutorias_institucionales").document(idTuto).collection("Mensajes_live").document().getId();
+
+        fdb.collection("Tutorias_institucionales").document(idTuto).collection("Mensajes_live").document(keyid)
+                .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TransmisionActivity2.this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    private void LeerMensajeLive() {
+
+        Query ref = fdb.collection("Tutorias_institucionales").document(idTuto).collection("Mensajes_live").orderBy("timestamp", Query.Direction.ASCENDING);
+        ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.i("Listen failed.", "" + e);
+                    return;
+                }
+
+                for (DocumentChange dc : snapshot.getDocumentChanges()) {
+                    final DocumentSnapshot docS = dc.getDocument();
+
+                    switch (dc.getType()) {
+                        case ADDED:
+
+
+                            Handler handler = new Handler();
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+                                    mChatList.add(new ModelChatLive(docS.getId(), docS.getString("mensaje"), docS.getString("emisor"),  docS.getString("timestamp"), docS.getString("tipo_user")));
+                                    Log.i("ProbandoPrincipal", "Tamaño: " + mChatList.size());
+
+
+                                    adapterChatLive = new AdapterChatLive(TransmisionActivity2.this, mChatList);
+                                    rcChatLive.setAdapter(adapterChatLive);
+                                    adapterChatLive.notifyDataSetChanged();
+
+
+                                }
+                            }, 500);
+
+
+                            break;
+                        case MODIFIED:
+
+                            break;
+                        case REMOVED:
+
+                            break;
+                    }
+                }
+            }
+        });
+
+    }
+
     private void abrirLYPopup() {
         TextView txtCerrar;
         RecyclerView rvArchivos;
@@ -275,6 +406,14 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
 
         mDialog.setContentView(R.layout.ly_archivos_tuto);
+        mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (swicthAbrirLY.isIconEnabled()){
+                    swicthAbrirLY.switchState(false);
+                }
+            }
+        });
         txtCerrar = (TextView) mDialog.findViewById(R.id.txtCerrar);
         rvArchivos = (RecyclerView) mDialog.findViewById(R.id.RC_Archivo);
         btnImagen = (Button) mDialog.findViewById(R.id.btnImagen);
@@ -887,6 +1026,26 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         }
         if (view == btnAbrirLY) {
             abrirLYPopup();
+            swicthAbrirLY.switchState();
+        }
+        if (view == btnEnviar) {
+            String mensaje = txtMensaje.getText().toString().trim();
+            txtMensaje.setText("");
+
+            if (TextUtils.isEmpty(mensaje)) {
+                Toast.makeText(this, "No puede enviar un mensaje vacío", Toast.LENGTH_SHORT).show();
+            } else {
+                EnviarMensajeLive(mensaje);
+            }
+        }
+        if (view == btnOpenChatlive) {
+            swichtOpenChat.switchState();
+
+            if (swichtOpenChat.isIconEnabled()) {
+                findViewById(R.id.rlChatLive).setVisibility(View.VISIBLE);
+            }else{
+                findViewById(R.id.rlChatLive).setVisibility(View.INVISIBLE);
+            }
         }
     }
 

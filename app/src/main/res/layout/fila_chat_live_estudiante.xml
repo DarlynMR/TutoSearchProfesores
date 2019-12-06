@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@null">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgCircularUserProfileLive"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/imageprofile"
+            app:civ_border_color="@null" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imgCircularUserProfileLive"
+            android:background="@drawable/bg_mensaje_estudiante_live"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_5sdp">
+
+
+            <TextView
+                android:id="@+id/textNombreUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Nombre de usuario"
+                android:padding="15dp"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textMensajeLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Mensaje..."
+                android:padding="15dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:layout_below="@id/textNombreUser"
+                android:layout_marginTop="-15dp"/>
+
+            <TextView
+                android:id="@+id/tiempoLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26/11/2019 03:25PM"
+                android:textSize="12sp"
+                android:layout_below="@id/textMensajeLive"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginStart="15dp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

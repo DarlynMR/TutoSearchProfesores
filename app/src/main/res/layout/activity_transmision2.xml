@@ -24,6 +24,7 @@
         android:textSize="@dimen/_17sdp"
         android:layout_marginTop="@dimen/_10sdp"/>
 
+
     <Button android:id="@+id/BroadcastButton"
         android:text="Iniciar transmisión"
         android:layout_width="wrap_content"
@@ -32,19 +33,144 @@
         android:background="@drawable/button_style"
         android:layout_centerHorizontal="true"/>
 
-    <ImageButton
-        android:id="@+id/btnAbrirLY"
+    <TextView
+        android:id="@+id/itemEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text=" " />
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlChatLive"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/itemEmpty"
+        android:layout_marginTop="-65dp"
+        android:visibility="invisible">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RCChatLive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/lyMensaje" />
+
+        <LinearLayout
+            android:id="@+id/lyMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Blanco"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/txtMensajeEnviarLive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Escribir..."
+                android:inputType="textCapSentences|textMultiLine"
+                android:padding="15dp" />
+
+            <ImageButton
+                android:id="@+id/btnEnviarLive"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:src="@drawable/ic_menu_send_black" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/lyControls"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_iconfinder_document"
-        android:background="@drawable/button_style_oval"
-        android:layout_alignParentEnd="true"
+        android:background="#4DFFFFFF"
+        android:visibility="invisible">
 
-        />
+        <LinearLayout
+            android:id="@+id/btnOpenChatLive"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:orientation="vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center">
+
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/swithiconChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#b7b7b7"
+                app:si_tint_color="#ff3c00"
+                app:si_enabled="false"
+                app:si_no_dash="true"
+                app:srcCompat="@drawable/ic_iconfinder_icons_message"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnSilencio"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:orientation="vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center">
+
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/swicthSilencio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#b7b7b7"
+                app:si_tint_color="#ff3c00"
+                app:si_enabled="true"
+                app:si_no_dash="true"
+                app:srcCompat="@drawable/ic_mic_black_24dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnAbrirLY"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:orientation="vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center">
+
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/swicthAbrirLY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#b7b7b7"
+                app:si_tint_color="#ff3c00"
+                app:si_enabled="false"
+                app:si_no_dash="true"
+                app:srcCompat="@drawable/ic_iconfinder_document_text"/>
+
+        </LinearLayout>
 
 
 
+    </LinearLayout>
 
 
 
