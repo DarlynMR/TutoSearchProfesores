@@ -165,6 +165,8 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     hashMap.put("url_thumb_pic", "defaultPicProf");
                     hashMap.put("about_me","null");
                     hashMap.put("estadoOnline","En linea");
+                    hashMap.put("escribiendoA","ninguno");
+
 
                     HashMap<Array, String> hasprueba = new HashMap<>();
 
@@ -349,23 +351,26 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            uri = result.getUri();
+            if (result!=null) {
+                uri = result.getUri();
 
 
-            File thumb_filePath = new File(uri.getPath());
+                File thumb_filePath = new File(uri.getPath());
 
-            final Bitmap thumb_bitmap = new Compressor(this)
-                    .setMaxWidth(200)
-                    .setMaxHeight(200)
-                    .setQuality(75)
-                    .compressToBitmap(thumb_filePath);
+                final Bitmap thumb_bitmap = new Compressor(this)
+                        .setMaxWidth(200)
+                        .setMaxHeight(200)
+                        .setQuality(75)
+                        .compressToBitmap(thumb_filePath);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            thumb_byte = baos.toByteArray();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                thumb_byte = baos.toByteArray();
+            }
         }
-
-        ciruclarImageView.setImageURI(uri);
+        if (uri!=null) {
+            ciruclarImageView.setImageURI(uri);
+        }
 
     }
 

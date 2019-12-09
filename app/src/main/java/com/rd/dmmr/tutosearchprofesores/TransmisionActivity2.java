@@ -485,6 +485,9 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (result==null){
+                return;
+            }
             cualMethod = "Image";
             imgUri = result.getUri();
             builder.show();

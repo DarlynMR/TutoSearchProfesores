@@ -3,7 +3,9 @@ package com.rd.dmmr.tutosearchprofesores;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -84,6 +86,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
         FAuth = FirebaseAuth.getInstance();
         FUser = FAuth.getCurrentUser();
+        myUID= FUser.getUid();
         fdb = FirebaseFirestore.getInstance();
 
         mChatList = new ArrayList<>();
@@ -110,6 +113,28 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         } else if (tipoAmigo.equals("Estudiante")) {
             rutaUser = "Estudiantes";
         }
+
+        txtMensaje.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().trim().length()==0){
+                    verifEscrib("ninguno");
+
+                }else {
+                    verifEscrib(idAmigo);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         cargarDatosAmigo();
         leerMensajes();
@@ -206,7 +231,19 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                             break;
                         case MODIFIED:
 
+                            index = getRCIndex(docS.getId());
+
+                            if (modelChat.receptor.equals(myUID) && modelChat.emisor.equals(idAmigo) ||
+                                    modelChat.receptor.equals(idAmigo) && modelChat.emisor.equals(myUID)){
+                                mChatList.set(index, new ModelChat(docS.getId(),docS.getString("mensaje"),docS.getString("emisor"),docS.getString("receptor"), docS.getString("timestamp"), docS.getBoolean("visto")));
+                                Log.i("ProbandoPrincipal", "Tamaño: "+ mChatList.size());
+                            }
+
+                            adapterChat = new AdapterChat(ChatPriv.this, mChatList);
+                            rcChat.setAdapter(adapterChat);
+                            adapterChat.notifyDataSetChanged();
                             break;
+
                         case REMOVED:
 
                             index = getRCIndex(docS.getId());
@@ -282,16 +319,20 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
                 }
 
                 String estadoOnline = String.valueOf(documentSnapshot.getString("estadoOnline"));
-                Log.i("Chatprov", estadoOnline);
+                String estadoEscrib = String.valueOf(documentSnapshot.getString("escribiendoA"));
 
-                if (estadoOnline.equals("En linea")) {
-                    txtEstado.setText(estadoOnline);
+                if (estadoEscrib.equals(myUID)) {
+                    txtEstado.setText("Escribiendo...");
                 }else {
-                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                    cal.setTimeInMillis(Long.parseLong(estadoOnline));
-                    String datetime= DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
-                    txtEstado.setText(datetime);
+                    if (estadoOnline.equals("En linea")) {
+                        txtEstado.setText(estadoOnline);
+                    }else {
+                        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                        cal.setTimeInMillis(Long.parseLong(estadoOnline));
+                        String datetime= DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
+                        txtEstado.setText(datetime);
 
+                    }
                 }
 
 
@@ -349,6 +390,15 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         docRef.update(hashMap);
     }
 
+    private void verifEscrib(String escrib){
+        DocumentReference docRef = fdb.collection("Profesores").document(myUID);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("escribiendoA", escrib);
+
+        docRef.update(hashMap);
+    }
+
     private void verifEstadoUser() {
 
 
@@ -391,6 +441,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     protected void onPause() {
         String timestamp = String.valueOf(System.currentTimeMillis());
         verifOnline(timestamp);
+        verifEscrib("ninguno");
         super.onPause();
     }
 

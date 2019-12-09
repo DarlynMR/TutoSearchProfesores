@@ -278,23 +278,26 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            uri = result.getUri();
+            if (result!=null) {
+                uri = result.getUri();
 
-            File thumb_filePath = new File(uri.getPath());
+                File thumb_filePath = new File(uri.getPath());
 
-            final Bitmap thumb_bitmap = new Compressor(this)
-                    .setMaxWidth(200)
-                    .setMaxHeight(200)
-                    .setQuality(75)
-                    .compressToBitmap(thumb_filePath);
+                final Bitmap thumb_bitmap = new Compressor(this)
+                        .setMaxWidth(200)
+                        .setMaxHeight(200)
+                        .setQuality(75)
+                        .compressToBitmap(thumb_filePath);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            thumb_byte = baos.toByteArray();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                thumb_byte = baos.toByteArray();
+            }
         }
 
-        imgTutoPresencial.setImageURI(uri);
-
+        if (uri!=null) {
+            imgTutoPresencial.setImageURI(uri);
+        }
     }
 
     private void SubirImagen(final String UIDTuto) {

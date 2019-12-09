@@ -189,6 +189,10 @@ public class PerfilProf extends AppCompatActivity {
 
                 final Uri resultUri = result.getUri();
 
+                if (result==null){
+                    return;
+                }
+
                 //CREANDO EL PROGREES BAR
                 mProgressDialog = new ProgressDialog(this);
                 mProgressDialog.setTitle("Cargando imagen...");
