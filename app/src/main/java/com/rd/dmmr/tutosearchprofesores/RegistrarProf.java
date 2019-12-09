@@ -164,6 +164,7 @@ public class RegistrarProf extends AppCompatActivity implements View.OnClickList
                     hashMap.put("url_pic", "defaultPicProf");
                     hashMap.put("url_thumb_pic", "defaultPicProf");
                     hashMap.put("about_me","null");
+                    hashMap.put("estadoOnline","En linea");
 
                     HashMap<Array, String> hasprueba = new HashMap<>();
 

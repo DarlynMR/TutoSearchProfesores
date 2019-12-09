@@ -50,115 +50,135 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/imageprofile"
         app:civ_border_color="@android:color/darker_gray"
-        app:civ_border_width="3sp" />
+        app:civ_border_width="3sp"
+        android:layout_marginTop="-15dp"/>
 
-    <LinearLayout
-        android:id="@+id/LYInformacion"
+    <ScrollView
+        android:id="@+id/scrollContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingStart="10dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/fondo_trans"
+        android:layout_height="@dimen/_330sdp"
         android:layout_below="@id/circularprofileProf"
-        android:orientation="vertical">
+        android:background="@drawable/fondo_trans"
+        android:paddingTop="15dp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp">
 
-        <EditText
-            android:id="@+id/txt_nombres_reg"
+        <RelativeLayout
+            android:id="@+id/LYInformacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/nombres"
-            android:drawableStart="@drawable/ic_person_black_24dp"
-            android:drawablePadding="6sp"
-            android:inputType="textPersonName" />
-        <EditText
-            android:id="@+id/txt_apellidos_reg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/apeliidos"
-            android:drawableStart="@drawable/ic_person_black_24dp"
-            android:drawablePadding="6sp"
-            android:inputType="textPersonName" />
-        <TextView
-            android:id="@+id/txt_fechanacimiento_reg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/fecha_nacimiento"
-            android:textSize="@dimen/_14sdp"
-            android:drawableStart="@drawable/ic_if_christmas_date_1651909"
-            android:drawablePadding="6sp"
-            />
 
-        <EditText
-            android:id="@+id/txtTelefonoProf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/tel_fono"
-            android:drawableStart="@drawable/ic_contact_phone_black_24dp"
-            android:drawablePadding="6sp"
-            android:inputType="phone" />
-
-        <fr.ganfra.materialspinner.MaterialSpinner
-            android:id="@+id/spnProvincia"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
-            app:ms_arrowColor="@color/GrisFondo"
-            app:ms_floatingLabelColor="#A9A9A9"
-            app:ms_floatingLabelText="Provincia"
-            app:ms_hint="Seleccione su provincia"
-            app:ms_hintColor="#000000"
-            app:ms_multiline="true"
             >
 
-        </fr.ganfra.materialspinner.MaterialSpinner>
+            <EditText
+                android:id="@+id/txt_nombres_reg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/nombres"
+                android:drawableStart="@drawable/ic_person_black_24dp"
+                android:drawablePadding="6sp"
+                android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/txt_apellidos_reg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/apeliidos"
+                android:drawableStart="@drawable/ic_person_black_24dp"
+                android:drawablePadding="6sp"
+                android:inputType="textPersonName"
+                android:layout_below="@id/txt_nombres_reg"/>
+            <TextView
+                android:id="@+id/txt_fechanacimiento_reg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/fecha_nacimiento"
+                android:textSize="@dimen/_14sdp"
+                android:drawableStart="@drawable/ic_if_christmas_date_1651909"
+                android:drawablePadding="6sp"
+                android:layout_below="@id/txt_apellidos_reg"
+                />
 
-        <EditText
-            android:id="@+id/txtCorreoProf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/correo_electr_nico"
-            android:drawableStart="@drawable/ic_email_black_24dp"
-            android:drawablePadding="6sp"
-            android:inputType="textEmailAddress" />
+            <EditText
+                android:id="@+id/txtTelefonoProf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/tel_fono"
+                android:drawableStart="@drawable/ic_contact_phone_black_24dp"
+                android:drawablePadding="6sp"
+                android:inputType="phone"
+                android:layout_below="@id/txt_fechanacimiento_reg"/>
 
-        <EditText
-            android:id="@+id/txtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/contrase_a"
-            android:drawableStart="@drawable/ic_passwordopen"
-            android:drawablePadding="6sp"
-            android:inputType="textPassword" />
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spnProvincia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ms_arrowColor="@color/GrisFondo"
+                app:ms_floatingLabelColor="#A9A9A9"
+                app:ms_floatingLabelText="Provincia"
+                app:ms_hint="Seleccione su provincia"
+                app:ms_hintColor="#000000"
+                app:ms_multiline="true"
+                android:layout_below="@id/txtTelefonoProf"
+                >
 
-        <EditText
-            android:id="@+id/txtPassword2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="6sp"
-            android:drawableStart="@drawable/ic_passwordopen"
-            android:ems="10"
-            android:hint="@string/repetir_contrase_a"
-            android:inputType="textPassword" />
+            </fr.ganfra.materialspinner.MaterialSpinner>
 
-        <Button
-            android:id="@+id/btnCargarimage"
-            android:layout_width="165sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:drawableStart="@drawable/cargarimage"
-            android:background="@drawable/button_style"
-            android:text="@string/cargar_foto" />
+            <EditText
+                android:id="@+id/txtCorreoProf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/correo_electr_nico"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:drawablePadding="6sp"
+                android:inputType="textEmailAddress"
+                android:layout_below="@id/spnProvincia"/>
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/contrase_a"
+                android:drawableStart="@drawable/ic_passwordopen"
+                android:drawablePadding="6sp"
+                android:inputType="textPassword"
+                android:layout_below="@id/txtCorreoProf"/>
+
+            <EditText
+                android:id="@+id/txtPassword2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="6sp"
+                android:drawableStart="@drawable/ic_passwordopen"
+                android:ems="10"
+                android:hint="@string/repetir_contrase_a"
+                android:inputType="textPassword"
+                android:layout_below="@id/txtPassword"/>
+
+            <Button
+                android:id="@+id/btnCargarimage"
+                android:layout_width="165sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:drawableStart="@drawable/cargarimage"
+                android:background="@drawable/button_style"
+                android:text="@string/cargar_foto"
+                android:layout_below="@id/txtPassword2"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
 
 
     <Button
@@ -168,7 +188,7 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/button_style"
         android:text="@string/registrar"
-        android:layout_below="@id/LYInformacion"/>
+        android:layout_alignParentBottom="true"/>
 
 
 
