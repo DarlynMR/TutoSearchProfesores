@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "296874605056-kcs17vmri63vk7tpklh2e3kc4jupca5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rd.dmmr.tutosearch",
+            "certificate_hash": "c03066dc8cad175324f802a7239b82f6156706c4"
+          }
+        },
+        {
           "client_id": "296874605056-656ueh6c4ursp1rg6134u3tg4fkf5bne.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -33,20 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "296874605056-5q4kr6s41hbu3mnaujq3ur69k7l3rs2c.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -58,6 +59,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "296874605056-2271igtt0qkeopktq5nko4jsn319t576.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rd.dmmr.tutosearchprofesores",
+            "certificate_hash": "c03066dc8cad175324f802a7239b82f6156706c4"
+          }
+        },
         {
           "client_id": "296874605056-sv9stcghg9n4un2qa6ii1mo3pkcrsi2u.apps.googleusercontent.com",
           "client_type": 1,
@@ -77,20 +86,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "296874605056-5q4kr6s41hbu3mnaujq3ur69k7l3rs2c.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

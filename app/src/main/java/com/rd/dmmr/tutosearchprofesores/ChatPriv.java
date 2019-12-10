@@ -34,16 +34,26 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rd.dmmr.tutosearchprofesores.notificaciones.APIService;
+import com.rd.dmmr.tutosearchprofesores.notificaciones.Client;
+import com.rd.dmmr.tutosearchprofesores.notificaciones.Data;
+import com.rd.dmmr.tutosearchprofesores.notificaciones.Sender;
+import com.rd.dmmr.tutosearchprofesores.notificaciones.Token;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatPriv extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,6 +76,9 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     FirebaseFirestore fdb;
 
     String idAmigo, tipoAmigo, myUID, rutaUser, suIMG;
+
+    APIService apiService;
+    boolean notify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +113,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         rcChat.setHasFixedSize(true);
         rcChat.setLayoutManager(linearLayoutManager);
 
-
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
 
 
         Intent intent = getIntent();
@@ -258,7 +271,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    private void enviarMensaje(String mensaje) {
+    private void enviarMensaje(final String mensaje) {
         String timestamp = String.valueOf(System.currentTimeMillis());
 
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -283,6 +296,59 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
             }
         });
 
+
+        final DocumentReference docRef = fdb.collection("Profesores").document(myUID);
+
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                if (notify){
+                    sendNotification(idAmigo, txtNombre.getText().toString(), mensaje);
+                }
+                notify =false;
+
+
+
+            }
+        });
+    }
+
+    private void sendNotification(final String idAmigo, String toString, final String mensaje) {
+        CollectionReference allTokens = fdb.collection("Tokens");
+        Query query  = allTokens.orderBy(FieldPath.documentId()).whereEqualTo(FieldPath.documentId(), idAmigo );
+
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()){
+                    DocumentSnapshot docS = dc.getDocument();
+                    Token tokenp = new Token();
+                    Token token = (Token) docS.get(tokenp.getToken());
+
+
+                    Data data = new Data(myUID, txtNombre.getText()+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile);
+
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, Response<Response> response) {
+                                    Toast.makeText(ChatPriv.this, ""+response.message(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+                }
+
+
+
+            }
+        });
 
     }
 
@@ -456,6 +522,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnEnviar:
+                notify = true;
                 String mensaje = txtMensaje.getText().toString().trim();
                 txtMensaje.setText("");
 

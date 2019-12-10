@@ -1,6 +1,7 @@
 package com.rd.dmmr.tutosearchprofesores;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,9 +27,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.rd.dmmr.tutosearchprofesores.notificaciones.Token;
 
 import static com.rd.dmmr.tutosearchprofesores.R.id.nav_imagePorf;
 import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtCorreoProfMenu;
@@ -36,7 +40,7 @@ import static com.rd.dmmr.tutosearchprofesores.R.id.nav_txtNombreProfMenu;
 
 
 public class Pantalla_Principal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     Button btnAgregarTutoria,btnTutoriasAgregadas , btnMensajes,btnAgenda;
 
@@ -47,6 +51,7 @@ public class Pantalla_Principal extends AppCompatActivity
     DatabaseReference UserReference;
 
     FirebaseFirestore fdb;
+    String miUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,7 @@ public class Pantalla_Principal extends AppCompatActivity
 
         FAuth= FirebaseAuth.getInstance();
         FUser= FAuth.getCurrentUser();
+        miUID = FUser.getUid();
         UserReference= FirebaseDatabase.getInstance().getReference().child("usuarios").child("profesores").child(FUser.getUid());
 
         fdb = FirebaseFirestore.getInstance();
@@ -88,7 +94,20 @@ public class Pantalla_Principal extends AppCompatActivity
         btnMensajes.setOnClickListener(this);
         btnTutoriasAgregadas.setOnClickListener(this);
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
     }
+
+    public void updateToken(String token){
+        CollectionReference collectionReference = fdb.collection("Tokens");
+
+        Token mToken = new Token(token);
+
+        collectionReference.document(miUID).set(mToken);
+
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -123,8 +142,17 @@ public class Pantalla_Principal extends AppCompatActivity
     @Override
     protected void onStart() {
         try {
-            FUser = FAuth.getCurrentUser();
             super.onStart();
+            FUser = FAuth.getCurrentUser();
+            miUID = FUser.getUid();
+
+
+            SharedPreferences sharedPreferences = getSharedPreferences("SP_USER", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("current_userID", miUID);
+            editor.apply();
+
+
             if (FUser==null){
                 VolverInicio();
             }else{
