@@ -322,7 +322,7 @@ public class PerfilProf extends AppCompatActivity {
 
     private void setUpViewPagerAdapter() {
         viewPagerAdapter.addFragment(new fragment_DatosPerfil(), "DATOS");
-        viewPagerAdapter.addFragment(new fragment_Valoraciones(), "VALORACIONES");
+        //viewPagerAdapter.addFragment(new fragment_Valoraciones(), "VALORACIONES");
         viewPager.setAdapter(viewPagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);

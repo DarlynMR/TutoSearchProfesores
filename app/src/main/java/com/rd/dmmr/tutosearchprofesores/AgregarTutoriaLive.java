@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -459,6 +460,22 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         }
     }
 
+    final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface
+                        .BUTTON_POSITIVE:
+                    mtdAgregarTutoriaLive();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    dialog.dismiss();
+                    break;
+            }
+        }
+    };
+
     private void LlenarSpinner() {
         try {
 
@@ -511,6 +528,11 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
 
     }
 
+    public void campos_vacios(EditText campo, View view) {
+        campo.setError("No puede dejar este campo vacío.");
+        view = campo;
+    }
+
     @Override
     public void onClick(View view) {
         if (view == fabImgChange) {
@@ -555,7 +577,28 @@ public class AgregarTutoriaLive extends AppCompatActivity implements View.OnClic
         }
 
         if (view == btnPublicar) {
-            mtdAgregarTutoriaLive();
+            View ViewFocus = null;
+            if(spnMateria.getSelectedItem()==null){
+                Alerta("Elegir materia", "Debe elegir la materia correspondiente a la tutoría");
+
+            } else if (txtTitulo.getText().toString().length() == 0){
+                campos_vacios(txtTitulo, ViewFocus);
+            } else if (txtDescripcion.getText().toString().length() == 0){
+                campos_vacios(txtDescripcion, ViewFocus);
+            } else if (txtFecha.getText().toString().length() == 0){
+                campos_vacios(txtFecha, ViewFocus);
+            } else if (txtHoraInicio.getText().toString().length() == 0){
+                campos_vacios(txtHoraInicio, ViewFocus);
+            }else {
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(AgregarTutoriaLive.this);
+                builder.setMessage("¿Está seguro de que desea publicar esta tutoría?").setPositiveButton("Si", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .setCancelable(false);
+                builder.show();
+
+            }
+
         }
     }
 }

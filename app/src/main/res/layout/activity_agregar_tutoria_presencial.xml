@@ -156,44 +156,33 @@
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
-                <EditText
-                    android:id="@+id/txtDescripcion"
-                    android:layout_width="match_parent"
-                    android:layout_height="150sp"
-                    android:layout_below="@id/textDescripcion"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginHorizontal="8sp"
-                    android:background="@color/GrisParaTexto"
-                    android:ems="10"
-                    android:inputType="textMultiLine"
-                    android:textAlignment="textStart" />
-
-                <Button
-                    android:id="@+id/btnUbicacion"
-                    android:layout_width="50sp"
-                    android:layout_height="55sp"
-                    android:layout_below="@id/txtDescripcion"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:background="@drawable/button_style"
-                    android:drawableBottom="@drawable/ic_add_location_black_24dp"/>
-
-                <EditText
-                    android:id="@+id/txtUbicacion"
+                <ScrollView
+                    android:id="@+id/scrollDescripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/txtDescripcion"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:layout_toEndOf="@id/btnFecha"
-                    android:hint="Ubicación"
-                    android:editable="false" />
+                    android:maxHeight="250dp"
+                    android:layout_below="@id/textDescripcion"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="8sp">
+
+                    <EditText
+                        android:id="@+id/txtDescripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:background="@color/GrisParaTexto"
+                        android:ems="10"
+                        android:inputType="textMultiLine"
+                        android:textAlignment="textStart" />
+
+                </ScrollView>
 
 
                 <TextView
                     android:id="@+id/textLugar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/btnUbicacion"
+                    android:layout_below="@id/scrollDescripcion"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:text="Descripcion de lugar"
                     android:textSize="20sp"
@@ -293,7 +282,7 @@
                     android:layout_below="@id/LyHora"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_7sdp"
-                    android:textColor="@color/darkColor"
+                    android:textColor="@color/Blanco"
                     android:textSize="@dimen/_14sdp"
                     android:backgroundTint="#3085C9"
                     android:background="@drawable/button_style"/>

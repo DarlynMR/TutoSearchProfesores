@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -82,7 +84,7 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
 
     private EditText Titulo, Descripcion, Lugar, Fecha, HoraInicio, HoraFinal;
 
-    private Button btnFecha, btnHoraInicio, btnHoraFinal, btnPublicar, btnUbicacion;
+    private Button btnFecha, btnHoraInicio, btnHoraFinal, btnPublicar;
 
     private FloatingActionButton fabSelectImagePresencial;
 
@@ -112,7 +114,6 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         btnFecha = (Button) findViewById(R.id.btnFecha);
         btnHoraInicio = (Button) findViewById(R.id.btnHoraInicio);
         btnHoraFinal = (Button) findViewById(R.id.btnHoraFinal);
-        btnUbicacion = (Button) findViewById(R.id.btnUbicacion);
 
         imgTutoPresencial = (ImageView) findViewById(R.id.imgTutoPresencial);
 
@@ -184,7 +185,6 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         LlenarSpinner();
 
         btnPublicar.setOnClickListener(this);
-        btnUbicacion.setOnClickListener(this);
         fabSelectImagePresencial.setOnClickListener(this);
 
     }
@@ -449,6 +449,18 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
         }
     }
 
+    public void campos_vacios(EditText campo, View view) {
+        campo.setError("No puede dejar este campo vacío.");
+        view = campo;
+    }
+    public void Alerta(String Titulo, String Mensaje) {
+        AlertDialog alertDialog;
+        alertDialog = new AlertDialog.Builder(AgregarTutoriaPresencial.this).setNegativeButton("Ok", null).create();
+        alertDialog.setTitle(Titulo);
+        alertDialog.setMessage(Mensaje);
+        alertDialog.show();
+
+    }
 
     public void ObtenerFechaHora() {
         final Calendar calendar = Calendar.getInstance();
@@ -460,12 +472,54 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
 
     }
 
+    final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface
+                        .BUTTON_POSITIVE:
+                        mtdAgregarTutoriaPresencial();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    dialog.dismiss();
+                    break;
+            }
+        }
+    };
+
     @Override
     public void onClick(View view) {
 
 
         if (view == btnPublicar) {
-            mtdAgregarTutoriaPresencial();
+            View ViewFocus = null;
+            if (spnMateriaPresencial.getSelectedItem()==null){
+                Alerta("Elegir materia", "Debe elegir la materia correspondiente a la tutoría");
+
+            } else if (Titulo.getText().toString().length() == 0){
+                campos_vacios(Titulo, ViewFocus);
+            } else if (Descripcion.getText().toString().length() == 0){
+                campos_vacios(Descripcion, ViewFocus);
+            } else if (Lugar.getText().toString().length() == 0){
+                campos_vacios(Lugar, ViewFocus);
+            } else if (Fecha.getText().toString().length() == 0){
+                campos_vacios(Fecha, ViewFocus);
+            } else if (HoraInicio.getText().toString().length() == 0){
+                campos_vacios(HoraInicio, ViewFocus);
+            } else if (HoraFinal.getText().toString().length() == 0){
+                campos_vacios(HoraFinal, ViewFocus);
+            }else {
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(AgregarTutoriaPresencial.this);
+                builder.setMessage("¿Está seguro de que desea publicar esta tutoría?").setPositiveButton("Si", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .setCancelable(false);
+                builder.show();
+
+            }
+
+
         }
         if (view == btnFecha) {
             final Calendar calendar = Calendar.getInstance();
@@ -525,12 +579,6 @@ public class AgregarTutoriaPresencial extends AppCompatActivity implements View.
             startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), GALERRY_PICK);
 
         }
-        if (view == btnUbicacion) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(2018,1,24, 11,45,0);
-            Log.i("ProbandoFecha", ""+cal.getTimeInMillis());
-            Log.i("ProbandoFecha", "La Fecha seleccionada es: "+cal.get(Calendar.DAY_OF_MONTH)+"/"+cal.get(Calendar.MONTH)+"/"+cal.get(Calendar.YEAR)+" La Hora seleccionada es: "+cal.get(Calendar.HOUR)+":"+cal.get(Calendar.MINUTE));
-            Log.i("ProbandoFecha", ""+dia+"/"+mes+"/"+ano);
-        }
+
     }
 };

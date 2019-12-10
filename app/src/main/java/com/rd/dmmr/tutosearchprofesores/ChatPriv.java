@@ -42,6 +42,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.rd.dmmr.tutosearchprofesores.notificaciones.APIService;
 import com.rd.dmmr.tutosearchprofesores.notificaciones.Client;
 import com.rd.dmmr.tutosearchprofesores.notificaciones.Data;
+import com.rd.dmmr.tutosearchprofesores.notificaciones.Response;
 import com.rd.dmmr.tutosearchprofesores.notificaciones.Sender;
 import com.rd.dmmr.tutosearchprofesores.notificaciones.Token;
 
@@ -53,7 +54,6 @@ import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ChatPriv extends AppCompatActivity implements View.OnClickListener {
 
@@ -121,9 +121,9 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
         idAmigo = intent.getStringExtra("idAmigo");
         tipoAmigo = intent.getStringExtra("tipoUser");
 
-        if (tipoAmigo.equals("Profesor")) {
+        if (tipoAmigo.equals("Profesor") || tipoAmigo.equals("Profesores")) {
             rutaUser = "Profesores";
-        } else if (tipoAmigo.equals("Estudiante")) {
+        } else if (tipoAmigo.equals("Estudiante") || tipoAmigo.equals("Estudiantes")) {
             rutaUser = "Estudiantes";
         }
 
@@ -312,6 +312,41 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
             }
         });
+
+
+        DocumentReference docHis  = fdb.collection("ListChat").document(myUID).collection("lista").document(idAmigo);
+        docHis.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot docS = task.getResult();
+
+                if (!docS.exists()){
+                    HashMap<String, Object> hash1 = new HashMap<>();
+                    hash1.put("timestamp", String.valueOf(System.currentTimeMillis()));
+                    hash1.put("tipoUser", rutaUser);
+
+                    docHis.set(hash1);
+                }
+
+            }
+        });
+
+        DocumentReference docMy  = fdb.collection("ListChat").document(idAmigo).collection("lista").document(myUID);
+        docMy.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot docS = task.getResult();
+
+                if (!docS.exists()){
+                    HashMap<String, Object> hash2 = new HashMap<>();
+                    hash2.put("timestamp", String.valueOf(System.currentTimeMillis()));
+                    hash2.put("tipoUser", "Profesores");
+
+                    docMy.set(hash2);
+                }
+
+            }
+        });
     }
 
     private void sendNotification(final String idAmigo, String toString, final String mensaje) {
@@ -324,17 +359,24 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
                 for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()){
                     DocumentSnapshot docS = dc.getDocument();
+/*
+                    DataSnapshot dataSnapshot = (DataSnapshot) docS.getD();
+
                     Token tokenp = new Token();
-                    Token token = (Token) docS.get(tokenp.getToken());
+                    */
+                    Token token = new Token();
 
+                    token.setToken(docS.getString("token"));
 
-                    Data data = new Data(myUID, txtNombre.getText()+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile);
+                    Log.i("Token", token.getToken());
+
+                    Data data = new Data(myUID, txtNombre.getText().toString()+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile);
 
                     Sender sender = new Sender(data, token.getToken());
                     apiService.sendNotification(sender)
                             .enqueue(new Callback<Response>() {
                                 @Override
-                                public void onResponse(Call<Response> call, Response<Response> response) {
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                     Toast.makeText(ChatPriv.this, ""+response.message(), Toast.LENGTH_SHORT).show();
                                 }
 

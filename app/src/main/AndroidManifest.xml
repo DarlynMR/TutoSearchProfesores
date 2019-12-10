@@ -41,11 +41,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ChatPriv"></activity>
-        <activity android:name=".PantallaMensajes" />
+        <activity android:name=".PantallaMensajes"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".PerfilProf" />
         <activity android:name=".TutoriasAgregadas" />
         <activity android:name=".ElegirTipoTutoria" />
-        <activity android:name=".AgregarTutoriaLive" />
+        <activity android:name=".AgregarTutoriaLive"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".DetallesTutorias" />
         <activity android:name=".TransmisionActivity2" />
         <activity android:name=".Acercade" />
@@ -60,9 +62,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrarProf" />
-        <activity android:name=".LoginProf" />
-        <activity android:name=".AgregarTutoriaPresencial" />
+        <activity android:name=".RegistrarProf"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".LoginProf"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".AgregarTutoriaPresencial"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Pantalla_Principal"
             android:label="@string/title_activity_pantalla__principal"

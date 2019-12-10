@@ -15,8 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.rd.dmmr.tutosearchprofesores.ChatPriv;
@@ -89,11 +94,15 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String tittle = remoteMessage.getData().get("tittle");
         String body = remoteMessage.getData().get("body");
 
+        String tipo;
+        tipo=tipoUser(user);
+
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, ChatPriv.class);
         Bundle bundle = new Bundle();
         bundle.putString("idAmigo", user);
+        bundle.putString("tipoUser", tipo);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pIntent = PendingIntent.getActivity(this, i, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -110,6 +119,31 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         }
         notification1.getManager().notify(j, builder.build());
 
+    }
+
+    private String tipoUser (String idAmigo){
+        FirebaseFirestore fdb = FirebaseFirestore.getInstance();
+        final String[] tipo = new String[1];
+        DocumentReference docRef = fdb.collection("Estudiantes").document(idAmigo);
+
+        docRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        DocumentSnapshot docS = task.getResult();
+                        if (docS.exists()){
+                            tipo[0] = "Estudiante";
+                        }else{
+                            tipo[0] = "Profesor";
+                        }
+
+                    }
+                });
+
+
+
+        return tipo[0];
     }
 }
 

@@ -8,6 +8,8 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -24,16 +27,18 @@ import java.util.List;
  * Created by Owner on 10/3/2018.
  */
 
-public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPos> {
+public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPos> implements Filterable {
 
 
 
     private List<ModelTutoriasProf> mList;
+    private List<ModelTutoriasProf> mListCopy;
 
 
     public TutoriasAdapter(List<ModelTutoriasProf> mList) {
 
         this.mList = mList;
+        this.mListCopy = mList;
     }
 
     @Override
@@ -116,10 +121,52 @@ public class TutoriasAdapter extends RecyclerView.Adapter<TutoriasAdapter.ViewPo
 
     }
 
+
+
     @Override
     public int getItemCount() {
 
         return mList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if (mList!=null) {
+                    mList = (List<ModelTutoriasProf>) results.values;
+                    notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<ModelTutoriasProf> filteredResults = null;
+                if (constraint.length() == 0) {
+                    filteredResults = mListCopy;
+                } else {
+                    filteredResults = getFilteredResults(constraint.toString());
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredResults;
+
+                return results;
+            }
+        };
+    }
+
+    protected List<ModelTutoriasProf> getFilteredResults(String constraint) {
+        List<ModelTutoriasProf> results = new ArrayList<>();
+        for (ModelTutoriasProf item : mListCopy) {
+            if (item.getTitulo().contains(constraint) || item.getTipo_tuto().contains(constraint) || item.getMateria().contains(constraint)) {
+                results.add(item);
+            }
+
+        }
+        return results;
     }
 
     public class  ViewPos extends RecyclerView.ViewHolder implements View.OnClickListener{

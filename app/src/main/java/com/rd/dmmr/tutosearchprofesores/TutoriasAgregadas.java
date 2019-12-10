@@ -3,12 +3,18 @@ package com.rd.dmmr.tutosearchprofesores;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.SearchView;
+import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,7 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TutoriasAgregadas extends AppCompatActivity {
+public class TutoriasAgregadas extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
     FirebaseFirestore fdb;
@@ -34,6 +40,11 @@ public class TutoriasAgregadas extends AppCompatActivity {
     private TutoriasAdapter tutoriasAdapter;
 
     private List<ModelTutoriasProf> mListTutoria;
+    private FloatingActionButton fBack;
+    private Spinner spnMateria;
+    private SearchView searchView;
+
+    boolean create = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +57,16 @@ public class TutoriasAgregadas extends AppCompatActivity {
         fdb = FirebaseFirestore.getInstance();
         FUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        fBack = (FloatingActionButton) findViewById(R.id.fBackButton);
+        spnMateria = (Spinner) findViewById(R.id.spnMateria);
+        searchView = (SearchView) findViewById(R.id.txtBuscar);
+
         mListTutoria = new ArrayList<>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(TutoriasAgregadas.this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
+        spnMateria.setOnItemSelectedListener(this);
 
         RCAbajo.setLayoutManager(layoutManager);
 
@@ -60,6 +76,27 @@ public class TutoriasAgregadas extends AppCompatActivity {
 
         RCAbajo.setAdapter(tutoriasAdapter);
         tutoriasAdapter.notifyDataSetChanged();
+
+        fBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //tutoriasAdapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                tutoriasAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
 
         upTutorias();
 
@@ -80,6 +117,11 @@ public class TutoriasAgregadas extends AppCompatActivity {
                     return;
                 }
 
+                final List<String> materias = new ArrayList<>();
+                spnMateria = (Spinner) findViewById(R.id.spnMateria);
+                ArrayAdapter<String> materiasAdapter = new ArrayAdapter<String>(TutoriasAgregadas.this, android.R.layout.simple_spinner_item, materias);
+                materiasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnMateria.setAdapter(materiasAdapter);
 
                 for (DocumentChange dc : snapshot.getDocumentChanges()) {
                     DocumentSnapshot docS = dc.getDocument();
@@ -90,8 +132,14 @@ public class TutoriasAgregadas extends AppCompatActivity {
                     switch (dc.getType()) {
                         case ADDED:
 
+
+                            if (!materias.contains(modelProf.getMateria())) {
+                                materias.add(modelProf.getMateria());
+                                materiasAdapter.notifyDataSetChanged();
+                            }
+
                             if (modelProf.getTipo_tuto().equals("Live")) {
-                                mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub") , modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
+                                mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
                             } else {
                                 mListTutoria.add(new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
                             }
@@ -103,9 +151,9 @@ public class TutoriasAgregadas extends AppCompatActivity {
                             index = getRCIndex(docS.getId());
 
                             if (modelProf.getTipo_tuto().equals("Live")) {
-                                mListTutoria.set(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(),docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
+                                mListTutoria.set(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), ""));
                             } else {
-                                mListTutoria.set(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(),docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
+                                mListTutoria.set(index, new ModelTutoriasProf(docS.getId(), modelProf.getTitulo(), modelProf.getDescripcion(), modelProf.getBroadcastId(), docS.getString("timestamp_inicial"), docS.getString("timestamp_final"), docS.getString("timestamp_pub"), modelProf.getMateria(), modelProf.getTipo_tuto(), modelProf.getUrl_image_portada(), modelProf.getUrl_thumb_image_portada(), modelProf.getLugar()));
                             }
                             tutoriasAdapter.notifyDataSetChanged();
 
@@ -134,7 +182,7 @@ public class TutoriasAgregadas extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case 0:
                 return true;
 
@@ -161,4 +209,27 @@ public class TutoriasAgregadas extends AppCompatActivity {
 
     }
 
-}
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (!create) {
+            create = true;
+            return;
+        }
+
+        if (adapterView.getId() == R.id.spnMateria) {
+            if (spnMateria.getSelectedItem() != null) {
+                tutoriasAdapter.getFilter().filter(spnMateria.getSelectedItem().toString());
+            } else {
+                tutoriasAdapter.getFilter().filter("");
+            }
+            Log.i("ProbandoSPN", "Entro a la condicion");
+        }
+    }
+
+
+        @Override
+        public void onNothingSelected (AdapterView < ? > adapterView){
+
+        }
+    }
+

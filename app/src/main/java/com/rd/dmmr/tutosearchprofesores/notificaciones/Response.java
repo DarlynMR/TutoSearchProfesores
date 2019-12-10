@@ -1,6 +1,6 @@
 package com.rd.dmmr.tutosearchprofesores.notificaciones;
 
-public class Reponse {
+public class Response {
 
 
     private String success;
