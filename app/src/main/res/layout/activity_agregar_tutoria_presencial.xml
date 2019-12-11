@@ -44,6 +44,11 @@
                         android:scaleType="centerCrop"
                         android:src="@mipmap/presencial_background" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_overlay"/>
+
                 </RelativeLayout>
             </LinearLayout>
 
@@ -184,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/scrollDescripcion"
                     android:layout_marginTop="@dimen/_7sdp"
-                    android:text="Descripcion de lugar"
+                    android:text="Descripción del lugar"
                     android:textSize="20sp"
                     android:layout_centerHorizontal="true"
                     android:textStyle="bold"/>
