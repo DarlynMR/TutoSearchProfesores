@@ -21,6 +21,11 @@ public class MainActivity extends AppCompatActivity {
         FAuth= FirebaseAuth.getInstance();
         FirebaseUser user= FAuth.getCurrentUser();
 
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         if(user==null){
             Intent intent = new Intent(MainActivity.this, LoginProf.class);
