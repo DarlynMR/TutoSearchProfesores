@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tituloEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar datos"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_10sdp"/>
+
+    <TextView
+        android:id="@+id/textNombresEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre(s):"
+        android:textSize="20sp"
+        android:layout_below="@+id/tituloEditar"
+        android:layout_marginStart="@dimen/_15sdp"/>
+
+    <EditText
+        android:id="@+id/txtNombresEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:hint="Nombres..."
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_below="@id/textNombresEditar"/>
+
+    <TextView
+        android:id="@+id/textApellidosEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apellido(s):"
+        android:textSize="20sp"
+        android:layout_below="@+id/txtNombresEditar"
+        android:layout_marginStart="@dimen/_15sdp"/>
+
+    <EditText
+        android:id="@+id/txtApellidosEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:hint="Apellidos..."
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_below="@id/textApellidosEditar"/>
+
+    <TextView
+        android:id="@+id/textFechaEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de nacimiento"
+        android:textSize="20sp"
+        android:layout_below="@+id/txtApellidosEditar"
+        android:layout_marginStart="@dimen/_15sdp"/>
+
+    <EditText
+        android:id="@+id/txtFechaEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:hint="Fecha de nacimiento..."
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_below="@id/textFechaEditar"
+        />
+
+    <TextView
+        android:id="@+id/textTelefonoEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teléfono:"
+        android:textSize="20sp"
+        android:layout_below="@+id/txtFechaEditar"
+        android:layout_marginStart="@dimen/_15sdp"/>
+
+    <EditText
+        android:id="@+id/txtTelefonoEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:hint="Teléfono..."
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_below="@id/textTelefonoEditar"/>
+
+
+
+</RelativeLayout>

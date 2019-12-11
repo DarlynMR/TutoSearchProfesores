@@ -207,13 +207,15 @@ public class LoginProf extends AppCompatActivity implements View.OnClickListener
 
                                                     DocumentSnapshot dc = task.getResult();
 
-                                                    Log.i("Prueba",  dc.getString("nombres"));
+
                                                     editor.putString("nombresProf", dc.getString("nombres"));
                                                     editor.putString("apellidosProf", dc.getString("apellidos"));
                                                     editor.putString("TelefonoProf",  dc.getString("telefono"));
                                                     editor.putString("FechaNacimiento", dc.getString("fecha_nacimiento"));
                                                     editor.putString("Correo",  dc.getString("correo"));
                                                     editor.apply();
+                                                    Log.i("Prueba",  dc.getString("nombres"));
+
                                                     // }
 
                                                 }

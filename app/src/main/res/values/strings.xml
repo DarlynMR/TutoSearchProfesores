@@ -38,6 +38,67 @@
     <string name="creators">Desarrollado por Darly Marmolejos y Anderson Ferreras</string>
     <string name="copy">© 2019-2019 Tutosearch Inc.</string>
     <string name="version">V 1.0</string>
+    <string name="large_text">
 
+        "1-Como cambio mi contraseña?\n\n"
+
+        "Para cambiar la contraseña debes ir al panel de opciones en la parte izquierda de la pantalla (se abre deslizando hacia la derecha)"
+        " Luego nos dirigimos hacia la opción configuraciones y dentro encontraremos la opción cambiar contraseña la cual te enviara un enlace al correo que te permitirá cambiarla por una nueva.\n\n"
+
+        "2-Como elimino mi cuenta?\n\n"
+
+        "En reportar problemas o sugerencias, podrás especificar qué quieres eliminar tu cuenta y nosotros te haremos varias preguntas vía correo para asegurarnos de tu elección.\n\n"
+
+        "3-Puedo tener varias cuentas con el mismo correo?\n\n"
+
+        "No, cada correo es único y por lo tanto las cuentas creadas con ese correo también.\n\n"
+
+        "4-Como puedo cambiar mi foto de perfil?\n\n"
+
+        "En la pantalla principal deslizamos hacia la derecha y se abrirá un panel en el cual"
+        "tendremos la opción perfil, luego de acceder a esta encontraremos un icono de una cámara"
+        "el cual nos permitirá buscar, recortar y establecer una foto de perfil.\n\n"
+
+        "5-Por que la aplicación se me cierra?\n\n"
+
+        "Si la aplicación se cierra en algunas pantallas, esto se debe a que te hace falta actualizar"
+        "a una nueva versión de la aplicación, esto se debe a que los datos que la cuenta quiere extraer"
+        "o crear, hacen funciones que no existen o hay nuevas funciones que necesitan nuevos datos.\n\n"
+
+        "6-Como puedo agregar a un tutor?\n\n"
+
+        "En la pantalla principal tendremos el apartado "Buscar tutores" tendremos una lista de los tutores"
+        "que están registrados en la app, ahí procederás a ver el perfil del profesor y darle al icono circular"
+        "en la parte derecha superior para enviarle una solicitud.\n\n"
+
+        "7-Como puedo abrir una sala de chat con un tutor?\n\n"
+
+        "En la pantalla principal tendremos el apartado mensajes, dentro de este tendremos un Tab con tres ventanas,"
+        "en la derecha están las SOLICITUDES, en medio AMIGOS y en la izquierda MENSAJES, si el profesor o tutor se"
+        "acepta, ese aparecerá en la pantalla AMIGOS y pulsando sobre el abrirá una sala de chat.\n\n"
+
+        "8-Cual es la diferencia entre una tutoría presencial y una streaming?\n\n"
+
+        "La tutoría presencial es aquella en la cual quedas en verte en un lugar establecido por la descripción de la"
+        "tutoría creada o mediante un contacto con el profesor.\n\n"
+
+        "La tutoría streaming es una transmisión en vivo la cual un tutor podrá realizar ya sea para establecer una"
+        "comunicación más plena con estudiantes en general o algunos en específico, con esto se busca ayudar a personas"
+        "en algunos problemas e incluso ponerse en contacto.\n\n"
+
+        "9-Como se descargan los archivos en una tutoria streaming?\n\n"
+
+        "En la transmisión te aparecerá un icono en la parte izquierda con una flecha hacia abajo la cual indica que es"
+        "un apartado de descargas, ahí podrás recibir todos los archivos que el propietario del streaming quiera enviar.\n\n"
+
+        "10-Es gratis enviar mensajes?\n\n"
+
+        "Si, nuestra aplicación no cuenta con permisos para poder utilizar el saldo de tu móvil ya que todo nuestro servicio"
+        "es vía internet.\n\n"
+
+        "Loading..."
+
+
+    </string>
 
 </resources>

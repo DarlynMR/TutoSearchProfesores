@@ -19,9 +19,9 @@
         <menu>
 
             <item
-                android:id="@+id/nav_compartir"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Compartir" />
+                android:id="@+id/politicas_privacidad"
+                android:icon="@drawable/ic_iconfinder_data_privacy"
+                android:title="Políticas de privacidad" />
             <item
                 android:id="@+id/nav_acercaD"
                 android:icon="@drawable/ic_info_black_24dp"

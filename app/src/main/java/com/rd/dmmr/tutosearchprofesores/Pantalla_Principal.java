@@ -229,7 +229,8 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
            Intent intent = new Intent(this,PerfilProf.class);startActivity(intent);
         } else if (id == R.id.nav_ajustes) {
 
-        } else if (id == R.id.nav_compartir) {
+        } else if (id == R.id.politicas_privacidad) {
+            Intent intent = new Intent(this,ScrollingActivity.class);startActivity(intent);
 
         } else if (id == R.id.nav_acercaD) {
             Intent intent = new Intent(this,Acercade.class);startActivity(intent);
