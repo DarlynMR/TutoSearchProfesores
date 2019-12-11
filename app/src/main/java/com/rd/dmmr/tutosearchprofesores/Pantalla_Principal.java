@@ -67,6 +67,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        txtNombreProf = (TextView) findViewById(R.id.txtNombreProfPrincipal);
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -179,6 +180,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
                         TextView txt_correoNav = (TextView) headerview.findViewById(nav_txtCorreoProfMenu);
                         ImageView img_navProf = (ImageView) headerview.findViewById(nav_imagePorf);
 
+                        txtNombreProf.setText("Prof. "+nombresProf + " " + apellidosProf);
                         txt_nombreprofNav.setText(nombresProf + " " + apellidosProf);
                         txt_correoNav.setText(correoProf);
 

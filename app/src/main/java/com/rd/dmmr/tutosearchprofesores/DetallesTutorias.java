@@ -72,7 +72,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
 
         textListado = (TextView) findViewById(R.id.textLista);
 
-        btnAsistir = (CardView) findViewById(R.id.btnAsistir);
+        //btnAsistir = (CardView) findViewById(R.id.btnAsistir);
 
         RCListadoEstudiantes = (RecyclerView) findViewById(R.id.rcListaAsistir);
 
@@ -139,7 +139,7 @@ public class DetallesTutorias extends AppCompatActivity implements View.OnClickL
             }
 
 
-            btnAsistir.setOnClickListener(this);
+            //btnAsistir.setOnClickListener(this);
             CargarEstudiantes();
 
         }

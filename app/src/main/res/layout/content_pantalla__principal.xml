@@ -47,15 +47,16 @@
                         android:layout_centerInParent="true"/>
 
                     <TextView
+                        android:id="@+id/txtNombreProfPrincipal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Bienvenido Darly"
+                        android:text=""
                         android:textColor="#ffffff"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:layout_below="@id/imgTop"
-                        android:layout_centerHorizontal="true"/>
+                        android:layout_centerHorizontal="true" />
 
 
                 </RelativeLayout>

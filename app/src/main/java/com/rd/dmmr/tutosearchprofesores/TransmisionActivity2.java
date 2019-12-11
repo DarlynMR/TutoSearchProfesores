@@ -82,6 +82,11 @@ import id.zelory.compressor.Compressor;
 
 public class TransmisionActivity2 extends AppCompatActivity implements View.OnClickListener {
 
+    private static Long Mdia = Long.parseLong("86400000");
+    private static Long Mhora = Long.parseLong("3600000");
+    private static Long Mminuto = Long.parseLong("60000");
+    private static Long Msegundo = Long.parseLong("1000");
+
     private SurfaceView mPreviewSurface;
     private Button btnIniciarTransmision;
     private LinearLayout btnAbrirLY;
@@ -94,7 +99,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
     private Bundle datosTuto;
     private TextView titulo;
-    private String idTuto, download_url, thumb_downloadUrl, cualMethod, nameF;
+    private String idTuto, download_url, thumb_downloadUrl, cualMethod, nameF, tiempoI;
 
     private List<DownloadModel> mListDown;
     private DownloadAdapter downloadAdapter;
@@ -111,7 +116,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     private Uri imgUri = null, docUri = null, nameImage, nameDoc;
 
 
-    private static final String APPLICATION_ID = "kBOAwsuh7RgyF8w2CqPjmg";
+    private static final String APPLICATION_ID = "bZFXuz2AitY0oFLf2UA36g";
 
     //Variables para el chat en vivo
     private RecyclerView rcChatLive;
@@ -190,6 +195,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
         if (datosTuto != null) {
             idTuto = datosTuto.getString("idTuto");
+            tiempoI = datosTuto.getString("timestampI");
             titulo.setText(datosTuto.getString("Titulo"));
 
 
@@ -241,6 +247,8 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         @Override
         public void onConnectionError(ConnectionError connectionError, String s) {
             Log.w("Mybroadcastingapp", "Received connection error: " + connectionError + ", " + s);
+            progressDialog.dismiss();
+            Toast.makeText(TransmisionActivity2.this, "Ha ocurrido un error al tratar de transmitir", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -270,6 +278,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
             Log.w("Mybroadcastingapp", "ID Transmision: " + s);
             Map update_hashmMap = new HashMap();
             update_hashmMap.put("broadcastId", s);
+            update_hashmMap.put("timestamp_inicial", String.valueOf(System.currentTimeMillis()));
 
             fdb.collection("Tutorias_institucionales").document(idTuto)
                     .update(update_hashmMap)
@@ -372,7 +381,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
                                 public void run() {
 
 
-                                    mChatList.add(new ModelChatLive(docS.getId(), docS.getString("mensaje"), docS.getString("emisor"),  docS.getString("timestamp"), docS.getString("tipo_user")));
+                                    mChatList.add(new ModelChatLive(docS.getId(), docS.getString("mensaje"), docS.getString("emisor"), docS.getString("timestamp"), docS.getString("tipo_user")));
                                     Log.i("ProbandoPrincipal", "Tamaño: " + mChatList.size());
 
 
@@ -409,7 +418,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                if (swicthAbrirLY.isIconEnabled()){
+                if (swicthAbrirLY.isIconEnabled()) {
                     swicthAbrirLY.switchState(false);
                 }
             }
@@ -469,8 +478,8 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(TransmisionActivity2.this);
-        builder.setMessage("¿Está seguro de que quiere subir este archivo?").setPositiveButton("Si", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener)
+        builder.setMessage("¿Está seguro de que quiere subir este archivo?").setPositiveButton("Si", dialogArchivoClickListener)
+                .setNegativeButton("No", dialogArchivoClickListener)
                 .setCancelable(false);
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -485,7 +494,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (result==null){
+            if (result == null) {
                 return;
             }
             cualMethod = "Image";
@@ -759,9 +768,9 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
         Log.i("Borrar", "Entro");
 
-        File compFile = new File(ruta+mListDown.get(pos).name);
+        File compFile = new File(ruta + mListDown.get(pos).name);
 
-        if (compFile.exists()){
+        if (compFile.exists()) {
             compFile.delete();
 
         }
@@ -803,7 +812,6 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
 
     }
-
 
 
     void savefile(Uri sourceuri) {
@@ -967,7 +975,7 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Log.i("Borrar", "Entroo");
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case 0:
 
                 EliminarArchivos(item.getGroupId());
@@ -984,7 +992,6 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     }
 
 
-
     private void CualMethod() {
         if (cualMethod.equals("Image")) {
             SubirImagen();
@@ -997,8 +1004,36 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
         }
     }
 
+    private String obtenerTiempoRestante(Long milisRestantes) {
 
-    final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        Long di, hor, min, seg;
+        String textRestante = "";
+
+        if (milisRestantes >= Mdia) {
+            di = milisRestantes / Mdia;
+            milisRestantes -= Mdia * di;
+            textRestante += (milisRestantes >= Mhora ? di + " días, " : di + " días,");
+        }
+        if (milisRestantes >= Mhora) {
+            hor = milisRestantes / Mhora;
+            milisRestantes -= Mhora * hor;
+            textRestante += (milisRestantes >= Mminuto ? hor + " horas, " : hor + " horas");
+        }
+        if (milisRestantes >= Mminuto) {
+            min = milisRestantes / Mminuto;
+            milisRestantes -= Mminuto * min;
+            textRestante += (milisRestantes >= Msegundo ? min + " minutos y " : min + " minutos");
+        }
+
+        if (milisRestantes >= Msegundo) {
+            seg = milisRestantes / Msegundo;
+            textRestante += seg + " segundos";
+        }
+        return textRestante;
+    }
+
+
+    final DialogInterface.OnClickListener dialogArchivoClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
@@ -1009,7 +1044,31 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
-                    //No button clicked
+                    dialog.dismiss();
+                    break;
+            }
+        }
+    };
+
+    final DialogInterface.OnClickListener dialogIniciarClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface
+                        .BUTTON_POSITIVE:
+                    if (mBroadcaster.canStartBroadcasting()) {
+                        mBroadcaster.setAuthor(idTuto);
+                        mBroadcaster.startBroadcast();
+                        progressDialog.show();
+                        tiempoI = String.valueOf(System.currentTimeMillis());
+                    } else {
+                        mBroadcaster.stopBroadcast();
+                    }
+
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    dialog.dismiss();
                     break;
             }
         }
@@ -1019,13 +1078,33 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if (view == btnIniciarTransmision) {
-            if (mBroadcaster.canStartBroadcasting()) {
-                mBroadcaster.setAuthor(idTuto);
-                mBroadcaster.startBroadcast();
-                progressDialog.show();
+            Long ini, actual;
+
+            ini = Long.parseLong(tiempoI);
+            actual = System.currentTimeMillis();
+            String strTiempo;
+
+            if (ini > actual) {
+                strTiempo = obtenerTiempoRestante((ini - actual));
+                AlertDialog.Builder builder = new AlertDialog.Builder(TransmisionActivity2.this);
+                builder.setMessage("Aún quedan " + strTiempo + " para iniciar la transmisión.\n\n¿Está seguro que desea iniciar la transmisión?, sí presiona que 'Si' la transmisión iniciará y " +
+                        "la fecha será modificada a la actual.").setPositiveButton("Si", dialogIniciarClickListener)
+                        .setNegativeButton("No", dialogIniciarClickListener)
+                        .setCancelable(false);
+                builder.show();
+
+
             } else {
-                mBroadcaster.stopBroadcast();
+                if (mBroadcaster.canStartBroadcasting()) {
+                    mBroadcaster.setAuthor(idTuto);
+                    mBroadcaster.startBroadcast();
+                    progressDialog.show();
+                } else {
+                    mBroadcaster.stopBroadcast();
+                }
             }
+
+
         }
         if (view == btnAbrirLY) {
             abrirLYPopup();
@@ -1046,8 +1125,10 @@ public class TransmisionActivity2 extends AppCompatActivity implements View.OnCl
 
             if (swichtOpenChat.isIconEnabled()) {
                 findViewById(R.id.rlChatLive).setVisibility(View.VISIBLE);
-            }else{
+                btnIniciarTransmision.setVisibility(View.INVISIBLE);
+            } else {
                 findViewById(R.id.rlChatLive).setVisibility(View.INVISIBLE);
+                btnIniciarTransmision.setVisibility(View.VISIBLE);
             }
         }
     }

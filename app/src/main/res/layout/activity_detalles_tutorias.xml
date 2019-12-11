@@ -141,7 +141,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"/>
 
-            <androidx.cardview.widget.CardView
+           <!-- <androidx.cardview.widget.CardView
                 android:id="@+id/btnAsistir"
                 android:layout_width="125dp"
                 android:layout_height="40dp"
@@ -157,7 +157,7 @@
 
                     android:textSize="20sp"
                     />
-            </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>-->
 
 
 

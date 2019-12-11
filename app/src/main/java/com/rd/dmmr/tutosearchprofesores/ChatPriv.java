@@ -1,6 +1,8 @@
 package com.rd.dmmr.tutosearchprofesores;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -57,6 +59,7 @@ import retrofit2.Callback;
 
 public class ChatPriv extends AppCompatActivity implements View.OnClickListener {
 
+    Bundle datosAmigo;
 
     Toolbar toolbar;
     RecyclerView rcChat;
@@ -118,8 +121,20 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
         Intent intent = getIntent();
 
+        datosAmigo = intent.getExtras();
+
+        if (datosAmigo!=null){
+            Log.i("Notificaciones", datosAmigo.getString("tipoUser"));
+        }
+
+
         idAmigo = intent.getStringExtra("idAmigo");
         tipoAmigo = intent.getStringExtra("tipoUser");
+
+        if (datosAmigo!=null){
+            Log.i("Notificaciones", "Via bundle"+datosAmigo.getString("tipoUser"));
+            Log.i("NotificacionesIntent","Via intent"+ tipoAmigo);
+        }
 
         if (tipoAmigo.equals("Profesor") || tipoAmigo.equals("Profesores")) {
             rutaUser = "Profesores";
@@ -304,7 +319,11 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
                 if (notify){
-                    sendNotification(idAmigo, txtNombre.getText().toString(), mensaje);
+                    final SharedPreferences pref = getSharedPreferences("ProfPref", Context.MODE_PRIVATE);
+
+                    String myName = pref.getString("nombresProf", "Usuario")+" "+pref.getString("apellidosProf", "");
+
+                    sendNotification(idAmigo, myName.trim(), mensaje);
                 }
                 notify =false;
 
@@ -370,7 +389,7 @@ public class ChatPriv extends AppCompatActivity implements View.OnClickListener 
 
                     Log.i("Token", token.getToken());
 
-                    Data data = new Data(myUID, txtNombre.getText().toString()+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile);
+                    Data data = new Data(myUID, toString+": "+mensaje,  "Nuevo mensaje", idAmigo, R.drawable.imageprofile, "Profesores");
 
                     Sender sender = new Sender(data, token.getToken());
                     apiService.sendNotification(sender)
